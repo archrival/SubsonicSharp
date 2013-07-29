@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A533A041-6D2D-46B3-A3E7-4CC7E64A16F3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Subsonic.Common</RootNamespace>
+    <AssemblyName>Subsonic.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\AlbumID3.cs" />
+    <Compile Include="Classes\AlbumList.cs" />
+    <Compile Include="Classes\AlbumList2.cs" />
+    <Compile Include="Classes\Error.cs" />
+    <Compile Include="Classes\Genres.cs" />
+    <Compile Include="Classes\Response.cs" />
+    <Compile Include="Classes\Songs.cs" />
+    <Compile Include="Enums\AlbumListType.cs" />
+    <Compile Include="Classes\AlbumWithSongsID3.cs" />
+    <Compile Include="Classes\Artist.cs" />
+    <Compile Include="Classes\ArtistID3.cs" />
+    <Compile Include="Classes\ArtistsID3.cs" />
+    <Compile Include="Classes\ArtistWithAlbumsID3.cs" />
+    <Compile Include="Classes\ChatMessage.cs" />
+    <Compile Include="Classes\ChatMessages.cs" />
+    <Compile Include="Classes\Child.cs" />
+    <Compile Include="Enums\ItemChoiceType.cs" />
+    <Compile Include="Enums\JukeboxControlAction.cs" />
+    <Compile Include="Classes\JukeboxPlaylist.cs" />
+    <Compile Include="Classes\JukeboxStatus.cs" />
+    <Compile Include="Classes\Lyrics.cs" />
+    <Compile Include="Classes\PodcastChannel.cs" />
+    <Compile Include="Classes\Podcasts.cs" />
+    <Compile Include="Classes\RandomSongs.cs" />
+    <Compile Include="Classes\Share.cs" />
+    <Compile Include="Classes\Shares.cs" />
+    <Compile Include="Classes\Directory.cs" />
+    <Compile Include="Enums\Methods.cs" />
+    <Compile Include="Enums\ResponseStatus.cs" />
+    <Compile Include="Interfaces\IImageFormat.cs" />
+    <Compile Include="Classes\Index.cs" />
+    <Compile Include="Classes\Indexes.cs" />
+    <Compile Include="Classes\IndexID3.cs" />
+    <Compile Include="Interfaces\ISubsonicClient.cs" />
+    <Compile Include="Classes\License.cs" />
+    <Compile Include="Enums\MediaType.cs" />
+    <Compile Include="Classes\MusicFolder.cs" />
+    <Compile Include="Classes\MusicFolders.cs" />
+    <Compile Include="Classes\NowPlaying.cs" />
+    <Compile Include="Classes\NowPlayingEntry.cs" />
+    <Compile Include="Classes\Playlist.cs" />
+    <Compile Include="Classes\Playlists.cs" />
+    <Compile Include="Classes\PlaylistWithSongs.cs" />
+    <Compile Include="Classes\PodcastEpisode.cs" />
+    <Compile Include="Enums\PodcastStatus.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Classes\SearchResult.cs" />
+    <Compile Include="Classes\SearchResult2.cs" />
+    <Compile Include="Classes\SearchResult3.cs" />
+    <Compile Include="Classes\Starred.cs" />
+    <Compile Include="Classes\Starred2.cs" />
+    <Compile Include="Enums\StreamFormat.cs" />
+    <Compile Include="Classes\User.cs" />
+    <Compile Include="Classes\Users.cs" />
+    <Compile Include="Classes\Videos.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
