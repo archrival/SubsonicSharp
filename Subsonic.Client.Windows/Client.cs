@@ -3,7 +3,6 @@ using Subsonic.Client.Common.Enums;
 using Subsonic.Common;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -22,6 +21,13 @@ namespace Subsonic.Client.Windows
             SubsonicClient = new SubsonicClient { Name = clientName, Password = password, ServerUrl = serverUrl, UserName = userName };
             HttpResponse = new HttpResponse(SubsonicClient);
         }
+
+        public Client(string serverUrl, string userName, string password, string proxyServer, int proxyPort, string proxyUserName, string proxyPassword, string clientName)
+        {
+            SubsonicClient = new SubsonicClient { Name = clientName, Password = password, ServerUrl = serverUrl, UserName = userName, ProxyServerUrl = proxyServer, ProxyPort = proxyPort, ProxyUserName = proxyUserName, ProxyPassword = proxyPassword };
+            HttpResponse = new HttpResponse(SubsonicClient);
+        }
+
 
         /// <summary>
         /// Used to test connectivity with the server.
