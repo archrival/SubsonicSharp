@@ -788,70 +788,70 @@ namespace Subsonic.Client.Windows
             return HttpResponse.GetResponse(path, true, Methods.stream, methodApiVersion, parameters);
         }
 
-        ///// <summary>
-        ///// Downloads a given media file. Similar to stream, but this method returns the original media data without transcoding or downsampling.
-        ///// </summary>
-        ///// <param name="id">A string which uniquely identifies the file to download. Obtained by calls to GetMusicDirectory.</param>W
-        ///// <returns>long</returns>
-        //public string BuildDownloadUrl(string id)
-        //{
-        //    var parameters = SubsonicParameters.Create();
-        //    parameters.Add(Constants.Id, id, true);
+        /// <summary>
+        /// Downloads a given media file. Similar to stream, but this method returns the original media data without transcoding or downsampling.
+        /// </summary>
+        /// <param name="id">A string which uniquely identifies the file to download. Obtained by calls to GetMusicDirectory.</param>W
+        /// <returns>long</returns>
+        public string BuildDownloadUrl(string id)
+        {
+            var parameters = SubsonicParameters.Create();
+            parameters.Add(Constants.Id, id, true);
 
-        //    return SubsonicRequest.BuildRequestUriUser(Methods.download, Versions._version100, parameters);
-        //}
+            return SubsonicRequest.BuildRequestUriUser(SubsonicClient, Methods.download, Versions.Version100, parameters);
+        }
 
-        ///// <summary>
-        ///// Streams a given media file.
-        ///// </summary>
-        ///// <param name="id">A string which uniquely identifies the file to stream. Obtained by calls to getMusicDirectory.</param>
-        ///// <param name="maxBitRate">(Since 1.2.0) If specified, the server will attempt to limit the bitrate to this value, in kilobits per second. If set to zero, no limit is imposed.</param>
-        ///// <param name="format">(Since 1.6.0) Specifies the preferred target format (e.g., "mp3" or "flv") in case there are multiple applicable transcodings</param>
-        ///// <param name="timeOffset">Only applicable to video streaming. If specified, start streaming at the given offset (in seconds) into the video. Typically used to implement video skipping.</param>
-        ///// <param name="size">(Since 1.6.0) Only applicable to video streaming. Requested video size specified as WxH, for instance "640x480".</param>
-        ///// <param name="estimateContentLength">(Since 1.8.0). If set to "true", the Content-Length HTTP header will be set to an estimated value for transcoded or downsampled media.</param>
-        ///// <returns>long</returns>
-        //public string BuildStreamUrl(string id, int? maxBitRate = null, StreamFormat? format = null, int? timeOffset = null, string size = null, bool? estimateContentLength = null)
-        //{
-        //    var methodApiVersion = Versions._version120;
+        /// <summary>
+        /// Streams a given media file.
+        /// </summary>
+        /// <param name="id">A string which uniquely identifies the file to stream. Obtained by calls to getMusicDirectory.</param>
+        /// <param name="maxBitRate">(Since 1.2.0) If specified, the server will attempt to limit the bitrate to this value, in kilobits per second. If set to zero, no limit is imposed.</param>
+        /// <param name="format">(Since 1.6.0) Specifies the preferred target format (e.g., "mp3" or "flv") in case there are multiple applicable transcodings</param>
+        /// <param name="timeOffset">Only applicable to video streaming. If specified, start streaming at the given offset (in seconds) into the video. Typically used to implement video skipping.</param>
+        /// <param name="size">(Since 1.6.0) Only applicable to video streaming. Requested video size specified as WxH, for instance "640x480".</param>
+        /// <param name="estimateContentLength">(Since 1.8.0). If set to "true", the Content-Length HTTP header will be set to an estimated value for transcoded or downsampled media.</param>
+        /// <returns>long</returns>
+        public string BuildStreamUrl(string id, int? maxBitRate = null, StreamFormat? format = null, int? timeOffset = null, string size = null, bool? estimateContentLength = null)
+        {
+            var methodApiVersion = Versions.Version120;
 
-        //    var parameters = SubsonicParameters.Create();
-        //    parameters.Add(Constants.Id, id, true);
+            var parameters = SubsonicParameters.Create();
+            parameters.Add(Constants.Id, id, true);
 
-        //    if (maxBitRate != null && maxBitRate != 0)
-        //        parameters.Add(Constants.MaxBitRate, maxBitRate);
+            if (maxBitRate != null && maxBitRate != 0)
+                parameters.Add(Constants.MaxBitRate, maxBitRate);
 
-        //    if (format != null)
-        //    {
-        //        var streamFormatName = Enum.GetName(typeof(StreamFormat), format);
+            if (format != null)
+            {
+                var streamFormatName = EnumHelper.GetXmlEnumAttribute(format);
 
-        //        if (streamFormatName != null)
-        //        {
-        //            parameters.Add(Constants.StreamFormat, streamFormatName);
-        //            methodApiVersion = Versions._version160;
-        //        }
-        //    }
+                if (streamFormatName != null)
+                {
+                    parameters.Add(Constants.StreamFormat, streamFormatName);
+                    methodApiVersion = Versions.Version160;
+                }
+            }
 
-        //    if (timeOffset != null)
-        //    {
-        //        parameters.Add(Constants.TimeOffset, timeOffset);
-        //        methodApiVersion = Versions._version160;
-        //    }
+            if (timeOffset != null)
+            {
+                parameters.Add(Constants.TimeOffset, timeOffset);
+                methodApiVersion = Versions.Version160;
+            }
 
-        //    if (!string.IsNullOrWhiteSpace(size))
-        //    {
-        //        parameters.Add(Constants.Size, size);
-        //        methodApiVersion = Versions._version160;
-        //    }
+            if (!string.IsNullOrWhiteSpace(size))
+            {
+                parameters.Add(Constants.Size, size);
+                methodApiVersion = Versions.Version160;
+            }
 
-        //    if (estimateContentLength != null)
-        //    {
-        //        parameters.Add(Constants.EstimateContentLength, estimateContentLength);
-        //        methodApiVersion = Versions._version180;
-        //    }
+            if (estimateContentLength != null)
+            {
+                parameters.Add(Constants.EstimateContentLength, estimateContentLength);
+                methodApiVersion = Versions.Version180;
+            }
 
-        //    return SubsonicRequest.BuildRequestUriUser(Methods.stream, methodApiVersion, parameters);
-        //}
+            return SubsonicRequest.BuildRequestUriUser(SubsonicClient, Methods.stream, methodApiVersion, parameters);
+        }
 
         /// <summary>
         /// Returns a cover art image.

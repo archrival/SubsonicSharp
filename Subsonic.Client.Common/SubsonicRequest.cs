@@ -61,14 +61,15 @@ namespace Subsonic.Client.Common
         /// <summary>
         /// Builds a URI to be used for the request.
         /// </summary>
+        /// <param name="client"></param>
         /// <param name="method">Subsonic API method to call.</param>
         /// <param name="methodApiVersion">Subsonic API version of the method.</param>
         /// <param name="parameters">Parameters used by the method.</param>
         /// <returns>string</returns>
-        public string BuildRequestUriUser(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
+        public static string BuildRequestUriUser(SubsonicClient client, Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
         {
-            string encodedPassword = string.Format(CultureInfo.InvariantCulture, "enc:{0}", Client.Password.ToHex());
-            string request = string.Format(CultureInfo.InvariantCulture, "{0}/rest/{1}.view?v={2}&c={3}&u={4}&p={5}", Client.ServerUrl, Enum.GetName(typeof(Methods), method), methodApiVersion, Client.Name, Client.UserName, encodedPassword);
+            string encodedPassword = string.Format(CultureInfo.InvariantCulture, "enc:{0}", client.Password.ToHex());
+            string request = string.Format(CultureInfo.InvariantCulture, "{0}/rest/{1}.view?v={2}&c={3}&u={4}&p={5}", client.ServerUrl, Enum.GetName(typeof(Methods), method), methodApiVersion, client.Name, client.UserName, encodedPassword);
 
             if (parameters != null && parameters.Parameters.Count > 0)
                 request = parameters.Parameters.Cast<DictionaryEntry>().Aggregate(request, (current, parameter) => current + string.Format(CultureInfo.InvariantCulture, "&{0}={1}", HttpUtility.UrlEncode(parameter.Key.ToString()), HttpUtility.UrlEncode(parameter.Value.ToString())));
