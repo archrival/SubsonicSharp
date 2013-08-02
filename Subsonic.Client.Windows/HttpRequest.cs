@@ -1,4 +1,5 @@
-﻿using Subsonic.Client.Common;
+﻿using System.Security.AccessControl;
+using Subsonic.Client.Common;
 using Subsonic.Common;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
@@ -166,7 +167,7 @@ namespace Subsonic.Client.Windows
                                 cancelToken.Value.ThrowIfCancellationRequested();
 
                             using (var stream = response.GetResponseStream())
-                            using (var fileStream = File.Create(path))
+                            using (var fileStream = File.Open(path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
                             {
                                 if (stream != null)
                                 {
