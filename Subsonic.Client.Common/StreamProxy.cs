@@ -17,6 +17,7 @@ namespace Subsonic.Client.Common
         private readonly TcpListener _socket;
         private readonly int _port;
         private readonly TrackItem _trackItem;
+        private string _currentTrack;
 
         public StreamProxy(TrackItem trackItem)
         {
@@ -46,8 +47,9 @@ namespace Subsonic.Client.Common
 
         public void Stop()
         {
+            _currentTrack = null;
             _isRunning = false;
-            _thread.Interrupt();
+            _thread.Abort();
         }
 
         private void Run()
@@ -69,11 +71,13 @@ namespace Subsonic.Client.Common
                     StreamToMediaPlayerTask task = new StreamToMediaPlayerTask(this, client);
 
                     if (task.ProcessRequest())
-                        task.Run();
+                         task.Run();
                 }
                 catch
                 {
                 }
+
+                Thread.Sleep(10);
             }
         }
 
@@ -96,9 +100,9 @@ namespace Subsonic.Client.Common
 
                 try
                 {
-                    using (var inputStream = _client.GetStream())
-                    using (var streamReader = new StreamReader(inputStream))
-                        firstLine = streamReader.ReadLine();
+                    var inputStream = _client.GetStream();
+                    var streamReader = new StreamReader(inputStream);
+                    firstLine = streamReader.ReadLine();
                 }
                 catch (Exception e)
                 {
@@ -109,10 +113,7 @@ namespace Subsonic.Client.Common
                     return null;
 
                 var st = firstLine.Split(' ');
-                String uri = st.ElementAt(1);
-                String realUri = uri.Substring(1);
-
-                return realUri;
+                return st.ElementAt(1).Substring(1);
             }
 
             public bool ProcessRequest()
@@ -123,6 +124,9 @@ namespace Subsonic.Client.Common
                     return false;
 
                 _localPath = HttpUtility.UrlDecode(request, Encoding.UTF8);
+
+                if (_localPath == _instance._currentTrack)
+                    return false;
 
                 return _localPath != null && new FileInfo(_localPath).Exists;
             }
@@ -189,9 +193,11 @@ namespace Subsonic.Client.Common
                 }
                 catch
                 {
+                    
                 }
                 finally
                 {
+                    _instance._currentTrack = null;
                     _client.Close();
                 }
             }

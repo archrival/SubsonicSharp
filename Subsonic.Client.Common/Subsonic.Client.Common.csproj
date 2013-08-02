@@ -56,7 +56,7 @@
     <Compile Include="HttpMethod.cs" />
     <Compile Include="Interfaces\ISubsonicRequest.cs" />
     <Compile Include="Interfaces\ISubsonicResponse.cs" />
-    <Compile Include="NowPlayingItem.cs" />
+    <Compile Include="Items\NowPlayingItem.cs" />
     <Compile Include="Items\PlaylistItem.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="StreamProxy.cs" />
