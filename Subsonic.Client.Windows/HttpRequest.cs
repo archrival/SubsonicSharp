@@ -292,7 +292,7 @@ namespace Subsonic.Client.Windows
         /// <param name="requestUri">URI for the request.</param>
         /// <param name="method"></param>
         /// <returns>HttpWebRequest</returns>
-        private HttpWebRequest BuildRequest(string requestUri, string method = HttpMethod.POST)
+        private HttpWebRequest BuildRequest(Uri requestUri, string method = HttpMethod.POST)
         {
             var request = WebRequest.Create(requestUri) as HttpWebRequest;
 

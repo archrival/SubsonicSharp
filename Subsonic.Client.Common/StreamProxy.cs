@@ -10,7 +10,7 @@ using System.Web;
 
 namespace Subsonic.Client.Common
 {
-    public class StreamProxy
+    public sealed class StreamProxy : IDisposable
     {
         private Thread _thread;
         private bool _isRunning;
@@ -79,7 +79,7 @@ namespace Subsonic.Client.Common
                     if (_task.ProcessRequest())
                         _task.Run();
                     else
-                        _task.Cancel();
+                        _task.Dispose();
                 }
                 catch (Exception)
                 {
@@ -89,7 +89,13 @@ namespace Subsonic.Client.Common
             }
         }
 
-        private class StreamToMediaPlayerTask
+        public void Dispose()
+        {
+            if (_task != null)
+                _task.Dispose();
+        }
+
+        private sealed class StreamToMediaPlayerTask : IDisposable
         {
             private string _localPath;
             private TcpClient _client;
@@ -177,23 +183,6 @@ namespace Subsonic.Client.Common
                 return false;
             }
 
-            protected internal void Cancel()
-            {
-                if (_streamReader != null)
-                {
-                    _streamReader.Close();
-                    _streamReader.Dispose();
-                    _streamReader = null;
-                }
-
-                if (_inputStream != null)
-                {
-                    _inputStream.Close();
-                    _inputStream.Dispose();
-                    _inputStream = null;
-                }
-            }
-
             protected internal void Run()
             {
                 // Create HTTP header
@@ -268,9 +257,26 @@ namespace Subsonic.Client.Common
                 }
                 finally
                 {
-                    Cancel();
+                    Dispose();
                     _client.Close();
                 }
+            }
+
+            public void Dispose()
+            {
+                if (_streamReader != null)
+                {
+                    _streamReader.Close();
+                    _streamReader.Dispose();
+                    _streamReader = null;
+                }
+
+                if (_inputStream != null)
+                {
+                    _inputStream.Close();
+                    _inputStream.Dispose();
+                    _inputStream = null;
+                } 
             }
         }
     }

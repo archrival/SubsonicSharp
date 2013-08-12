@@ -1,4 +1,5 @@
-﻿using Subsonic.Client.Common;
+﻿using System;
+using Subsonic.Client.Common;
 using Subsonic.Client.Common.Enums;
 using Subsonic.Common;
 using Subsonic.Common.Classes;
@@ -11,18 +12,18 @@ using System.Threading.Tasks;
 
 namespace Subsonic.Client.Windows
 {
-    public class Client : ISubsonicClient<Image>
+    public class SubsonicClientWindows : ISubsonicClient<Image>
     {
         public SubsonicClient SubsonicClient { get; set; }
         private HttpResponse HttpResponse { get; set; }
         
-        public Client(string serverUrl, string userName, string password, string clientName)
+        public SubsonicClientWindows(Uri serverUrl, string userName, string password, string clientName)
         {
             SubsonicClient = new SubsonicClient { Name = clientName, Password = password, ServerUrl = serverUrl, UserName = userName };
             HttpResponse = new HttpResponse(SubsonicClient);
         }
 
-        public Client(string serverUrl, string userName, string password, string proxyServer, int proxyPort, string proxyUserName, string proxyPassword, string clientName)
+        public SubsonicClientWindows(Uri serverUrl, string userName, string password, string proxyServer, int proxyPort, string proxyUserName, string proxyPassword, string clientName)
         {
             SubsonicClient = new SubsonicClient { Name = clientName, Password = password, ServerUrl = serverUrl, UserName = userName, ProxyServerUrl = proxyServer, ProxyPort = proxyPort, ProxyUserName = proxyUserName, ProxyPassword = proxyPassword };
             HttpResponse = new HttpResponse(SubsonicClient);
@@ -793,7 +794,7 @@ namespace Subsonic.Client.Windows
         /// </summary>
         /// <param name="id">A string which uniquely identifies the file to download. Obtained by calls to GetMusicDirectory.</param>W
         /// <returns>long</returns>
-        public string BuildDownloadUrl(string id)
+        public Uri BuildDownloadUrl(string id)
         {
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
@@ -811,7 +812,7 @@ namespace Subsonic.Client.Windows
         /// <param name="size">(Since 1.6.0) Only applicable to video streaming. Requested video size specified as WxH, for instance "640x480".</param>
         /// <param name="estimateContentLength">(Since 1.8.0). If set to "true", the Content-Length HTTP header will be set to an estimated value for transcoded or downsampled media.</param>
         /// <returns>long</returns>
-        public string BuildStreamUrl(string id, int? maxBitRate = null, StreamFormat? format = null, int? timeOffset = null, string size = null, bool? estimateContentLength = null)
+        public Uri BuildStreamUrl(string id, int? maxBitRate = null, StreamFormat? format = null, int? timeOffset = null, string size = null, bool? estimateContentLength = null)
         {
             var methodApiVersion = Versions.Version120;
 
