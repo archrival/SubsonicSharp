@@ -52,7 +52,6 @@ namespace Subsonic.Client.Common
 
             if (_thread == null) return;
 
-            _thread.Interrupt();
             _thread.Abort();
         }
 
@@ -62,35 +61,40 @@ namespace Subsonic.Client.Common
 
             _task = new StreamToMediaPlayerTask(this);
 
-            while (_isRunning)
+            SpinWait.SpinUntil(CheckForWork);
+        }
+
+        private bool CheckForWork()
+        {
+            try
             {
-                try
-                {
-                    if (!_socket.Pending())
-                        continue;
+                if (!_socket.Pending())
+                    return !_isRunning;
 
-                    var client = _socket.AcceptTcpClient();
+                var client = _socket.AcceptTcpClient();
 
-                    if (!client.Connected)
-                        continue;
+                if (!client.Connected)
+                    return !_isRunning;
 
-                    _task.SetClient(client);
+                _task.SetClient(client);
 
-                    if (_task.ProcessRequest())
-                        _task.Run();
-                    else
-                        _task.Dispose();
-                }
-                catch (Exception)
-                {
-                }
-
-                Thread.Sleep(10);
+                if (_task.ProcessRequest())
+                    _task.Run();
+                else
+                    _task.Dispose();
             }
+            catch (Exception)
+            {
+            }
+
+            return !_isRunning;
         }
 
         public void Dispose()
         {
+            if (_isRunning)
+                Stop();
+
             if (_task != null)
                 _task.Dispose();
         }
@@ -109,7 +113,7 @@ namespace Subsonic.Client.Common
                 _instance = streamProxy;
             }
 
-            protected internal void SetClient(TcpClient client)
+            internal void SetClient(TcpClient client)
             {
                 if (_client != null)
                     _client.Close();
@@ -143,7 +147,7 @@ namespace Subsonic.Client.Common
                 return st.ElementAt(1).Substring(1);
             }
 
-            protected internal bool ProcessRequest()
+            internal bool ProcessRequest()
             {
                 string request = ReadRequest();
 
@@ -183,7 +187,7 @@ namespace Subsonic.Client.Common
                 return false;
             }
 
-            protected internal void Run()
+            internal void Run()
             {
                 // Create HTTP header
                 string headers = "HTTP/1.1 200 OK\r\n";
