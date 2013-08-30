@@ -256,7 +256,7 @@ namespace Subsonic.Client.Common
                         }
                     }
                 }
-                catch (Exception)
+                catch
                 {
                 }
                 finally

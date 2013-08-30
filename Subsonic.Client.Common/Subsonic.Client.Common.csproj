@@ -42,6 +42,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\LoggingLevel.cs" />
+    <Compile Include="FileLogger.cs" />
+    <Compile Include="Interfaces\IFileLogger.cs" />
     <Compile Include="Items\AlbumItem.cs" />
     <Compile Include="Items\AlbumListItem.cs" />
     <Compile Include="Items\ArtistItem.cs" />

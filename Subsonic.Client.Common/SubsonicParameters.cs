@@ -8,7 +8,7 @@ namespace Subsonic.Client.Common
     public class SubsonicParameters
     {
         public ICollection Parameters { get; set; }
-        public SubsonicParameterTypes ParameterType { get; private set; }
+        private SubsonicParameterTypes ParameterType { get; set; }
 
         private SubsonicParameters() { }
 
