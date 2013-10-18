@@ -1,6 +1,7 @@
 ﻿using System;
 using Subsonic.Client.Common;
 using Subsonic.Client.Common.Enums;
+using Subsonic.Client.Common.Exceptions;
 using Subsonic.Common;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
@@ -23,7 +24,7 @@ namespace Subsonic.Client.Windows
             HttpResponse = new HttpResponse(SubsonicClient);
         }
 
-        public SubsonicClientWindows(Uri serverUrl, string userName, string password, string proxyServer, int proxyPort, string proxyUserName, string proxyPassword, string clientName)
+        public SubsonicClientWindows(Uri serverUrl, string userName, string password, Uri proxyServer, int proxyPort, string proxyUserName, string proxyPassword, string clientName)
         {
             SubsonicClient = new SubsonicClient { Name = clientName, Password = password, ServerUrl = serverUrl, UserName = userName, ProxyServerUrl = proxyServer, ProxyPort = proxyPort, ProxyUserName = proxyUserName, ProxyPassword = proxyPassword };
             HttpResponse = new HttpResponse(SubsonicClient);
@@ -542,16 +543,16 @@ namespace Subsonic.Client.Windows
         public async Task<bool> CreatePlaylistAsync(string playlistId = null, string name = null, IEnumerable<string> songId = null)
         {
             if (!string.IsNullOrWhiteSpace(playlistId) && !string.IsNullOrWhiteSpace(name))
-                throw new Exceptions.SubsonicApiException("Only one of playlist ID and name can be specified.");
+                throw new SubsonicApiException("Only one of playlist ID and name can be specified.");
 
-            var parameters = SubsonicParameters.Create(SubsonicParameterTypes.List);
+            var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
 
             if (!string.IsNullOrWhiteSpace(playlistId))
                 parameters.Add(Constants.PlaylistId, playlistId);
             else if (!string.IsNullOrWhiteSpace(name))
                 parameters.Add(Constants.Name, name);
             else
-                throw new Exceptions.SubsonicApiException("One of playlist ID and name must be specified.");
+                throw new SubsonicApiException("One of playlist ID and name must be specified.");
 
             parameters.Add(Constants.SongId, songId);
 
@@ -567,14 +568,14 @@ namespace Subsonic.Client.Windows
         /// <returns>bool</returns>
         public bool CreatePlaylist(string playlistId = null, string name = null, IEnumerable<string> songId = null)
         {
-            var parameters = SubsonicParameters.Create(SubsonicParameterTypes.List);
+            var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
 
             if (!string.IsNullOrWhiteSpace(playlistId))
                 parameters.Add(Constants.PlaylistId, playlistId);
             else if (!string.IsNullOrWhiteSpace(name))
                 parameters.Add(Constants.Name, name);
             else
-                throw new Exceptions.SubsonicApiException("One of playlist ID and name must be specified.");
+                throw new SubsonicApiException("One of playlist ID and name must be specified.");
 
             parameters.Add(Constants.SongId, songId);
 
@@ -592,7 +593,7 @@ namespace Subsonic.Client.Windows
         /// <returns>bool</returns>
         public async Task<bool> UpdatePlaylistAsync(string playlistId, string name = null, string comment = null, IEnumerable<string> songIdToAdd = null, IEnumerable<string> songIndexToRemove = null)
         {
-            var parameters = SubsonicParameters.Create(SubsonicParameterTypes.List);
+            var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
             parameters.Add(Constants.Name, name);
             parameters.Add(Constants.Comment, comment);
             parameters.Add(Constants.SongIdToAdd, songIdToAdd);
@@ -612,7 +613,7 @@ namespace Subsonic.Client.Windows
         /// <returns>bool</returns>
         public bool UpdatePlaylist(string playlistId, string name = null, string comment = null, IEnumerable<string> songIdToAdd = null, IEnumerable<string> songIndexToRemove = null)
         {
-            var parameters = SubsonicParameters.Create(SubsonicParameterTypes.List);
+            var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
             parameters.Add(Constants.Name, name);
             parameters.Add(Constants.Comment, comment);
             parameters.Add(Constants.SongIdToAdd, songIdToAdd);
@@ -1069,9 +1070,9 @@ namespace Subsonic.Client.Windows
         public async Task<bool> StarAsync(IEnumerable<string> id = null, IEnumerable<string> albumId = null, IEnumerable<string> artistId = null)
         {
             if (id == null && albumId == null && artistId == null)
-                throw new Exceptions.SubsonicApiException("You must provide one of id, albumId or artistId");
+                throw new SubsonicApiException("You must provide one of id, albumId or artistId");
 
-            var parameters = SubsonicParameters.Create(SubsonicParameterTypes.List);
+            var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
             parameters.Add(Constants.Id, id);
             parameters.Add(Constants.AlbumId, albumId);
             parameters.Add(Constants.ArtistId, artistId);
@@ -1089,9 +1090,9 @@ namespace Subsonic.Client.Windows
         public bool Star(IEnumerable<string> id = null, IEnumerable<string> albumId = null, IEnumerable<string> artistId = null)
         {
             if (id == null && albumId == null && artistId == null)
-                throw new Exceptions.SubsonicApiException("You must provide one of id, albumId or artistId");
+                throw new SubsonicApiException("You must provide one of id, albumId or artistId");
 
-            var parameters = SubsonicParameters.Create(SubsonicParameterTypes.List);
+            var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
             parameters.Add(Constants.Id, id);
             parameters.Add(Constants.AlbumId, albumId);
             parameters.Add(Constants.ArtistId, artistId);
@@ -1109,9 +1110,9 @@ namespace Subsonic.Client.Windows
         public async Task<bool> UnStarAsync(IEnumerable<string> id = null, IEnumerable<string> albumId = null, IEnumerable<string> artistId = null)
         {
             if (id == null && albumId == null && artistId == null)
-                throw new Exceptions.SubsonicApiException("You must provide one of id, albumId or artistId");
+                throw new SubsonicApiException("You must provide one of id, albumId or artistId");
 
-            var parameters = SubsonicParameters.Create(SubsonicParameterTypes.List);
+            var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
             parameters.Add(Constants.Id, id);
             parameters.Add(Constants.AlbumId, albumId);
             parameters.Add(Constants.ArtistId, artistId);
@@ -1129,9 +1130,9 @@ namespace Subsonic.Client.Windows
         public bool UnStar(IEnumerable<string> id = null, IEnumerable<string> albumId = null, IEnumerable<string> artistId = null)
         {
             if (id == null && albumId == null && artistId == null)
-                throw new Exceptions.SubsonicApiException("You must provide one of id, albumId or artistId");
+                throw new SubsonicApiException("You must provide one of id, albumId or artistId");
 
-            var parameters = SubsonicParameters.Create(SubsonicParameterTypes.List);
+            var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
             parameters.Add(Constants.Id, id);
             parameters.Add(Constants.AlbumId, albumId);
             parameters.Add(Constants.ArtistId, artistId);
@@ -1471,7 +1472,7 @@ namespace Subsonic.Client.Windows
         public async Task<Lyrics> GetLyricsAsync(string artist = null, string title = null, CancellationToken? cancelToken = null)
         {
             if (string.IsNullOrWhiteSpace(artist) && string.IsNullOrWhiteSpace(title))
-                throw new Exceptions.SubsonicApiException("You must specify an artist and/or a title");
+                throw new SubsonicApiException("You must specify an artist and/or a title");
 
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Artist, artist);
@@ -1489,7 +1490,7 @@ namespace Subsonic.Client.Windows
         public Lyrics GetLyrics(string artist = null, string title = null)
         {
             if (string.IsNullOrWhiteSpace(artist) && string.IsNullOrWhiteSpace(title))
-                throw new Exceptions.SubsonicApiException("You must specify an artist and/or a title");
+                throw new SubsonicApiException("You must specify an artist and/or a title");
 
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Artist, artist);
@@ -1535,9 +1536,9 @@ namespace Subsonic.Client.Windows
             var actionName = EnumHelper.GetXmlEnumAttribute(action);
 
             if (string.IsNullOrWhiteSpace(actionName))
-                throw new Exceptions.SubsonicApiException("You must provide valid action");
+                throw new SubsonicApiException("You must provide valid action");
 
-            var parameters = SubsonicParameters.Create(SubsonicParameterTypes.List);
+            var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
 
             parameters.Add(Constants.Action, actionName);
 
@@ -1547,7 +1548,7 @@ namespace Subsonic.Client.Windows
             if (action == JukeboxControlAction.Add)
             {
                 if (id == null)
-                    throw new Exceptions.SubsonicApiException("You must provide at least 1 ID.");
+                    throw new SubsonicApiException("You must provide at least 1 ID.");
 
                 parameters.Add(Constants.Id, id);
             }
@@ -1555,7 +1556,7 @@ namespace Subsonic.Client.Windows
             if (action == JukeboxControlAction.SetGain)
             {
                 if (gain == null || (gain < 0 || gain > 1))
-                    throw new Exceptions.SubsonicApiException("Gain value must be >= 0.0 and <= 1.0");
+                    throw new SubsonicApiException("Gain value must be >= 0.0 and <= 1.0");
 
                 parameters.Add(Constants.SetGain, gain.ToString());
             }
@@ -1576,9 +1577,9 @@ namespace Subsonic.Client.Windows
             var actionName = EnumHelper.GetXmlEnumAttribute(action);
 
             if (string.IsNullOrWhiteSpace(actionName))
-                throw new Exceptions.SubsonicApiException("You must provide valid action");
+                throw new SubsonicApiException("You must provide valid action");
 
-            var parameters = SubsonicParameters.Create(SubsonicParameterTypes.List);
+            var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
 
             parameters.Add(Constants.Action, actionName);
 
@@ -1588,7 +1589,7 @@ namespace Subsonic.Client.Windows
             if (action == JukeboxControlAction.Add)
             {
                 if (id == null)
-                    throw new Exceptions.SubsonicApiException("You must provide at least 1 ID.");
+                    throw new SubsonicApiException("You must provide at least 1 ID.");
 
                 parameters.Add(Constants.Id, id);
             }
@@ -1596,7 +1597,7 @@ namespace Subsonic.Client.Windows
             if (action == JukeboxControlAction.SetGain)
             {
                 if (gain == null || (gain < 0 || gain > 1))
-                    throw new Exceptions.SubsonicApiException("Gain value must be >= 0.0 and <= 1.0");
+                    throw new SubsonicApiException("Gain value must be >= 0.0 and <= 1.0");
 
                 parameters.Add(Constants.SetGain, gain.ToString());
             }

@@ -5,7 +5,7 @@ namespace Subsonic.Client.Common.Items
 {
     public sealed class AlbumListItem : INotifyPropertyChanged
     {
-        public AlbumListType Type { get; set; }
+        public AlbumListType AlbumListType { get; set; }
         public int Current { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 

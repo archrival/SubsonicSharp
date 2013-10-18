@@ -20,6 +20,8 @@ namespace Subsonic.Client.Common
         /// <returns>A string representing the friendly name</returns>
         public static string GetXmlEnumAttribute(Enum en)
         {
+            if (en == null) throw new ArgumentNullException("en");
+
             Type type = en.GetType();
 
             var memInfo = type.GetMember(en.ToString());

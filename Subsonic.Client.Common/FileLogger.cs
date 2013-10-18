@@ -1,11 +1,12 @@
-﻿using Subsonic.Client.Common.Enums;
+﻿using System.Globalization;
+using Subsonic.Client.Common.Enums;
 using Subsonic.Client.Common.Interfaces;
 using System;
 using System.IO;
 
 namespace Subsonic.Client.Common
 {
-    public class FileLogger : IFileLogger, IDisposable
+    public sealed class FileLogger : IFileLogger, IDisposable
     {
         private readonly FileStream _logFile;
         private readonly TextWriter _logWriter;
@@ -24,9 +25,9 @@ namespace Subsonic.Client.Common
                 _logWriter.WriteLine(FormatLogEntry(entry));
         }
 
-        private string FormatLogEntry(string entry)
+        private static string FormatLogEntry(string entry)
         {
-            return string.Format("{0} {1}", DateTime.UtcNow.ToString("yyyy/MM/dd HH:mm:ss.fffffff"), entry);
+            return string.Format("{0} {1}", DateTime.UtcNow.ToString("yyyy/MM/dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture), entry);
         }
 
         public void Close()

@@ -3,12 +3,12 @@ namespace Subsonic.Client.Common
 {
     public static class HttpMethod
     {
-        public const string GET = "GET";
-        public const string HEAD = "HEAD";
-        public const string POST = "POST";
-        public const string PUT = "PUT";
-        public const string DELETE = "DELETE";
-        public const string TRACE = "TRACE";
-        public const string CONNECT = "CONNECT";
+        public const string Get = "GET";
+        public const string Head = "HEAD";
+        public const string Post = "POST";
+        public const string Put = "PUT";
+        public const string Delete = "DELETE";
+        public const string Trace = "TRACE";
+        public const string Connect = "CONNECT";
     }
 }

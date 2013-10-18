@@ -2,26 +2,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Subsonic.Client.Common.Exceptions;
 
 namespace Subsonic.Client.Common
 {
     public class SubsonicParameters
     {
-        public ICollection Parameters { get; set; }
-        private SubsonicParameterTypes ParameterType { get; set; }
+        public ICollection Parameters { get; private set; }
+        private SubsonicParameterType ParameterType { get; set; }
 
         private SubsonicParameters() { }
 
-        public static SubsonicParameters Create(SubsonicParameterTypes type = SubsonicParameterTypes.Single)
+        public static SubsonicParameters Create(SubsonicParameterType type = SubsonicParameterType.Single)
         {
             var parameters = new SubsonicParameters {ParameterType = type};
 
             switch (type)
             {
-                case SubsonicParameterTypes.List:
+                case SubsonicParameterType.List:
                     parameters.Parameters = new List<KeyValuePair<string, string>>();
                     break;
-                case SubsonicParameterTypes.Single:
+                case SubsonicParameterType.Single:
                     parameters.Parameters = new Hashtable();
                     break;
             }
@@ -33,17 +34,17 @@ namespace Subsonic.Client.Common
         {
             switch (ParameterType)
             {
-                case SubsonicParameterTypes.List:
+                case SubsonicParameterType.List:
                     {
                         var stringValue = value as string;
 
                         if (stringValue != null)
                             Add(key, new List<string> {stringValue});
                         else if (required)
-                            throw new Exceptions.SubsonicErrorException(string.Format("Parameter '{0}' is required, the value provided is null", key));
+                            throw new SubsonicErrorException(string.Format("Parameter '{0}' is required, the value provided is null", key));
                     }
                     break;
-                case SubsonicParameterTypes.Single:
+                case SubsonicParameterType.Single:
                     {
                         var parameters = Parameters as Hashtable;
 
@@ -51,7 +52,7 @@ namespace Subsonic.Client.Common
                             if (value != null)
                                 parameters.Add(key, value);
                             else if (required)
-                                throw new Exceptions.SubsonicErrorException(string.Format("Parameter '{0}' is required, the value provided is null", key));
+                                throw new SubsonicErrorException(string.Format("Parameter '{0}' is required, the value provided is null", key));
                     }
                     break;
             }
@@ -65,7 +66,7 @@ namespace Subsonic.Client.Common
                 if (values != null)
                     parameters.AddRange(from value in values where !string.IsNullOrWhiteSpace(value) select new KeyValuePair<string, string>(key, value));
                 else if (required)
-                    throw new Exceptions.SubsonicErrorException(string.Format("Parameter '{0}' is required, the value provided is null", key));
+                    throw new SubsonicErrorException(string.Format("Parameter '{0}' is required, the value provided is null", key));
         }
     }
 }

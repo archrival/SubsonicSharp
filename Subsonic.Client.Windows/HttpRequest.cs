@@ -1,5 +1,6 @@
 ﻿using System.Security.AccessControl;
 using Subsonic.Client.Common;
+using Subsonic.Client.Common.Exceptions;
 using Subsonic.Common;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
@@ -56,12 +57,12 @@ namespace Subsonic.Client.Windows
                         }
                         else
                         {
-                            throw new Exceptions.SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "HTTP response does not contain XML, content type is: {0}", response.ContentType));
+                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "HTTP response does not contain XML, content type is: {0}", response.ContentType));
                         }
                     }
                     else
                     {
-                        throw new Exceptions.SubsonicErrorException("HTTP response is null");
+                        throw new SubsonicErrorException("HTTP response is null");
                     }
                 }
 
@@ -69,7 +70,7 @@ namespace Subsonic.Client.Windows
             }
             catch (Exception ex)
             {
-                throw new Exceptions.SubsonicApiException(ex.Message, ex);
+                throw new SubsonicApiException(ex.Message, ex);
             }
 
             if (cancelToken.HasValue)
@@ -117,11 +118,11 @@ namespace Subsonic.Client.Windows
                                     if (!string.IsNullOrWhiteSpace(contentDisposition.FileName))
                                         path = Path.Combine(path, contentDisposition.FileName);
                                     else
-                                        throw new Exceptions.SubsonicApiException("FileName was not provided in the Content-Disposition header, you must use the path override flag.");
+                                        throw new SubsonicApiException("FileName was not provided in the Content-Disposition header, you must use the path override flag.");
                                 }
                                 else
                                 {
-                                    throw new Exceptions.SubsonicApiException("Content-Disposition header was not provided, you must use the path override flag.");
+                                    throw new SubsonicApiException("Content-Disposition header was not provided, you must use the path override flag.");
                                 }
                             }
                         }
@@ -142,9 +143,9 @@ namespace Subsonic.Client.Windows
                                 result = restResponse.DeserializeFromXml<Response>();
 
                             if (result.ItemElementName == ItemChoiceType.Error)
-                                throw new Exceptions.SubsonicErrorException("Error occurred during request.", result.Item as Error);
+                                throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
 
-                            throw new Exceptions.SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
+                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
                         }
 
                         if (File.Exists(path))
@@ -184,13 +185,13 @@ namespace Subsonic.Client.Windows
                     }
                     else
                     {
-                        throw new Exceptions.SubsonicErrorException("HTTP response is null");
+                        throw new SubsonicErrorException("HTTP response is null");
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw new Exceptions.SubsonicApiException(ex.Message, ex);
+                throw new SubsonicApiException(ex.Message, ex);
             }
 
             if (cancelToken.HasValue)
@@ -221,7 +222,7 @@ namespace Subsonic.Client.Windows
             }
             catch (Exception ex)
             {
-                throw new Exceptions.SubsonicApiException(ex.Message, ex);
+                throw new SubsonicApiException(ex.Message, ex);
             }
 
             if (cancelToken.HasValue)
@@ -262,17 +263,17 @@ namespace Subsonic.Client.Windows
                             }
                             else
                             {
-                                throw new Exceptions.SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "HTTP response does not contain XML, content type is: {0}", response.ContentType));
+                                throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "HTTP response does not contain XML, content type is: {0}", response.ContentType));
                             }
                         }
                         else
                         {
-                            throw new Exceptions.SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Invalid HTTP response status code: {0}", response.StatusCode));
+                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Invalid HTTP response status code: {0}", response.StatusCode));
                         }
                     }
                     else
                     {
-                        throw new Exceptions.SubsonicErrorException("HTTP response is null");
+                        throw new SubsonicErrorException("HTTP response is null");
                     }
                 }
 
@@ -280,7 +281,7 @@ namespace Subsonic.Client.Windows
             }
             catch (Exception ex)
             {
-                throw new Exceptions.SubsonicApiException(ex.Message, ex);
+                throw new SubsonicApiException(ex.Message, ex);
             }
 
             return result;
@@ -292,7 +293,7 @@ namespace Subsonic.Client.Windows
         /// <param name="requestUri">URI for the request.</param>
         /// <param name="method"></param>
         /// <returns>HttpWebRequest</returns>
-        private HttpWebRequest BuildRequest(Uri requestUri, string method = HttpMethod.POST)
+        private HttpWebRequest BuildRequest(Uri requestUri, string method = HttpMethod.Post)
         {
             var request = WebRequest.Create(requestUri) as HttpWebRequest;
 
@@ -310,14 +311,14 @@ namespace Subsonic.Client.Windows
                 request.Headers[HttpHeaderField.Authorization] = string.Format(CultureInfo.InvariantCulture, "Basic {0}", authInfo);
 
                 // Add proxy information if specified, limit to valid ports
-                if (!string.IsNullOrWhiteSpace(SubsonicClient.ProxyServerUrl) && (SubsonicClient.ProxyPort > 0 && SubsonicClient.ProxyPort < 65536))
+                if (SubsonicClient.ProxyServerUrl != null && (SubsonicClient.ProxyPort > 0 && SubsonicClient.ProxyPort < 65536))
                 {
-                    var proxy = new WebProxy(SubsonicClient.ProxyServerUrl, SubsonicClient.ProxyPort);
+                    var proxy = new WebProxy(SubsonicClient.ProxyServerUrl.Host, SubsonicClient.ProxyPort);
 
                     if (!string.IsNullOrWhiteSpace(SubsonicClient.ProxyUserName))
                     {
                         if (string.IsNullOrWhiteSpace(SubsonicClient.ProxyPassword))
-                            throw new Exceptions.SubsonicApiException("When specifying a proxy username, you must also specify a password.");
+                            throw new SubsonicApiException("When specifying a proxy username, you must also specify a password.");
 
                         proxy.Credentials = new NetworkCredential(SubsonicClient.ProxyUserName, SubsonicClient.ProxyPassword);
                     }
@@ -340,7 +341,7 @@ namespace Subsonic.Client.Windows
         public async Task<long> ImageSizeRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             var requestUri = SubsonicRequest.BuildRequestUri(method, methodApiVersion, parameters);
-            var request = BuildRequest(requestUri, HttpMethod.GET);
+            var request = BuildRequest(requestUri, HttpMethod.Get);
             long length = -1;
 
             if (cancelToken.HasValue)
@@ -376,9 +377,9 @@ namespace Subsonic.Client.Windows
                                 result = restResponse.DeserializeFromXml<Response>();
 
                             if (result.ItemElementName == ItemChoiceType.Error)
-                                throw new Exceptions.SubsonicErrorException("Error occurred during request.", result.Item as Error);
+                                throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
 
-                            throw new Exceptions.SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
+                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
                         }
                     }
                 }
@@ -392,7 +393,7 @@ namespace Subsonic.Client.Windows
             }
             catch (Exception ex)
             {
-                throw new Exceptions.SubsonicApiException(ex.Message, ex);
+                throw new SubsonicApiException(ex.Message, ex);
             }
 
             if (cancelToken.HasValue)
@@ -450,9 +451,9 @@ namespace Subsonic.Client.Windows
                                 result = restResponse.DeserializeFromXml<Response>();
 
                             if (result.ItemElementName == ItemChoiceType.Error)
-                                throw new Exceptions.SubsonicErrorException("Error occurred during request.", result.Item as Error);
+                                throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
 
-                            throw new Exceptions.SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
+                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
                         }
                     }
                 }
@@ -466,7 +467,7 @@ namespace Subsonic.Client.Windows
             }
             catch (Exception ex)
             {
-                throw new Exceptions.SubsonicApiException(ex.Message, ex);
+                throw new SubsonicApiException(ex.Message, ex);
             }
 
             if (cancelToken.HasValue)
@@ -513,21 +514,21 @@ namespace Subsonic.Client.Windows
                                 result = restResponse.DeserializeFromXml<Response>();
 
                             if (result.ItemElementName == ItemChoiceType.Error)
-                                throw new Exceptions.SubsonicErrorException("Error occurred during request.", result.Item as Error);
+                                throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
 
-                            throw new Exceptions.SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
+                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
                         }
                     }
                     else
                     {
                         if (response != null)
-                            throw new Exceptions.SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Invalid HTTP response status code: {0}", response.StatusCode));
+                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Invalid HTTP response status code: {0}", response.StatusCode));
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw new Exceptions.SubsonicApiException(ex.Message, ex);
+                throw new SubsonicApiException(ex.Message, ex);
             }
 
             return new WindowsImageFormat(image);
@@ -567,11 +568,11 @@ namespace Subsonic.Client.Windows
                                     if (!string.IsNullOrWhiteSpace(contentDisposition.FileName))
                                         path = Path.Combine(path, contentDisposition.FileName);
                                     else
-                                        throw new Exceptions.SubsonicApiException("FileName was not provided in the Content-Disposition header, you must use the path override flag.");
+                                        throw new SubsonicApiException("FileName was not provided in the Content-Disposition header, you must use the path override flag.");
                                 }
                                 else
                                 {
-                                    throw new Exceptions.SubsonicApiException("Content-Disposition header was not provided, you must use the path override flag.");
+                                    throw new SubsonicApiException("Content-Disposition header was not provided, you must use the path override flag.");
                                 }
                             }
                         }
@@ -589,9 +590,9 @@ namespace Subsonic.Client.Windows
                                 result = restResponse.DeserializeFromXml<Response>();
 
                             if (result.ItemElementName == ItemChoiceType.Error)
-                                throw new Exceptions.SubsonicErrorException("Error occurred during request.", result.Item as Error);
+                                throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
 
-                            throw new Exceptions.SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
+                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
                         }
 
                         if (File.Exists(path))
@@ -625,13 +626,13 @@ namespace Subsonic.Client.Windows
                     else
                     {
                         if (response != null)
-                            throw new Exceptions.SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Invalid HTTP response status code: {0}", response.StatusCode));
+                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Invalid HTTP response status code: {0}", response.StatusCode));
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw new Exceptions.SubsonicApiException(ex.Message, ex);
+                throw new SubsonicApiException(ex.Message, ex);
             }
 
             return bytesTransferred;
@@ -650,7 +651,7 @@ namespace Subsonic.Client.Windows
             }
             else
             {
-                throw new Exceptions.SubsonicApiException("Empty HTTP response returned.");
+                throw new SubsonicApiException("Empty HTTP response returned.");
             }
 
             return result;
