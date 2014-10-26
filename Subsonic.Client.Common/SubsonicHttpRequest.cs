@@ -589,7 +589,7 @@ namespace Subsonic.Client
                     value = entry.Value;
                 }
 
-                request += string.Format(CultureInfo.InvariantCulture, "&{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(value));
+                request += string.Format("&{0}={1}", Uri.EscapeDataString(key), Uri.EscapeDataString(value));
             }
 
             return new Uri(request);
@@ -604,11 +604,11 @@ namespace Subsonic.Client
         /// <returns>string</returns>
         public virtual Uri BuildRequestUriUser(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
         {
-            string encodedPassword = string.Format(CultureInfo.InvariantCulture, "enc:{0}", SubsonicClient.Password.ToHex());
-            string request = string.Format(CultureInfo.InvariantCulture, "{0}/rest/{1}.view?v={2}&c={3}&u={4}&p={5}", SubsonicClient.ServerUrl, method.GetXmlEnumAttribute(), methodApiVersion, HttpUtility.UrlEncode(SubsonicClient.Name), SubsonicClient.UserName, encodedPassword);
+            string encodedPassword = string.Format("enc:{0}", SubsonicClient.Password.ToHex());
+            string request = string.Format("{0}/rest/{1}.view?v={2}&c={3}&u={4}&p={5}", SubsonicClient.ServerUrl, method.GetXmlEnumAttribute(), methodApiVersion, Uri.EscapeDataString(SubsonicClient.Name), SubsonicClient.UserName, encodedPassword);
 
             if (parameters != null && parameters.Parameters.Count > 0)
-                request = parameters.Parameters.Cast<DictionaryEntry>().Aggregate(request, (current, parameter) => current + string.Format(CultureInfo.InvariantCulture, "&{0}={1}", HttpUtility.UrlEncode(parameter.Key.ToString()), HttpUtility.UrlEncode(parameter.Value.ToString())));
+                request = parameters.Parameters.Cast<DictionaryEntry>().Aggregate(request, (current, parameter) => current + string.Format("&{0}={1}", Uri.EscapeDataString(parameter.Key.ToString()), Uri.EscapeDataString(parameter.Value.ToString())));
 
             return new Uri(request);
         }

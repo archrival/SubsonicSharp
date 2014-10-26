@@ -42,16 +42,6 @@
     <Compile Include="WindowsRequest.cs" />
     <Compile Include="WindowsResponse.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Subsonic.Client.Common\Subsonic.Client.csproj">
-      <Project>{CBB112D5-2507-4453-83BE-51232FB95CA6}</Project>
-      <Name>Subsonic.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Subsonic.Common\Subsonic.Common.csproj">
-      <Project>{a533a041-6d2d-46b3-a3e7-4cc7e64a16f3}</Project>
-      <Name>Subsonic.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -60,4 +50,14 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <ProjectReference Include="..\Subsonic.Common\Subsonic.Common.csproj">
+      <Project>{A533A041-6D2D-46B3-A3E7-4CC7E64A16F3}</Project>
+      <Name>Subsonic.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Subsonic.Client.Common\Subsonic.Client.csproj">
+      <Project>{CBB112D5-2507-4453-83BE-51232FB95CA6}</Project>
+      <Name>Subsonic.Client</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

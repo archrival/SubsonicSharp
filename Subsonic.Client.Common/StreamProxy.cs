@@ -154,7 +154,7 @@ namespace Subsonic.Client
                 if (string.IsNullOrWhiteSpace(request))
                     return false;
 
-                _localPath = HttpUtility.UrlDecode(request, Encoding.UTF8);
+                _localPath = Uri.EscapeDataString(request);
 
                 const int timeToWaitForFile = 5000;
 
