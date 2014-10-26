@@ -32,13 +32,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -48,6 +46,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Subsonic.Client.Common\Subsonic.Client.csproj">
+      <Project>{CBB112D5-2507-4453-83BE-51232FB95CA6}</Project>
+      <Name>Subsonic.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Subsonic.Client.Windows\Subsonic.Client.Windows.csproj">
       <Project>{3b48cbdf-812e-4d3d-afad-d09fe6786f52}</Project>
       <Name>Subsonic.Client.Windows</Name>

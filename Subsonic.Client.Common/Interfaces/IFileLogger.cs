@@ -1,6 +1,6 @@
-﻿using Subsonic.Client.Common.Enums;
+﻿using Subsonic.Client.Enums;
 
-namespace Subsonic.Client.Common.Interfaces
+namespace Subsonic.Client.Interfaces
 {
     public interface IFileLogger
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Subsonic.Client.Common.Items
+namespace Subsonic.Client.Items
 {
     public sealed class ChatItem : INotifyPropertyChanged
     {

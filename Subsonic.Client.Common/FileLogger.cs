@@ -1,10 +1,10 @@
-﻿using System.Globalization;
-using Subsonic.Client.Common.Enums;
-using Subsonic.Client.Common.Interfaces;
-using System;
+﻿using System;
+using System.Globalization;
 using System.IO;
+using Subsonic.Client.Enums;
+using Subsonic.Client.Interfaces;
 
-namespace Subsonic.Client.Common
+namespace Subsonic.Client
 {
     public sealed class FileLogger : IFileLogger, IDisposable
     {

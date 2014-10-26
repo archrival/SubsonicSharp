@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Xml;
 
-namespace Subsonic.Client.Common
+namespace Subsonic.Client
 {
     public class XmlNamespaceIgnoreReader : XmlTextReader
     {

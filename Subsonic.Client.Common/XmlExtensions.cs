@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Xml.Serialization;
 
-namespace Subsonic.Client.Common
+namespace Subsonic.Client
 {
     public static class XmlExtensions
     {

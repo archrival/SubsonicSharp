@@ -2,8 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Subsonic.Common.Classes;
+using Subsonic.Common.Enums;
 
-namespace Subsonic.Common
+namespace Subsonic.Common.Interfaces
 {
     public interface ISubsonicClient<T>
     {

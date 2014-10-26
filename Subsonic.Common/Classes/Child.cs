@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Xml.Serialization;
+using Subsonic.Common.Enums;
 
-namespace Subsonic.Common
+namespace Subsonic.Common.Classes
 {
     [XmlInclude(typeof(PodcastEpisode))]
     [XmlInclude(typeof(NowPlayingEntry))]

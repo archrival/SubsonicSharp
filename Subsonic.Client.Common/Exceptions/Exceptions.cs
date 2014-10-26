@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using Subsonic.Common.Classes;
 
-namespace Subsonic.Client.Common.Exceptions
+namespace Subsonic.Client.Exceptions
 {
     [Serializable]
     public class SubsonicErrorException : Exception

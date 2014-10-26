@@ -1,5 +1,4 @@
-﻿using Subsonic.Client.Common.Items;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -7,8 +6,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Web;
+using Subsonic.Client.Common.Items;
 
-namespace Subsonic.Client.Common
+namespace Subsonic.Client
 {
     public sealed class StreamProxy : IDisposable
     {

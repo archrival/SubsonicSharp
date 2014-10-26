@@ -1,4 +1,4 @@
-﻿using Subsonic.Common;
+﻿using Subsonic.Common.Interfaces;
 using System.Drawing;
 
 namespace Subsonic.Client.Windows

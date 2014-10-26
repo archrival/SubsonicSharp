@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media.Imaging;
 
-namespace Subsonic.Client.Common.Items
+namespace Subsonic.Client.Items
 {
     public sealed class AlbumItem : ChildItem
     {

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Subsonic.Common.Enums;
 
-namespace Subsonic.Common
+namespace Subsonic.Common.Classes
 {
     [Serializable]
     public class PodcastChannel

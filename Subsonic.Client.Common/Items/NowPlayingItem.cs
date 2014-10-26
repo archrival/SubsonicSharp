@@ -1,7 +1,7 @@
 ﻿using System.Windows.Media.Imaging;
 using Subsonic.Client.Common.Items;
 
-namespace Subsonic.Client.Common
+namespace Subsonic.Client.Items
 {
     public sealed class NowPlayingItem : TrackItem
     {

@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Text;
 
-namespace Subsonic.Client.Common
+namespace Subsonic.Client
 {
     public static class StringExtensions
     {
@@ -27,7 +27,7 @@ namespace Subsonic.Client.Common
             if (str == null) throw new ArgumentNullException("str");
 
             byte[] bytes = new byte[str.Length * sizeof(char)];
-            System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+            Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
             return bytes;
         }
     }

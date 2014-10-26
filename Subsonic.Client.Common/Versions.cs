@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Subsonic.Client.Common
+namespace Subsonic.Client
 {
     public static class Versions
     {

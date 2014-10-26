@@ -1,10 +1,10 @@
-﻿using Subsonic.Client.Common.Enums;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Subsonic.Client.Common.Exceptions;
+using Subsonic.Client.Enums;
+using Subsonic.Client.Exceptions;
 
-namespace Subsonic.Client.Common
+namespace Subsonic.Client
 {
     public class SubsonicParameters
     {

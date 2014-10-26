@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace Subsonic.Common
+namespace Subsonic.Common.Enums
 {
     /// <summary>
     /// Query type to be performed when calling GetAlbumList.

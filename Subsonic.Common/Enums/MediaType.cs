@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace Subsonic.Common
+namespace Subsonic.Common.Enums
 {
     [Serializable]
     public enum MediaType

@@ -13,7 +13,7 @@ namespace ApiTester
     {
         static void Main(string[] args)
         {
-            var test = new Client("http://archrivalmini.archienet.local:8080/subsonic", "Josh", "This Is My Password!", "ApiTester");
+            
 
             while (true)
             {

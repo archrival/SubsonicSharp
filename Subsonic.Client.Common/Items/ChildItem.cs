@@ -1,9 +1,10 @@
-﻿using Subsonic.Client.Common.Properties;
-using Subsonic.Common;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Subsonic.Client.Common.Properties;
+using Subsonic.Common;
+using Subsonic.Common.Classes;
 
-namespace Subsonic.Client.Common.Items
+namespace Subsonic.Client.Items
 {
     public class ChildItem : INotifyPropertyChanged
     {

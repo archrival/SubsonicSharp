@@ -1,11 +1,12 @@
-﻿using System.Security.AccessControl;
-using Subsonic.Client.Common;
-using Subsonic.Client.Common.Exceptions;
-using Subsonic.Common;
+﻿using System.Web.UI.WebControls;
+using Subsonic.Client.Exceptions;
+using Subsonic.Client.Interfaces;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
+using Subsonic.Common.Interfaces;
 using System;
-using System.Drawing;
+using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -14,24 +15,23 @@ using System.Net.Mime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
-namespace Subsonic.Client.Windows
+namespace Subsonic.Client
 {
-    public class HttpRequest : ISubsonicRequest
+    public class SubsonicHttpRequest<T> : ISubsonicRequest<T>
     {
-        private SubsonicClient SubsonicClient { get; set; }
-        private SubsonicRequest SubsonicRequest { get; set; }
+        private SubsonicClient<T> SubsonicClient { get; set; }
 
-        public HttpRequest(SubsonicClient client)
+        public SubsonicHttpRequest(SubsonicClient<T> client)
         {
             SubsonicClient = client;
-            SubsonicRequest = new SubsonicRequest(client);
         }
 
-        public async Task<Response> RequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        public virtual async Task<Response> RequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             Response result;
-            var requestUri = SubsonicRequest.BuildRequestUri(method, methodApiVersion, parameters);
+            var requestUri = BuildRequestUri(method, methodApiVersion, parameters);
             var request = BuildRequest(requestUri);
 
             if (cancelToken.HasValue)
@@ -89,10 +89,10 @@ namespace Subsonic.Client.Windows
         /// <param name="parameters">Parameters used by the method.</param>
         /// <param name="cancelToken"> </param>
         /// <returns>long</returns>
-        public async Task<long> RequestAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        public virtual async Task<long> RequestAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             long bytesTransferred = 0;
-            var requestUri = SubsonicRequest.BuildRequestUri(method, methodApiVersion, parameters);
+            var requestUri = BuildRequestUri(method, methodApiVersion, parameters);
 
             var request = BuildRequest(requestUri);
             var download = true;
@@ -208,9 +208,9 @@ namespace Subsonic.Client.Windows
         /// <param name="parameters">Parameters used by the method.</param>
         /// <param name="cancelToken"> </param>
         /// <returns>long</returns>
-        public async Task<long> RequestAsyncNoResponse(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        public virtual async Task<long> RequestAsyncNoResponse(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
-            var requestUri = SubsonicRequest.BuildRequestUri(method, methodApiVersion, parameters);
+            var requestUri = BuildRequestUri(method, methodApiVersion, parameters);
             var request = BuildRequest(requestUri);
 
             if (cancelToken.HasValue)
@@ -238,10 +238,10 @@ namespace Subsonic.Client.Windows
         /// <param name="methodApiVersion">Subsonic API version of the method.</param>
         /// <param name="parameters">Parameters used by the method.</param>
         /// <returns>Response</returns>
-        public Response Request(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
+        public virtual Response Request(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
         {
             Response result;
-            var requestUri = SubsonicRequest.BuildRequestUri(method, methodApiVersion, parameters);
+            var requestUri = BuildRequestUri(method, methodApiVersion, parameters);
             var request = BuildRequest(requestUri);
 
             try
@@ -293,7 +293,7 @@ namespace Subsonic.Client.Windows
         /// <param name="requestUri">URI for the request.</param>
         /// <param name="method"></param>
         /// <returns>HttpWebRequest</returns>
-        private HttpWebRequest BuildRequest(Uri requestUri, string method = HttpMethod.Post)
+        protected virtual HttpWebRequest BuildRequest(Uri requestUri, string method = HttpMethod.Post)
         {
             var request = WebRequest.Create(requestUri) as HttpWebRequest;
 
@@ -338,9 +338,9 @@ namespace Subsonic.Client.Windows
         /// <param name="parameters">Parameters used by the method.</param>
         /// <param name="cancelToken"> </param>
         /// <returns>Image</returns>
-        public async Task<long> ImageSizeRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        public virtual async Task<long> ImageSizeRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
-            var requestUri = SubsonicRequest.BuildRequestUri(method, methodApiVersion, parameters);
+            var requestUri = BuildRequestUri(method, methodApiVersion, parameters);
             var request = BuildRequest(requestUri, HttpMethod.Get);
             long length = -1;
 
@@ -410,70 +410,9 @@ namespace Subsonic.Client.Windows
         /// <param name="parameters">Parameters used by the method.</param>
         /// <param name="cancelToken"> </param>
         /// <returns>Image</returns>
-        public async Task<IImageFormat<Image>> ImageRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        public virtual async Task<IImageFormat<T>> ImageRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
-            var requestUri = SubsonicRequest.BuildRequestUri(method, methodApiVersion, parameters);
-            var request = BuildRequest(requestUri);
-            var content = new MemoryStream();
-
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
-
-            try
-            {
-                using (var response = await request.GetResponseAsync())
-                {
-                    if (response != null)
-                    {
-                        if (!response.ContentType.Contains(HttpContentTypes.TextXml))
-                        {
-                            if (cancelToken.HasValue)
-                                cancelToken.Value.ThrowIfCancellationRequested();
-
-                            using (var stream = response.GetResponseStream())
-                                if (stream != null)
-                                    await stream.CopyToAsync(content);
-                        }
-                        else
-                        {
-                            string restResponse = null;
-                            var result = new Response();
-
-                            if (cancelToken.HasValue)
-                                cancelToken.Value.ThrowIfCancellationRequested();
-
-                            using (var stream = response.GetResponseStream())
-                                if (stream != null)
-                                    using (var streamReader = new StreamReader(stream))
-                                        restResponse = streamReader.ReadToEnd();
-
-                            if (!string.IsNullOrWhiteSpace(restResponse))
-                                result = restResponse.DeserializeFromXml<Response>();
-
-                            if (result.ItemElementName == ItemChoiceType.Error)
-                                throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
-
-                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
-                        }
-                    }
-                }
-            }
-            catch (WebException wex)
-            {
-                var response = wex.Response as HttpWebResponse;
-                
-                if (response != null && response.StatusCode == HttpStatusCode.NotFound)
-                    return null;
-            }
-            catch (Exception ex)
-            {
-                throw new SubsonicApiException(ex.Message, ex);
-            }
-
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
-
-            return new WindowsImageFormat(Image.FromStream(content));
+            return default(IImageFormat<T>);
         }
 
         /// <summary>
@@ -483,55 +422,9 @@ namespace Subsonic.Client.Windows
         /// <param name="methodApiVersion">Subsonic API version of the method.</param>
         /// <param name="parameters">Parameters used by the method.</param>
         /// <returns>Image</returns>
-        public IImageFormat<Image> ImageRequest(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
+        public virtual IImageFormat<T> ImageRequest(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
         {
-            var requestUri = SubsonicRequest.BuildRequestUri(method, methodApiVersion, parameters);
-            var request = BuildRequest(requestUri);
-            var image = default(Image);
-
-            try
-            {
-                using (var response = request.GetResponse() as HttpWebResponse)
-                {
-                    if (response != null && (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.Redirect))
-                    {
-                        if (!response.ContentType.Contains(HttpContentTypes.TextXml))
-                        {
-                            using (var stream = response.GetResponseStream())
-                                if (stream != null) image = Image.FromStream(stream);
-                        }
-                        else
-                        {
-                            string restResponse = null;
-                            var result = new Response();
-
-                            using (var stream = response.GetResponseStream())
-                                if (stream != null)
-                                    using (var streamReader = new StreamReader(stream))
-                                        restResponse = streamReader.ReadToEnd();
-
-                            if (!string.IsNullOrWhiteSpace(restResponse))
-                                result = restResponse.DeserializeFromXml<Response>();
-
-                            if (result.ItemElementName == ItemChoiceType.Error)
-                                throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
-
-                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
-                        }
-                    }
-                    else
-                    {
-                        if (response != null)
-                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Invalid HTTP response status code: {0}", response.StatusCode));
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new SubsonicApiException(ex.Message, ex);
-            }
-
-            return new WindowsImageFormat(image);
+            return default(IImageFormat<T>);
         }
 
         /// <summary>
@@ -543,10 +436,10 @@ namespace Subsonic.Client.Windows
         /// <param name="methodApiVersion">Subsonic API version of the method.</param>
         /// <param name="parameters">Parameters used by the method.</param>
         /// <returns>long</returns>
-        public long Request(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
+        public virtual long Request(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
         {
             long bytesTransferred = 0;
-            var requestUri = SubsonicRequest.BuildRequestUri(method, methodApiVersion, parameters);
+            var requestUri = BuildRequestUri(method, methodApiVersion, parameters);
             var request = BuildRequest(requestUri);
             var download = true;
 
@@ -563,10 +456,15 @@ namespace Subsonic.Client.Windows
                             {
                                 if (response.Headers.AllKeys.Contains(HttpHeaderField.ContentDisposition))
                                 {
-                                    var contentDisposition = new ContentDisposition(response.Headers[HttpHeaderField.ContentDisposition]);
+                                    var contentDispositionHeader = response.Headers[HttpHeaderField.ContentDisposition];
+
+                                    // It appears the ContentDisposition class does not support RFC 2231.
+                                    contentDispositionHeader = contentDispositionHeader.Replace("filename*=UTF-8''", "filename=");
+
+                                    var contentDisposition = new ContentDisposition(contentDispositionHeader);
 
                                     if (!string.IsNullOrWhiteSpace(contentDisposition.FileName))
-                                        path = Path.Combine(path, contentDisposition.FileName);
+                                        path = Path.Combine(path, Uri.UnescapeDataString(contentDisposition.FileName));
                                     else
                                         throw new SubsonicApiException("FileName was not provided in the Content-Disposition header, you must use the path override flag.");
                                 }
@@ -638,7 +536,7 @@ namespace Subsonic.Client.Windows
             return bytesTransferred;
         }
 
-        private Response DeserializeResponse(string response)
+        protected virtual Response DeserializeResponse(string response)
         {
             Response result;
 
@@ -655,6 +553,65 @@ namespace Subsonic.Client.Windows
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Builds a URI to be used for the request.
+        /// </summary>
+        /// <param name="method">Subsonic API method to call.</param>
+        /// <param name="methodApiVersion">Subsonic API version of the method.</param>
+        /// <param name="parameters">Parameters used by the method.</param>
+        /// <returns>string</returns>
+        public virtual Uri BuildRequestUri(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
+        {
+            string request = string.Format(CultureInfo.InvariantCulture, "{0}/rest/{1}.view?v={2}&c={3}", SubsonicClient.ServerUrl, Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicClient.Name);
+
+            if (parameters == null || parameters.Parameters.Count <= 0)
+                return new Uri(request);
+
+            foreach (var parameter in parameters.Parameters)
+            {
+                string key = string.Empty;
+                string value = string.Empty;
+
+                if (parameter is DictionaryEntry)
+                {
+                    var entry = (DictionaryEntry)parameter;
+
+                    key = entry.Key.ToString();
+                    value = entry.Value.ToString();
+                }
+
+                if (parameter is KeyValuePair<string, string>)
+                {
+                    var entry = (KeyValuePair<string, string>)parameter;
+
+                    key = entry.Key;
+                    value = entry.Value;
+                }
+
+                request += string.Format(CultureInfo.InvariantCulture, "&{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(value));
+            }
+
+            return new Uri(request);
+        }
+
+        /// <summary>
+        /// Builds a URI to be used for the request.
+        /// </summary>
+        /// <param name="method">Subsonic API method to call.</param>
+        /// <param name="methodApiVersion">Subsonic API version of the method.</param>
+        /// <param name="parameters">Parameters used by the method.</param>
+        /// <returns>string</returns>
+        public virtual Uri BuildRequestUriUser(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
+        {
+            string encodedPassword = string.Format(CultureInfo.InvariantCulture, "enc:{0}", SubsonicClient.Password.ToHex());
+            string request = string.Format(CultureInfo.InvariantCulture, "{0}/rest/{1}.view?v={2}&c={3}&u={4}&p={5}", SubsonicClient.ServerUrl, Enum.GetName(typeof(Methods), method), methodApiVersion, HttpUtility.UrlEncode(SubsonicClient.Name), SubsonicClient.UserName, encodedPassword);
+
+            if (parameters != null && parameters.Parameters.Count > 0)
+                request = parameters.Parameters.Cast<DictionaryEntry>().Aggregate(request, (current, parameter) => current + string.Format(CultureInfo.InvariantCulture, "&{0}={1}", HttpUtility.UrlEncode(parameter.Key.ToString()), HttpUtility.UrlEncode(parameter.Value.ToString())));
+
+            return new Uri(request);
         }
     }
 }

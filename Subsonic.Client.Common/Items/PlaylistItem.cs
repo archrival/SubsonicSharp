@@ -1,8 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using Subsonic.Common;
+using Subsonic.Common.Classes;
 
-namespace Subsonic.Client.Common.Items
+namespace Subsonic.Client.Items
 {
     public sealed class PlaylistItem : INotifyPropertyChanged
     {
