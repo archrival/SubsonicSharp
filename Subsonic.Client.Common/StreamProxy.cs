@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Web;
-using Subsonic.Client.Common.Items;
+using Subsonic.Client.Items;
 
 namespace Subsonic.Client
 {

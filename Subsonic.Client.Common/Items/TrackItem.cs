@@ -1,9 +1,7 @@
 ﻿using System;
-using Subsonic.Client.Items;
-using Subsonic.Common;
 using Subsonic.Common.Classes;
 
-namespace Subsonic.Client.Common.Items
+namespace Subsonic.Client.Items
 {
     public class TrackItem : ChildItem
     {

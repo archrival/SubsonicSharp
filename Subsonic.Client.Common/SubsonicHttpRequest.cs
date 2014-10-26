@@ -1,5 +1,4 @@
-﻿using System.Web.UI.WebControls;
-using Subsonic.Client.Exceptions;
+﻿using Subsonic.Client.Exceptions;
 using Subsonic.Client.Interfaces;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
@@ -564,7 +563,7 @@ namespace Subsonic.Client
         /// <returns>string</returns>
         public virtual Uri BuildRequestUri(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
         {
-            string request = string.Format(CultureInfo.InvariantCulture, "{0}/rest/{1}.view?v={2}&c={3}", SubsonicClient.ServerUrl, Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicClient.Name);
+            string request = string.Format(CultureInfo.InvariantCulture, "{0}/rest/{1}.view?v={2}&c={3}", SubsonicClient.ServerUrl, method.GetXmlEnumAttribute(), methodApiVersion, SubsonicClient.Name);
 
             if (parameters == null || parameters.Parameters.Count <= 0)
                 return new Uri(request);
@@ -606,7 +605,7 @@ namespace Subsonic.Client
         public virtual Uri BuildRequestUriUser(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
         {
             string encodedPassword = string.Format(CultureInfo.InvariantCulture, "enc:{0}", SubsonicClient.Password.ToHex());
-            string request = string.Format(CultureInfo.InvariantCulture, "{0}/rest/{1}.view?v={2}&c={3}&u={4}&p={5}", SubsonicClient.ServerUrl, Enum.GetName(typeof(Methods), method), methodApiVersion, HttpUtility.UrlEncode(SubsonicClient.Name), SubsonicClient.UserName, encodedPassword);
+            string request = string.Format(CultureInfo.InvariantCulture, "{0}/rest/{1}.view?v={2}&c={3}&u={4}&p={5}", SubsonicClient.ServerUrl, method.GetXmlEnumAttribute(), methodApiVersion, HttpUtility.UrlEncode(SubsonicClient.Name), SubsonicClient.UserName, encodedPassword);
 
             if (parameters != null && parameters.Parameters.Count > 0)
                 request = parameters.Parameters.Cast<DictionaryEntry>().Aggregate(request, (current, parameter) => current + string.Format(CultureInfo.InvariantCulture, "&{0}={1}", HttpUtility.UrlEncode(parameter.Key.ToString()), HttpUtility.UrlEncode(parameter.Value.ToString())));

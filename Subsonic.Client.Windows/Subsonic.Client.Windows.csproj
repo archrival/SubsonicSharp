@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Subsonic.Client.Common\Subsonic.Client.csproj">
-      <Project>{cbb112d5-2507-4453-83be-51232fb95ca6}</Project>
+      <Project>{CBB112D5-2507-4453-83BE-51232FB95CA6}</Project>
       <Name>Subsonic.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Subsonic.Common\Subsonic.Common.csproj">
