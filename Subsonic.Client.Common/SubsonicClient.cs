@@ -53,7 +53,7 @@ namespace Subsonic.Client
         /// <returns>bool</returns>
         public async Task<bool> PingAsync()
         {
-            return await SubsonicResponse.GetResponseAsync(Methods.ping, Versions.Version100);
+            return await SubsonicResponse.GetResponseAsync(Methods.Ping, Versions.Version100);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Subsonic.Client
         /// <returns>bool</returns>
         public bool Ping()
         {
-            return SubsonicResponse.GetResponse(Methods.ping, Versions.Version100);
+            return SubsonicResponse.GetResponse(Methods.Ping, Versions.Version100);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Subsonic.Client
         /// <returns>License</returns>
         public async Task<License> GetLicenseAsync(CancellationToken? cancelToken = null)
         {
-            return await SubsonicResponse.GetResponseAsync<License>(Methods.getLicense, Versions.Version100, null, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<License>(Methods.GetLicense, Versions.Version100, null, cancelToken);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Subsonic.Client
         /// <returns>License</returns>
         public License GetLicense()
         {
-            return SubsonicResponse.GetResponse<License>(Methods.getLicense, Versions.Version100);
+            return SubsonicResponse.GetResponse<License>(Methods.GetLicense, Versions.Version100);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Subsonic.Client
         /// <returns>MusicFolders</returns>
         public async Task<MusicFolders> GetMusicFoldersAsync(CancellationToken? cancelToken = null)
         {
-            return await SubsonicResponse.GetResponseAsync<MusicFolders>(Methods.getMusicFolders, Versions.Version100, null, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<MusicFolders>(Methods.GetMusicFolders, Versions.Version100, null, cancelToken);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Subsonic.Client
         /// <returns>MusicFolders</returns>
         public MusicFolders GetMusicFolders()
         {
-            return SubsonicResponse.GetResponse<MusicFolders>(Methods.getMusicFolders, Versions.Version100);
+            return SubsonicResponse.GetResponse<MusicFolders>(Methods.GetMusicFolders, Versions.Version100);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Subsonic.Client
         /// <returns>NowPlaying</returns>
         public async Task<NowPlaying> GetNowPlayingAsync(CancellationToken? cancelToken = null)
         {
-            return await SubsonicResponse.GetResponseAsync<NowPlaying>(Methods.getNowPlaying, Versions.Version100, null, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<NowPlaying>(Methods.GetNowPlaying, Versions.Version100, null, cancelToken);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Subsonic.Client
         /// <returns>NowPlaying</returns>
         public NowPlaying GetNowPlaying()
         {
-            return SubsonicResponse.GetResponse<NowPlaying>(Methods.getNowPlaying, Versions.Version100);
+            return SubsonicResponse.GetResponse<NowPlaying>(Methods.GetNowPlaying, Versions.Version100);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Subsonic.Client
         /// <returns>Starred</returns>
         public async Task<Starred> GetStarredAsync(CancellationToken? cancelToken = null)
         {
-            return await SubsonicResponse.GetResponseAsync<Starred>(Methods.getStarred, Versions.Version180, null, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<Starred>(Methods.GetStarred, Versions.Version180, null, cancelToken);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace Subsonic.Client
         /// <returns>Starred</returns>
         public Starred GetStarred()
         {
-            return SubsonicResponse.GetResponse<Starred>(Methods.getStarred, Versions.Version180);
+            return SubsonicResponse.GetResponse<Starred>(Methods.GetStarred, Versions.Version180);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Subsonic.Client
         /// <returns>Starred2</returns>
         public async Task<Starred2> GetStarred2Async(CancellationToken? cancelToken = null)
         {
-            return await SubsonicResponse.GetResponseAsync<Starred2>(Methods.getStarred2, Versions.Version180, null, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<Starred2>(Methods.GetStarred2, Versions.Version180, null, cancelToken);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Subsonic.Client
         /// <returns>Starred2</returns>
         public Starred2 GetStarred2()
         {
-            return SubsonicResponse.GetResponse<Starred2>(Methods.getStarred2, Versions.Version180);
+            return SubsonicResponse.GetResponse<Starred2>(Methods.GetStarred2, Versions.Version180);
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.MusicFolderId, musicFolderId);
             parameters.Add(Constants.IfModifiedSince, ifModifiedSince);
 
-            return await SubsonicResponse.GetResponseAsync<Indexes>(Methods.getIndexes, Versions.Version100, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<Indexes>(Methods.GetIndexes, Versions.Version100, parameters, cancelToken);
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.MusicFolderId, musicFolderId);
             parameters.Add(Constants.IfModifiedSince, ifModifiedSince);
 
-            return SubsonicResponse.GetResponse<Indexes>(Methods.getIndexes, Versions.Version100, parameters);
+            return SubsonicResponse.GetResponse<Indexes>(Methods.GetIndexes, Versions.Version100, parameters);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return await SubsonicResponse.GetResponseAsync<Directory>(Methods.getMusicDirectory, Versions.Version100, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<Directory>(Methods.GetMusicDirectory, Versions.Version100, parameters, cancelToken);
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return SubsonicResponse.GetResponse<Directory>(Methods.getMusicDirectory, Versions.Version100, parameters);
+            return SubsonicResponse.GetResponse<Directory>(Methods.GetMusicDirectory, Versions.Version100, parameters);
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return await SubsonicResponse.GetResponseAsync<ArtistWithAlbumsID3>(Methods.getArtist, Versions.Version180, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<ArtistWithAlbumsID3>(Methods.GetArtist, Versions.Version180, parameters, cancelToken);
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return SubsonicResponse.GetResponse<ArtistWithAlbumsID3>(Methods.getArtist, Versions.Version180, parameters);
+            return SubsonicResponse.GetResponse<ArtistWithAlbumsID3>(Methods.GetArtist, Versions.Version180, parameters);
         }
 
         /// <summary>
@@ -246,7 +246,7 @@ namespace Subsonic.Client
         /// <returns>ArtistsID3</returns>
         public async Task<ArtistsID3> GetArtistsAsync(CancellationToken? cancelToken = null)
         {
-            return await SubsonicResponse.GetResponseAsync<ArtistsID3>(Methods.getArtists, Versions.Version180, null, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<ArtistsID3>(Methods.GetArtists, Versions.Version180, null, cancelToken);
         }
 
         /// <summary>
@@ -255,7 +255,7 @@ namespace Subsonic.Client
         /// <returns>ArtistsID3</returns>
         public ArtistsID3 GetArtists()
         {
-            return SubsonicResponse.GetResponse<ArtistsID3>(Methods.getArtists, Versions.Version180);
+            return SubsonicResponse.GetResponse<ArtistsID3>(Methods.GetArtists, Versions.Version180);
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return await SubsonicResponse.GetResponseAsync<AlbumID3>(Methods.getAlbum, Versions.Version180, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<AlbumID3>(Methods.GetAlbum, Versions.Version180, parameters, cancelToken);
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return SubsonicResponse.GetResponse<AlbumID3>(Methods.getAlbum, Versions.Version180, parameters);
+            return SubsonicResponse.GetResponse<AlbumID3>(Methods.GetAlbum, Versions.Version180, parameters);
         }
 
         /// <summary>
@@ -296,7 +296,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return await SubsonicResponse.GetResponseAsync<Child>(Methods.getSong, Versions.Version180, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<Child>(Methods.GetSong, Versions.Version180, parameters, cancelToken);
         }
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return SubsonicResponse.GetResponse<Child>(Methods.getSong, Versions.Version180, parameters);
+            return SubsonicResponse.GetResponse<Child>(Methods.GetSong, Versions.Version180, parameters);
         }
 
         /// <summary>
@@ -318,7 +318,7 @@ namespace Subsonic.Client
         /// <returns>Videos</returns>
         public async Task<Videos> GetVideosAsync(CancellationToken? cancelToken = null)
         {
-            return await SubsonicResponse.GetResponseAsync<Videos>(Methods.getVideos, Versions.Version180, null, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<Videos>(Methods.GetVideos, Versions.Version180, null, cancelToken);
         }
 
         /// <summary>
@@ -327,7 +327,7 @@ namespace Subsonic.Client
         /// <returns>Videos</returns>
         public Videos GetVideos()
         {
-            return SubsonicResponse.GetResponse<Videos>(Methods.getVideos, Versions.Version180);
+            return SubsonicResponse.GetResponse<Videos>(Methods.GetVideos, Versions.Version180);
         }
 
         /// <summary>
@@ -352,7 +352,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.Offset, offset);
             parameters.Add(Constants.NewerThan, newerThan);
 
-            return await SubsonicResponse.GetResponseAsync<SearchResult>(Methods.search, Versions.Version100, parameters);
+            return await SubsonicResponse.GetResponseAsync<SearchResult>(Methods.Search, Versions.Version100, parameters);
         }
 
         /// <summary>
@@ -377,7 +377,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.Offset, offset);
             parameters.Add(Constants.NewerThan, newerThan);
 
-            return SubsonicResponse.GetResponse<SearchResult>(Methods.search, Versions.Version100, parameters);
+            return SubsonicResponse.GetResponse<SearchResult>(Methods.Search, Versions.Version100, parameters);
         }
 
         /// <summary>
@@ -403,7 +403,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.SongCount, songCount);
             parameters.Add(Constants.SongOffset, songOffset);
 
-            return await SubsonicResponse.GetResponseAsync<SearchResult2>(Methods.search2, Versions.Version140, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<SearchResult2>(Methods.Search2, Versions.Version140, parameters, cancelToken);
         }
 
         /// <summary>
@@ -428,7 +428,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.SongCount, songCount);
             parameters.Add(Constants.SongOffset, songOffset);
 
-            return SubsonicResponse.GetResponse<SearchResult2>(Methods.search2, Versions.Version140, parameters);
+            return SubsonicResponse.GetResponse<SearchResult2>(Methods.Search2, Versions.Version140, parameters);
         }
 
         /// <summary>
@@ -454,7 +454,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.SongCount, songCount);
             parameters.Add(Constants.SongOffset, songOffset);
 
-            return await SubsonicResponse.GetResponseAsync<SearchResult3>(Methods.search3, Versions.Version180, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<SearchResult3>(Methods.Search3, Versions.Version180, parameters, cancelToken);
         }
 
         /// <summary>
@@ -479,7 +479,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.SongCount, songCount);
             parameters.Add(Constants.SongOffset, songOffset);
 
-            return SubsonicResponse.GetResponse<SearchResult3>(Methods.search3, Versions.Version180, parameters);
+            return SubsonicResponse.GetResponse<SearchResult3>(Methods.Search3, Versions.Version180, parameters);
         }
 
         /// <summary>
@@ -499,7 +499,7 @@ namespace Subsonic.Client
                 methodApiVersion = Versions.Version180;
             }
 
-            return await SubsonicResponse.GetResponseAsync<Playlists>(Methods.getPlaylists, methodApiVersion, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<Playlists>(Methods.GetPlaylists, methodApiVersion, parameters, cancelToken);
         }
 
         /// <summary>
@@ -518,7 +518,7 @@ namespace Subsonic.Client
                 methodApiVersion = Versions.Version180;
             }
 
-            return SubsonicResponse.GetResponse<Playlists>(Methods.getPlaylists, methodApiVersion, parameters);
+            return SubsonicResponse.GetResponse<Playlists>(Methods.GetPlaylists, methodApiVersion, parameters);
         }
 
         /// <summary>
@@ -532,7 +532,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return await SubsonicResponse.GetResponseAsync<PlaylistWithSongs>(Methods.getPlaylist, Versions.Version100, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<PlaylistWithSongs>(Methods.GetPlaylist, Versions.Version100, parameters, cancelToken);
         }
 
         /// <summary>
@@ -545,7 +545,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return SubsonicResponse.GetResponse<PlaylistWithSongs>(Methods.getPlaylist, Versions.Version100, parameters);
+            return SubsonicResponse.GetResponse<PlaylistWithSongs>(Methods.GetPlaylist, Versions.Version100, parameters);
         }
 
 
@@ -572,7 +572,7 @@ namespace Subsonic.Client
 
             parameters.Add(Constants.SongId, songId);
 
-            return await SubsonicResponse.GetResponseAsync(Methods.createPlaylist, Versions.Version120, parameters);
+            return await SubsonicResponse.GetResponseAsync(Methods.CreatePlaylist, Versions.Version120, parameters);
         }
 
         /// <summary>
@@ -595,7 +595,7 @@ namespace Subsonic.Client
 
             parameters.Add(Constants.SongId, songId);
 
-            return SubsonicResponse.GetResponse(Methods.createPlaylist, Versions.Version120, parameters);
+            return SubsonicResponse.GetResponse(Methods.CreatePlaylist, Versions.Version120, parameters);
         }
 
         /// <summary>
@@ -615,7 +615,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.SongIdToAdd, songIdToAdd);
             parameters.Add(Constants.SongIndexToRemove, songIndexToRemove);
 
-            return await SubsonicResponse.GetResponseAsync(Methods.updatePlaylist, Versions.Version180, parameters);
+            return await SubsonicResponse.GetResponseAsync(Methods.UpdatePlaylist, Versions.Version180, parameters);
         }
 
         /// <summary>
@@ -635,7 +635,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.SongIdToAdd, songIdToAdd);
             parameters.Add(Constants.SongIndexToRemove, songIndexToRemove);
 
-            return SubsonicResponse.GetResponse(Methods.updatePlaylist, Versions.Version180, parameters);
+            return SubsonicResponse.GetResponse(Methods.UpdatePlaylist, Versions.Version180, parameters);
         }
 
         /// <summary>
@@ -648,7 +648,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return await SubsonicResponse.GetResponseAsync(Methods.deletePlaylist, Versions.Version120, parameters);
+            return await SubsonicResponse.GetResponseAsync(Methods.DeletePlaylist, Versions.Version120, parameters);
         }
 
         /// <summary>
@@ -661,7 +661,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return SubsonicResponse.GetResponse(Methods.deletePlaylist, Versions.Version120, parameters);
+            return SubsonicResponse.GetResponse(Methods.DeletePlaylist, Versions.Version120, parameters);
         }
 
         /// <summary>
@@ -677,7 +677,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return await SubsonicResponse.GetResponseAsync(path, pathOverride, Methods.download, Versions.Version100, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync(path, pathOverride, Methods.Download, Versions.Version100, parameters, cancelToken);
         }
 
         /// <summary>
@@ -692,7 +692,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return SubsonicResponse.GetResponse(path, pathOverride, Methods.download, Versions.Version100, parameters);
+            return SubsonicResponse.GetResponse(path, pathOverride, Methods.Download, Versions.Version100, parameters);
         }
 
         /// <summary>
@@ -720,7 +720,7 @@ namespace Subsonic.Client
 
             if (format != null)
             {
-                var streamFormatName = EnumHelper.GetXmlEnumAttribute(format);
+                var streamFormatName = format.GetXmlEnumAttribute();
 
                 if (streamFormatName != null)
                 {
@@ -748,9 +748,9 @@ namespace Subsonic.Client
             }
 
             if (noResponse)
-                return await SubsonicResponse.GetResponseAsyncNoResponse(Methods.stream, methodApiVersion, parameters, cancelToken);
+                return await SubsonicResponse.GetResponseAsyncNoResponse(Methods.Stream, methodApiVersion, parameters, cancelToken);
 
-            return await SubsonicResponse.GetResponseAsync(path, true, Methods.stream, methodApiVersion, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync(path, true, Methods.Stream, methodApiVersion, parameters, cancelToken);
         }
 
         /// <summary>
@@ -776,7 +776,7 @@ namespace Subsonic.Client
 
             if (format != null)
             {
-                var streamFormatName = EnumHelper.GetXmlEnumAttribute(format);
+                var streamFormatName = format.GetXmlEnumAttribute();
 
                 if (streamFormatName != null)
                 {
@@ -803,7 +803,7 @@ namespace Subsonic.Client
                 methodApiVersion = Versions.Version180;
             }
 
-            return SubsonicResponse.GetResponse(path, true, Methods.stream, methodApiVersion, parameters);
+            return SubsonicResponse.GetResponse(path, true, Methods.Stream, methodApiVersion, parameters);
         }
 
         /// <summary>
@@ -816,7 +816,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return SubsonicRequest.BuildRequestUriUser(Methods.download, Versions.Version100, parameters);
+            return SubsonicRequest.BuildRequestUriUser(Methods.Download, Versions.Version100, parameters);
         }
 
         /// <summary>
@@ -841,7 +841,7 @@ namespace Subsonic.Client
 
             if (format != null)
             {
-                var streamFormatName = EnumHelper.GetXmlEnumAttribute(format);
+                var streamFormatName = format.GetXmlEnumAttribute();
 
                 if (streamFormatName != null)
                 {
@@ -868,7 +868,7 @@ namespace Subsonic.Client
                 methodApiVersion = Versions.Version180;
             }
 
-            return SubsonicRequest.BuildRequestUriUser(Methods.stream, methodApiVersion, parameters);
+            return SubsonicRequest.BuildRequestUriUser(Methods.Stream, methodApiVersion, parameters);
         }
 
         /// <summary>
@@ -884,7 +884,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.Id, id, true);
             parameters.Add(Constants.Size, size);
 
-            return await SubsonicResponse.GetImageSizeAsync(Methods.getCoverArt, Versions.Version100, parameters, cancelToken);
+            return await SubsonicResponse.GetImageSizeAsync(Methods.GetCoverArt, Versions.Version100, parameters, cancelToken);
         }
 
         /// <summary>
@@ -900,7 +900,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.Id, id, true);
             parameters.Add(Constants.Size, size);
 
-            return await SubsonicResponse.GetImageResponseAsync(Methods.getCoverArt, Versions.Version100, parameters, cancelToken);
+            return await SubsonicResponse.GetImageResponseAsync(Methods.GetCoverArt, Versions.Version100, parameters, cancelToken);
         }
 
         /// <summary>
@@ -915,7 +915,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.Id, id, true);
             parameters.Add(Constants.Size, size);
 
-            return SubsonicResponse.GetImageResponse(Methods.getCoverArt, Versions.Version100, parameters);
+            return SubsonicResponse.GetImageResponse(Methods.GetCoverArt, Versions.Version100, parameters);
         }
 
         /// <summary>
@@ -939,7 +939,7 @@ namespace Subsonic.Client
                 methodApiVersion = Versions.Version180;
             }
 
-            return await SubsonicResponse.GetResponseAsync(Methods.scrobble, methodApiVersion, parameters);
+            return await SubsonicResponse.GetResponseAsync(Methods.Scrobble, methodApiVersion, parameters);
         }
 
         /// <summary>
@@ -963,7 +963,7 @@ namespace Subsonic.Client
                 methodApiVersion = Versions.Version180;
             }
 
-            return SubsonicResponse.GetResponse(Methods.scrobble, methodApiVersion, parameters);
+            return SubsonicResponse.GetResponse(Methods.Scrobble, methodApiVersion, parameters);
         }
 
         /// <summary>
@@ -972,7 +972,7 @@ namespace Subsonic.Client
         /// <returns>Shares</returns>
         public async Task<Shares> GetSharesAsync(CancellationToken? cancelToken = null)
         {
-            return await SubsonicResponse.GetResponseAsync<Shares>(Methods.getShares, Versions.Version160, null, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<Shares>(Methods.GetShares, Versions.Version160, null, cancelToken);
         }
 
         /// <summary>
@@ -981,7 +981,7 @@ namespace Subsonic.Client
         /// <returns>Shares</returns>
         public Shares GetShares()
         {
-            return SubsonicResponse.GetResponse<Shares>(Methods.getShares, Versions.Version160);
+            return SubsonicResponse.GetResponse<Shares>(Methods.GetShares, Versions.Version160);
         }
 
         /// <summary>
@@ -1000,7 +1000,7 @@ namespace Subsonic.Client
 
             parameters.Add("password", password, true);
 
-            return await SubsonicResponse.GetResponseAsync(Methods.changePassword, Versions.Version110, parameters);
+            return await SubsonicResponse.GetResponseAsync(Methods.ChangePassword, Versions.Version110, parameters);
         }
 
         /// <summary>
@@ -1019,7 +1019,7 @@ namespace Subsonic.Client
 
             parameters.Add("password", password, true);
 
-            return SubsonicResponse.GetResponse(Methods.changePassword, Versions.Version110, parameters);
+            return SubsonicResponse.GetResponse(Methods.ChangePassword, Versions.Version110, parameters);
         }
 
         /// <summary>
@@ -1033,7 +1033,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Username, username, true);
 
-            return await SubsonicResponse.GetResponseAsync<User>(Methods.getUser, Versions.Version130, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<User>(Methods.GetUser, Versions.Version130, parameters, cancelToken);
         }
 
         /// <summary>
@@ -1046,7 +1046,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Username, username, true);
 
-            return SubsonicResponse.GetResponse<User>(Methods.getUser, Versions.Version130, parameters);
+            return SubsonicResponse.GetResponse<User>(Methods.GetUser, Versions.Version130, parameters);
         }
 
         /// <summary>
@@ -1060,7 +1060,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Username, username, true);
 
-            return await SubsonicResponse.GetImageResponseAsync(Methods.getAvatar, Versions.Version180, parameters, cancelToken);
+            return await SubsonicResponse.GetImageResponseAsync(Methods.GetAvatar, Versions.Version180, parameters, cancelToken);
         }
 
         /// <summary>
@@ -1073,7 +1073,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Username, username, true);
 
-            return SubsonicResponse.GetImageResponse(Methods.getAvatar, Versions.Version180, parameters);
+            return SubsonicResponse.GetImageResponse(Methods.GetAvatar, Versions.Version180, parameters);
         }
 
         /// <summary>
@@ -1093,7 +1093,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.AlbumId, albumId);
             parameters.Add(Constants.ArtistId, artistId);
 
-            return await SubsonicResponse.GetResponseAsync(Methods.star, Versions.Version180, parameters);
+            return await SubsonicResponse.GetResponseAsync(Methods.Star, Versions.Version180, parameters);
         }
 
         /// <summary>
@@ -1113,7 +1113,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.AlbumId, albumId);
             parameters.Add(Constants.ArtistId, artistId);
 
-            return SubsonicResponse.GetResponse(Methods.star, Versions.Version180, parameters);
+            return SubsonicResponse.GetResponse(Methods.Star, Versions.Version180, parameters);
         }
 
         /// <summary>
@@ -1133,7 +1133,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.AlbumId, albumId);
             parameters.Add(Constants.ArtistId, artistId);
 
-            return await SubsonicResponse.GetResponseAsync(Methods.unstar, Versions.Version180, parameters);
+            return await SubsonicResponse.GetResponseAsync(Methods.Unstar, Versions.Version180, parameters);
         }
 
         /// <summary>
@@ -1153,7 +1153,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.AlbumId, albumId);
             parameters.Add(Constants.ArtistId, artistId);
 
-            return SubsonicResponse.GetResponse(Methods.unstar, Versions.Version180, parameters);
+            return SubsonicResponse.GetResponse(Methods.Unstar, Versions.Version180, parameters);
         }
 
         /// <summary>
@@ -1168,7 +1168,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.Id, id, true);
             parameters.Add(Constants.Rating, rating, true);
 
-            return await SubsonicResponse.GetResponseAsync(Methods.setRating, Versions.Version160, parameters);
+            return await SubsonicResponse.GetResponseAsync(Methods.SetRating, Versions.Version160, parameters);
         }
 
         /// <summary>
@@ -1183,7 +1183,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.Id, id, true);
             parameters.Add(Constants.Rating, rating, true);
 
-            return SubsonicResponse.GetResponse(Methods.setRating, Versions.Version160, parameters);
+            return SubsonicResponse.GetResponse(Methods.SetRating, Versions.Version160, parameters);
         }
 
         /// <summary>
@@ -1224,7 +1224,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.CommentRole, commentRole);
             parameters.Add(Constants.PodcastRole, podcastRole);
 
-            return await SubsonicResponse.GetResponseAsync(Methods.createUser, Versions.Version130, parameters);
+            return await SubsonicResponse.GetResponseAsync(Methods.CreateUser, Versions.Version130, parameters);
         }
 
         /// <summary>
@@ -1265,7 +1265,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.CommentRole, commentRole);
             parameters.Add(Constants.PodcastRole, podcastRole);
 
-            return SubsonicResponse.GetResponse(Methods.createUser, Versions.Version130, parameters);
+            return SubsonicResponse.GetResponse(Methods.CreateUser, Versions.Version130, parameters);
         }
 
         /// <summary>
@@ -1278,7 +1278,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Username, username, true);
 
-            return await SubsonicResponse.GetResponseAsync(Methods.deleteUser, Versions.Version130, parameters);
+            return await SubsonicResponse.GetResponseAsync(Methods.DeleteUser, Versions.Version130, parameters);
         }
 
         /// <summary>
@@ -1291,7 +1291,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Username, username, true);
 
-            return SubsonicResponse.GetResponse(Methods.deleteUser, Versions.Version130, parameters);
+            return SubsonicResponse.GetResponse(Methods.DeleteUser, Versions.Version130, parameters);
         }
 
         /// <summary>
@@ -1305,7 +1305,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Since, since);
 
-            return await SubsonicResponse.GetResponseAsync<ChatMessages>(Methods.getChatMessages, Versions.Version120, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<ChatMessages>(Methods.GetChatMessages, Versions.Version120, parameters, cancelToken);
         }
 
         /// <summary>
@@ -1318,7 +1318,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Since, since);
 
-            return SubsonicResponse.GetResponse<ChatMessages>(Methods.getChatMessages, Versions.Version120, parameters);
+            return SubsonicResponse.GetResponse<ChatMessages>(Methods.GetChatMessages, Versions.Version120, parameters);
         }
 
         /// <summary>
@@ -1331,7 +1331,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Message, message);
 
-            return await SubsonicResponse.GetResponseAsync(Methods.addChatMessage, Versions.Version120, parameters);
+            return await SubsonicResponse.GetResponseAsync(Methods.AddChatMessage, Versions.Version120, parameters);
         }
 
         /// <summary>
@@ -1344,7 +1344,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Message, message);
 
-            return SubsonicResponse.GetResponse(Methods.addChatMessage, Versions.Version120, parameters);
+            return SubsonicResponse.GetResponse(Methods.AddChatMessage, Versions.Version120, parameters);
         }
 
         /// <summary>
@@ -1362,14 +1362,14 @@ namespace Subsonic.Client
             if (type == AlbumListType.AlphabeticalByArtist || type == AlbumListType.AlphabeticalByName || type == AlbumListType.Starred)
                 methodApiVersion = Versions.Version180;
 
-            var albumListTypeName = EnumHelper.GetXmlEnumAttribute(type);
+            var albumListTypeName = type.GetXmlEnumAttribute();
 
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Type, albumListTypeName, true);
             parameters.Add(Constants.Size, size);
             parameters.Add(Constants.Offset, offset);
 
-            return await SubsonicResponse.GetResponseAsync<AlbumList>(Methods.getAlbumList, methodApiVersion, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<AlbumList>(Methods.GetAlbumList, methodApiVersion, parameters, cancelToken);
         }
 
         /// <summary>
@@ -1386,14 +1386,14 @@ namespace Subsonic.Client
             if (type == AlbumListType.AlphabeticalByArtist || type == AlbumListType.AlphabeticalByName || type == AlbumListType.Starred)
                 methodApiVersion = Versions.Version180;
 
-            var albumListTypeName = EnumHelper.GetXmlEnumAttribute(type);
+            var albumListTypeName = type.GetXmlEnumAttribute();
 
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Type, albumListTypeName, true);
             parameters.Add(Constants.Size, size);
             parameters.Add(Constants.Offset, offset);
 
-            return SubsonicResponse.GetResponse<AlbumList>(Methods.getAlbumList, methodApiVersion, parameters);
+            return SubsonicResponse.GetResponse<AlbumList>(Methods.GetAlbumList, methodApiVersion, parameters);
         }
 
         /// <summary>
@@ -1406,14 +1406,14 @@ namespace Subsonic.Client
         /// <returns>AlbumList</returns>
         public async Task<AlbumList2> GetAlbumList2Async(AlbumListType type, int? size = null, int? offset = null, CancellationToken? cancelToken = null)
         {
-            var albumListTypeName = EnumHelper.GetXmlEnumAttribute(type);
+            var albumListTypeName = type.GetXmlEnumAttribute();
 
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Type, albumListTypeName, true);
             parameters.Add(Constants.Size, size);
             parameters.Add(Constants.Offset, offset);
 
-            return await SubsonicResponse.GetResponseAsync<AlbumList2>(Methods.getAlbumList2, Versions.Version180, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<AlbumList2>(Methods.GetAlbumList2, Versions.Version180, parameters, cancelToken);
         }
 
         /// <summary>
@@ -1425,14 +1425,14 @@ namespace Subsonic.Client
         /// <returns>AlbumList</returns>
         public AlbumList2 GetAlbumList2(AlbumListType type, int? size = null, int? offset = null)
         {
-            var albumListTypeName = EnumHelper.GetXmlEnumAttribute(type);
+            var albumListTypeName = type.GetXmlEnumAttribute();
 
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Type, albumListTypeName, true);
             parameters.Add(Constants.Size, size);
             parameters.Add(Constants.Offset, offset);
 
-            return SubsonicResponse.GetResponse<AlbumList2>(Methods.getAlbumList2, Versions.Version180, parameters);
+            return SubsonicResponse.GetResponse<AlbumList2>(Methods.GetAlbumList2, Versions.Version180, parameters);
         }
 
         /// <summary>
@@ -1454,7 +1454,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.ToYear, toYear);
             parameters.Add(Constants.MusicFolderId, musicFolderId);
 
-            return await SubsonicResponse.GetResponseAsync<RandomSongs>(Methods.getRandomSongs, Versions.Version120, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<RandomSongs>(Methods.GetRandomSongs, Versions.Version120, parameters, cancelToken);
         }
 
         /// <summary>
@@ -1475,7 +1475,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.ToYear, toYear);
             parameters.Add(Constants.MusicFolderId, musicFolderId);
 
-            return SubsonicResponse.GetResponse<RandomSongs>(Methods.getRandomSongs, Versions.Version120, parameters);
+            return SubsonicResponse.GetResponse<RandomSongs>(Methods.GetRandomSongs, Versions.Version120, parameters);
         }
 
         /// <summary>
@@ -1494,7 +1494,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.Artist, artist);
             parameters.Add(Constants.Title, title);
 
-            return await SubsonicResponse.GetResponseAsync<Lyrics>(Methods.getLyrics, Versions.Version120, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<Lyrics>(Methods.GetLyrics, Versions.Version120, parameters, cancelToken);
         }
 
         /// <summary>
@@ -1512,7 +1512,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.Artist, artist);
             parameters.Add(Constants.Title, title);
 
-            return SubsonicResponse.GetResponse<Lyrics>(Methods.getLyrics, Versions.Version120, parameters);
+            return SubsonicResponse.GetResponse<Lyrics>(Methods.GetLyrics, Versions.Version120, parameters);
         }
 
         /// <summary>
@@ -1524,7 +1524,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Action, Constants.Get);
 
-            return await SubsonicResponse.GetResponseAsync<JukeboxPlaylist>(Methods.jukeboxControl, Versions.Version120, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<JukeboxPlaylist>(Methods.JukeboxControl, Versions.Version120, parameters, cancelToken);
         }
 
         /// <summary>
@@ -1536,7 +1536,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Action, Constants.Get);
 
-            return SubsonicResponse.GetResponse<JukeboxPlaylist>(Methods.jukeboxControl, Versions.Version120, parameters);
+            return SubsonicResponse.GetResponse<JukeboxPlaylist>(Methods.JukeboxControl, Versions.Version120, parameters);
         }
 
         /// <summary>
@@ -1549,7 +1549,7 @@ namespace Subsonic.Client
         /// <returns>bool</returns>
         public async Task<bool> JukeboxControlAsync(JukeboxControlAction action, int? index = null, float? gain = null, IEnumerable<string> id = null)
         {
-            var actionName = EnumHelper.GetXmlEnumAttribute(action);
+            var actionName = action.GetXmlEnumAttribute();
 
             if (string.IsNullOrWhiteSpace(actionName))
                 throw new SubsonicApiException("You must provide valid action");
@@ -1577,7 +1577,7 @@ namespace Subsonic.Client
                 parameters.Add(Constants.SetGain, gain.ToString());
             }
 
-            return await SubsonicResponse.GetResponseAsync(Methods.jukeboxControl, Versions.Version120, parameters);
+            return await SubsonicResponse.GetResponseAsync(Methods.JukeboxControl, Versions.Version120, parameters);
         }
 
         /// <summary>
@@ -1590,7 +1590,7 @@ namespace Subsonic.Client
         /// <returns>bool</returns>
         public bool JukeboxControl(JukeboxControlAction action, int? index = null, float? gain = null, IEnumerable<string> id = null)
         {
-            var actionName = EnumHelper.GetXmlEnumAttribute(action);
+            var actionName = action.GetXmlEnumAttribute();
 
             if (string.IsNullOrWhiteSpace(actionName))
                 throw new SubsonicApiException("You must provide valid action");
@@ -1618,7 +1618,7 @@ namespace Subsonic.Client
                 parameters.Add(Constants.SetGain, gain.ToString());
             }
 
-            return SubsonicResponse.GetResponse(Methods.jukeboxControl, Versions.Version120, parameters);
+            return SubsonicResponse.GetResponse(Methods.JukeboxControl, Versions.Version120, parameters);
         }
 
         /// <summary>
@@ -1627,7 +1627,7 @@ namespace Subsonic.Client
         /// <returns>Podcasts</returns>
         public async Task<Podcasts> GetPodcastsAsync(CancellationToken? cancelToken = null)
         {
-            return await SubsonicResponse.GetResponseAsync<Podcasts>(Methods.getPodcasts, Versions.Version160, null, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<Podcasts>(Methods.GetPodcasts, Versions.Version160, null, cancelToken);
         }
 
         /// <summary>
@@ -1636,7 +1636,7 @@ namespace Subsonic.Client
         /// <returns>Podcasts</returns>
         public Podcasts GetPodcasts()
         {
-            return SubsonicResponse.GetResponse<Podcasts>(Methods.getPodcasts, Versions.Version160);
+            return SubsonicResponse.GetResponse<Podcasts>(Methods.GetPodcasts, Versions.Version160);
         }
 
         /// <summary>
@@ -1645,7 +1645,7 @@ namespace Subsonic.Client
         /// <returns>Genres</returns>
         public async Task<Genres> GetGenresAsync(CancellationToken? cancelToken = null)
         {
-            return await SubsonicResponse.GetResponseAsync<Genres>(Methods.getGenres, Versions.Version190, null, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<Genres>(Methods.GetGenres, Versions.Version190, null, cancelToken);
         }
 
         /// <summary>
@@ -1654,7 +1654,7 @@ namespace Subsonic.Client
         /// <returns>Podcasts</returns>
         public Genres GetGenres()
         {
-            return SubsonicResponse.GetResponse<Genres>(Methods.getGenres, Versions.Version190);
+            return SubsonicResponse.GetResponse<Genres>(Methods.GetGenres, Versions.Version190);
         }
 
         /// <summary>
@@ -1672,7 +1672,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.Count, count);
             parameters.Add(Constants.Offset, offset);
 
-            return await SubsonicResponse.GetResponseAsync<Songs>(Methods.getSongsByGenre, Versions.Version190, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync<Songs>(Methods.GetSongsByGenre, Versions.Version190, parameters, cancelToken);
         }
 
         /// <summary>
@@ -1689,7 +1689,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.Count, count);
             parameters.Add(Constants.Offset, offset);
 
-            return SubsonicResponse.GetResponse<Songs>(Methods.getSongsByGenre, Versions.Version190, parameters);
+            return SubsonicResponse.GetResponse<Songs>(Methods.GetSongsByGenre, Versions.Version190, parameters);
         }
     }
 }
