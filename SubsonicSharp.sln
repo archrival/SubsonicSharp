@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamProxyWindows", "Strea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileLoggerWindows", "FileLoggerWindows\FileLoggerWindows.csproj", "{B8CF25F9-5FF3-475B-A335-74121F48D4ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subsonic.Client.Android", "Subsoninc.Client.Android\Subsonic.Client.Android.csproj", "{62125682-B913-4281-87FE-BB3E5DF75248}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subsonic.Client.Android", "Subsonic.Client.Android\Subsonic.Client.Android.csproj", "{62125682-B913-4281-87FE-BB3E5DF75248}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
