@@ -1,9 +1,7 @@
-﻿using System;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Subsonic.Common.Enums
 {
-    [Serializable]
     [XmlType(IncludeInSchema = false)]
     public enum ItemChoiceType
     {

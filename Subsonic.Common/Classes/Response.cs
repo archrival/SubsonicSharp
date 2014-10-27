@@ -1,10 +1,8 @@
 ﻿using Subsonic.Common.Enums;
-using System;
 using System.Xml.Serialization;
 
 namespace Subsonic.Common.Classes
 {
-    [Serializable]
     [XmlRoot("subsonic-response", Namespace = null, IsNullable = false)]
     public class Response
     {

@@ -4,7 +4,6 @@ using Subsonic.Common.Enums;
 
 namespace Subsonic.Common.Classes
 {
-    [Serializable]
     public class PodcastEpisode : Child
     {
         [XmlAttribute("description")]

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using Subsonic.Common.Classes;
 
 namespace Subsonic.Client.Exceptions
 {
-    [Serializable]
     public class SubsonicErrorException : Exception
     {
         public SubsonicErrorException() { }
@@ -24,21 +22,9 @@ namespace Subsonic.Client.Exceptions
             Error = new Error {Message = message, Code = -1};
         }
 
-        protected SubsonicErrorException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-
-        }
-
         private Error Error { get; set; }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue("error", Error.Message);
-        }
     }
 
-    [Serializable]
     public class SubsonicApiException : Exception
     {
         public SubsonicApiException() { }
@@ -52,14 +38,8 @@ namespace Subsonic.Client.Exceptions
         {
 
         }
-
-        protected SubsonicApiException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-
-        }
     }
 
-    [Serializable]
     public class SubsonicInvalidApiException : Exception
     {
         public SubsonicInvalidApiException() { }
@@ -70,11 +50,6 @@ namespace Subsonic.Client.Exceptions
         }
 
         public SubsonicInvalidApiException(string message) : base(message)
-        {
-
-        }
-
-        protected SubsonicInvalidApiException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
 
         }

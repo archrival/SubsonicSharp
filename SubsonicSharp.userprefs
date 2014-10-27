@@ -1,0 +1,33 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ApiTester\Program.cs">
+    <Files>
+      <File FileName="Subsonic.Common\Classes\AlbumID3.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client.Windows\SubsonicClientWindows.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client.Windows\WindowsResponse.cs" Line="34" Column="34" />
+      <File FileName="Subsonic.Client.Windows\WindowsRequest.cs" Line="37" Column="37" />
+      <File FileName="Subsonic.Client.Windows\WindowsImageFormat.cs" Line="6" Column="6" />
+      <File FileName="Subsonic.Client.Common\Constants.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client.Common\EnumHelper.cs" Line="13" Column="13" />
+      <File FileName="Subsonic.Client.Common\Items\AlbumItem.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client.Common\Items\AlbumListItem.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client.Common\Items\NowPlayingItem.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client.Common\SubsonicHttpRequest.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client.Common\SubsonicParameters.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client.Common\StreamProxy.cs" Line="58" Column="58" />
+      <File FileName="C:\Program Files (x86)\MSBuild\12.0\bin\Microsoft.Common.CurrentVersion.targets" Line="31" Column="31" />
+      <File FileName="Subsonic.Client.Common\Items\ArtistItem.cs" Line="1" Column="1" />
+      <File FileName="ApiTester\Program.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Common\Interfaces\ISubsonicClient.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client.Common\SubsonicClient.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client.Common\Extensions\WebRequestExtensions.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <DisabledProjects>
+    <String>Subsonic.Client.Android\Subsonic.Client.Android.csproj</String>
+  </DisabledProjects>
+</Properties>

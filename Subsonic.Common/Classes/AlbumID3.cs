@@ -4,7 +4,6 @@ using System.Xml.Serialization;
 namespace Subsonic.Common.Classes
 {
     [XmlInclude(typeof(AlbumWithSongsID3))]
-    [Serializable]
     public class AlbumID3
     {
         [XmlAttribute("artist")]

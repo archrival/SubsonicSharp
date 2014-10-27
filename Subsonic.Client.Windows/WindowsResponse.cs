@@ -36,18 +36,22 @@ namespace Subsonic.Client.Windows
         }
 
         /// <summary>
-        /// Get a response from the Subsonic server for the given method.
+        /// Get a response and save it to a path from the Subsonic server for the given method.
         /// </summary>
+        /// <param name="pathOverride"></param>
         /// <param name="method">Subsonic API method to call.</param>
         /// <param name="methodApiVersion">Subsonic API version of the method.</param>
         /// <param name="parameters">Parameters used by the method.</param>
-        /// <returns>T</returns>
-        public override IImageFormat<T> GetImageResponse(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
+        /// <param name="cancelToken"></param>
+        /// <param name="path"></param>
+        /// <returns>bool</returns>
+        public virtual async Task<long> GetResponseAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             if (SubsonicClient.ServerApiVersion != null && methodApiVersion > SubsonicClient.ServerApiVersion)
                 throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicClient.ServerApiVersion));
 
-            return WindowsRequest.ImageRequest(method, methodApiVersion, parameters);
+            return await WindowsRequest.RequestAsync(path, pathOverride, method, methodApiVersion, parameters, cancelToken);
         }
+
     }
 }

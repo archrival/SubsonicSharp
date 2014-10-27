@@ -6,7 +6,9 @@ using System;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,14 +18,6 @@ namespace Subsonic.Client.Windows
     {
         public WindowsRequest(SubsonicClient<T> client) : base(client) { }
 
-        /// <summary>
-        /// Return an Image for the specified method.
-        /// </summary>
-        /// <param name="method">Subsonic API method to call.</param>
-        /// <param name="methodApiVersion">Subsonic API version of the method.</param>
-        /// <param name="parameters">Parameters used by the method.</param>
-        /// <param name="cancelToken"> </param>
-        /// <returns>Image</returns>
         public override async Task<IImageFormat<T>> ImageRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             var requestUri = BuildRequestUri(method, methodApiVersion, parameters);
@@ -91,39 +85,55 @@ namespace Subsonic.Client.Windows
 
         }
 
-        /// <summary>
-        /// Return an Image for the specified method.
-        /// </summary>
-        /// <param name="method">Subsonic API method to call.</param>
-        /// <param name="methodApiVersion">Subsonic API version of the method.</param>
-        /// <param name="parameters">Parameters used by the method.</param>
-        /// <returns>Image</returns>
-        public override IImageFormat<T> ImageRequest(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
+        public override async Task<long> RequestAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
+            long bytesTransferred = 0;
             var requestUri = BuildRequestUri(method, methodApiVersion, parameters);
+
             var request = BuildRequest(requestUri);
-            var image = default(Image);
+            var download = true;
+
+            if (cancelToken.HasValue)
+                cancelToken.Value.ThrowIfCancellationRequested();
 
             try
             {
-                using (var response = request.GetResponse() as HttpWebResponse)
+                using (var response = (HttpWebResponse)(await request.GetResponseAsync()))
                 {
-                    if (response != null && (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.Redirect))
+                    if (response != null)
                     {
                         if (!response.ContentType.Contains(HttpContentTypes.TextXml))
                         {
-                            using (var stream = response.GetResponseStream())
-                                if (stream != null) image = Image.FromStream(stream);
+                            // Read the file name from the Content-Disposition header if a path override value was not provided
+                            if (!pathOverride)
+                            {
+                                if (response.Headers.AllKeys.Contains(HttpHeaderField.ContentDisposition))
+                                {
+                                    var contentDisposition = new ContentDisposition(response.Headers[HttpHeaderField.ContentDisposition]);
+
+                                    if (!string.IsNullOrWhiteSpace(contentDisposition.FileName))
+                                        path = Path.Combine(path, contentDisposition.FileName);
+                                    else
+                                        throw new SubsonicApiException("FileName was not provided in the Content-Disposition header, you must use the path override flag.");
+                                }
+                                else
+                                {
+                                    throw new SubsonicApiException("Content-Disposition header was not provided, you must use the path override flag.");
+                                }
+                            }
                         }
                         else
                         {
                             string restResponse = null;
                             var result = new Response();
 
+                            if (cancelToken.HasValue)
+                                cancelToken.Value.ThrowIfCancellationRequested();
+
                             using (var stream = response.GetResponseStream())
                                 if (stream != null)
                                     using (var streamReader = new StreamReader(stream))
-                                        restResponse = streamReader.ReadToEnd();
+                                        restResponse = await streamReader.ReadToEndAsync();
 
                             if (!string.IsNullOrWhiteSpace(restResponse))
                                 result = restResponse.DeserializeFromXml<Response>();
@@ -133,11 +143,45 @@ namespace Subsonic.Client.Windows
 
                             throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
                         }
+
+                        if (File.Exists(path))
+                        {
+                            var fileInfo = new FileInfo(path);
+
+                            // If the file on disk matches the file on the server, do not attempt a download
+                            if (response.ContentLength >= 0 && response.LastModified == fileInfo.LastWriteTime && response.ContentLength == fileInfo.Length)
+                                download = false;
+                        }
+
+                        var directoryName = Path.GetDirectoryName(path);
+
+                        if (!string.IsNullOrWhiteSpace(directoryName) && !System.IO.Directory.Exists(directoryName))
+                            System.IO.Directory.CreateDirectory(directoryName);
+
+                        if (download)
+                        {
+                            if (cancelToken.HasValue)
+                                cancelToken.Value.ThrowIfCancellationRequested();
+
+                            using (var stream = response.GetResponseStream())
+                            using (var fileStream = File.Open(path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+                            {
+                                if (stream != null)
+                                {
+                                    if (cancelToken.HasValue)
+                                        cancelToken.Value.ThrowIfCancellationRequested();
+
+                                    await stream.CopyToAsync(fileStream);
+                                    bytesTransferred = fileStream.Length;
+                                }
+                            }
+
+                            File.SetLastWriteTime(path, response.LastModified);
+                        }
                     }
                     else
                     {
-                        if (response != null)
-                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Invalid HTTP response status code: {0}", response.StatusCode));
+                        throw new SubsonicErrorException("HTTP response is null");
                     }
                 }
             }
@@ -146,7 +190,10 @@ namespace Subsonic.Client.Windows
                 throw new SubsonicApiException(ex.Message, ex);
             }
 
-            return new WindowsImageFormat(image) as IImageFormat<T>;
+            if (cancelToken.HasValue)
+                cancelToken.Value.ThrowIfCancellationRequested();
+
+            return bytesTransferred;
         }
     }
 }

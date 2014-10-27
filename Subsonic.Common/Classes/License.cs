@@ -3,7 +3,6 @@ using System.Xml.Serialization;
 
 namespace Subsonic.Common.Classes
 {
-    [Serializable]
     public class License
     {
         [XmlAttribute("date")]

@@ -63,12 +63,9 @@ namespace Subsonic.Client
         /// <param name="cancelToken"></param>
         /// <param name="path"></param>
         /// <returns>bool</returns>
-        public virtual async Task<long> GetResponseAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        public virtual Task<long> GetResponseAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
-            if (SubsonicClient.ServerApiVersion != null && methodApiVersion > SubsonicClient.ServerApiVersion)
-                throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicClient.ServerApiVersion));
-
-            return await SubsonicRequest.RequestAsync(path, pathOverride, method, methodApiVersion, parameters, cancelToken);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -88,54 +85,6 @@ namespace Subsonic.Client
         }
 
         /// <summary>
-        /// Get a boolean response from the Subsonic server for the given method.
-        /// </summary>
-        /// <param name="method">Subsonic API method to call.</param>
-        /// <param name="methodApiVersion">Subsonic API version of the method.</param>
-        /// <param name="parameters">Parameters used by the method.</param>
-        /// <returns>bool</returns>
-        public virtual bool GetResponse(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
-        {
-            bool success = false;
-
-            if (SubsonicClient.ServerApiVersion != null && methodApiVersion > SubsonicClient.ServerApiVersion)
-                throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicClient.ServerApiVersion));
-
-            Response response = SubsonicRequest.Request(method, methodApiVersion, parameters);
-
-            switch (response.Status)
-            {
-                case ResponseStatus.Ok:
-                    success = true;
-                    break;
-                case ResponseStatus.Failed:
-                    if (response.ItemElementName == ItemChoiceType.Error)
-                        throw new SubsonicErrorException(string.Format(CultureInfo.CurrentCulture, "Error occurred in {0}", Enum.GetName(typeof(Methods), method)), response.Item as Error);
-
-                    break;
-            }
-
-            return success;
-        }
-
-        /// <summary>
-        /// Get a boolean response from the Subsonic server for the given method.
-        /// </summary>
-        /// <param name="pathOverride"></param>
-        /// <param name="method">Subsonic API method to call.</param>
-        /// <param name="methodApiVersion">Subsonic API version of the method.</param>
-        /// <param name="parameters">Parameters used by the method.</param>
-        /// <param name="path"></param>
-        /// <returns>bool</returns>
-        public virtual long GetResponse(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
-        {
-            if (SubsonicClient.ServerApiVersion != null && methodApiVersion > SubsonicClient.ServerApiVersion)
-                throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicClient.ServerApiVersion));
-
-            return SubsonicRequest.Request(path, pathOverride, method, methodApiVersion, parameters);
-        }
-
-        /// <summary>
         /// Get a response from the Subsonic server for the given method.
         /// </summary>
         /// <typeparam name="TResponse">Object type the method will return.</typeparam>
@@ -152,38 +101,6 @@ namespace Subsonic.Client
                 throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicClient.ServerApiVersion));
 
             Response response = await SubsonicRequest.RequestAsync(method, methodApiVersion, parameters, cancelToken);
-
-            switch (response.Status)
-            {
-                case ResponseStatus.Ok:
-                    result = (TResponse)response.Item;
-                    break;
-                case ResponseStatus.Failed:
-                    if (response.ItemElementName == ItemChoiceType.Error)
-                        throw new SubsonicErrorException(string.Format(CultureInfo.CurrentCulture, "Error occurred in {0}", Enum.GetName(typeof(Methods), method)), response.Item as Error);
-
-                    throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unknown error occurred in {0}", Enum.GetName(typeof(Methods), method)));
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Get a response from the Subsonic server for the given method.
-        /// </summary>
-        /// <typeparam name="TResponse">Object type the method will return.</typeparam>
-        /// <param name="method">Subsonic API method to call.</param>
-        /// <param name="methodApiVersion">Subsonic API version of the method.</param>
-        /// <param name="parameters">Parameters used by the method.</param>
-        /// <returns>T</returns>
-        public virtual TResponse GetResponse<TResponse>(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
-        {
-            TResponse result = default(TResponse);
-
-            if (SubsonicClient.ServerApiVersion != null && methodApiVersion > SubsonicClient.ServerApiVersion)
-                throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicClient.ServerApiVersion));
-
-            Response response = SubsonicRequest.Request(method, methodApiVersion, parameters);
 
             switch (response.Status)
             {
@@ -230,21 +147,6 @@ namespace Subsonic.Client
                 throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicClient.ServerApiVersion));
 
             return await SubsonicRequest.ImageRequestAsync(method, methodApiVersion, parameters, cancelToken);
-        }
-
-        /// <summary>
-        /// Get a response from the Subsonic server for the given method.
-        /// </summary>
-        /// <param name="method">Subsonic API method to call.</param>
-        /// <param name="methodApiVersion">Subsonic API version of the method.</param>
-        /// <param name="parameters">Parameters used by the method.</param>
-        /// <returns>T</returns>
-        public virtual IImageFormat<T> GetImageResponse(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
-        {
-            if (SubsonicClient.ServerApiVersion != null && methodApiVersion > SubsonicClient.ServerApiVersion)
-                throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicClient.ServerApiVersion));
-
-            return SubsonicRequest.ImageRequest(method, methodApiVersion, parameters);
         }
     }
 }

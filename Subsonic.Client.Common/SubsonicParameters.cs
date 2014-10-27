@@ -23,7 +23,7 @@ namespace Subsonic.Client
                     parameters.Parameters = new List<KeyValuePair<string, string>>();
                     break;
                 case SubsonicParameterType.Single:
-                    parameters.Parameters = new Hashtable();
+                    parameters.Parameters = new Dictionary<string, object>();
                     break;
             }
 
@@ -46,7 +46,7 @@ namespace Subsonic.Client
                     break;
                 case SubsonicParameterType.Single:
                     {
-                        var parameters = Parameters as Hashtable;
+                        var parameters = Parameters as Dictionary<string, object>;
 
                         if (parameters != null)
                             if (value != null)

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
+using Subsonic.Common.Enums;
 
 namespace Subsonic.Client.Windows
 {
@@ -12,11 +15,58 @@ namespace Subsonic.Client.Windows
             SubsonicRequest = windowsResponse.WindowsRequest;
         }
 
-        public SubsonicClientWindows(Uri serverUrl, string userName, string password, Uri proxyServer, int proxyPort, string proxyUserName, string proxyPassword, string clientName) : base(serverUrl, userName, password, proxyServer, proxyPort, proxyUserName, proxyPassword, clientName)
+        public override async Task<long> StreamAsync(string id, string path, int? maxBitRate = null, StreamFormat? format = null, int? timeOffset = null, string size = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)
         {
-            var windowsResponse = new WindowsResponse<Image>(this);
-            SubsonicResponse = windowsResponse;
-            SubsonicRequest = windowsResponse.WindowsRequest;
+            var methodApiVersion = Versions.Version120;
+
+            var parameters = SubsonicParameters.Create();
+            parameters.Add(Constants.Id, id, true);
+
+            if (maxBitRate != null && maxBitRate != 0)
+                parameters.Add(Constants.MaxBitRate, maxBitRate);
+
+            if (format != null)
+            {
+                var streamFormatName = format.GetXmlEnumAttribute();
+
+                if (streamFormatName != null)
+                {
+                    parameters.Add(Constants.StreamFormat, streamFormatName);
+                    methodApiVersion = format == StreamFormat.Raw ? Versions.Version190 : Versions.Version160;
+                }
+            }
+
+            if (timeOffset != null)
+            {
+                parameters.Add(Constants.TimeOffset, timeOffset);
+                methodApiVersion = Versions.Version160;
+            }
+
+            if (!string.IsNullOrWhiteSpace(size))
+            {
+                parameters.Add(Constants.Size, size);
+                methodApiVersion = Versions.Version160;
+            }
+
+            if (estimateContentLength != null)
+            {
+                parameters.Add(Constants.EstimateContentLength, estimateContentLength);
+                methodApiVersion = Versions.Version180;
+            }
+
+            if (noResponse)
+                return await SubsonicResponse.GetResponseAsyncNoResponse(Methods.Stream, methodApiVersion, parameters, cancelToken);
+
+            return await SubsonicResponse.GetResponseAsync(path, true, Methods.Stream, methodApiVersion, parameters, cancelToken);
+
+        }
+
+        public override async Task<long> DownloadAsync(string id, string path, bool pathOverride = false, CancellationToken? cancelToken = null)
+        {
+            var parameters = SubsonicParameters.Create();
+            parameters.Add(Constants.Id, id, true);
+
+            return await SubsonicResponse.GetResponseAsync(path, pathOverride, Methods.Download, Versions.Version100, parameters, cancelToken);
         }
     }
 }

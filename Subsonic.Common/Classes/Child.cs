@@ -6,7 +6,6 @@ namespace Subsonic.Common.Classes
 {
     [XmlInclude(typeof(PodcastEpisode))]
     [XmlInclude(typeof(NowPlayingEntry))]
-    [Serializable]
     public class Child
     {
         [XmlAttribute("album")]

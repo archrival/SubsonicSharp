@@ -4,7 +4,6 @@ using System.Xml.Serialization;
 
 namespace Subsonic.Common.Classes
 {
-    [Serializable]
     public class Share
     {
         [XmlAttribute("created")]

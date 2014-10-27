@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Subsonic.Client.Windows;
-using Subsonic.Common;
+﻿using Subsonic.Client.Windows;
+using System;
 
 namespace ApiTester
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {
-            
-
-            while (true)
-            {
-                Thread.Sleep(1000);
-            }
+            var test = new SubsonicClientWindows(new Uri("http://localhost:8080/madsonic/"), "user", "password", "ApiTester");
         }
     }
 }

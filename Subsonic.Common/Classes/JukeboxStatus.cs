@@ -1,10 +1,8 @@
-﻿using System;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Subsonic.Common.Classes
 {
     [XmlInclude(typeof(JukeboxPlaylist))]
-    [Serializable]
     public class JukeboxStatus
     {
         [XmlAttribute("currentIndex")]

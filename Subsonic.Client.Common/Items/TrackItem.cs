@@ -5,8 +5,6 @@ namespace Subsonic.Client.Items
 {
     public class TrackItem : ChildItem
     {
-        private bool _cached;
-
         public bool Selected { get; set; }
         public int DiscNumber { get; set; }
         public int TrackNumber { get; set; }
@@ -21,15 +19,7 @@ namespace Subsonic.Client.Items
         public string FileName { get; set; }
         public Guid PlaylistGuid { get; set; }
         public TrackItem Source { get; set; }
-        public bool Cached
-        {
-            get { return _cached; }
-            set
-            {
-                _cached = value;
-                OnPropertyChanged("Cached");
-            }
-        }
+        public bool Cached { get; set; }
 
         public static TrackItem Create(Child child, string fileName, bool cached)
         {

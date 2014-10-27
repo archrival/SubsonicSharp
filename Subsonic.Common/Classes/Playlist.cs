@@ -5,7 +5,6 @@ using System.Xml.Serialization;
 namespace Subsonic.Common.Classes
 {
     [XmlInclude(typeof(PlaylistWithSongs))]
-    [Serializable]
     public class Playlist
     {
         [XmlElement("allowedUser")]
