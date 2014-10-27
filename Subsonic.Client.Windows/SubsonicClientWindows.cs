@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Subsonic.Common.Enums;
+using System;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
-using Subsonic.Common.Enums;
-using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Windows
 {
