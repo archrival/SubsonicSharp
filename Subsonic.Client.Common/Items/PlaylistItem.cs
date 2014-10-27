@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Subsonic.Common.Classes;
+using System;
 using System.ComponentModel;
-using Subsonic.Common;
-using Subsonic.Common.Classes;
 
 namespace Subsonic.Client.Items
 {

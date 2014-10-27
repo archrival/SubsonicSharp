@@ -3,16 +3,29 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using Subsonic.Common.Enums;
+using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Windows
 {
     public class SubsonicClientWindows : SubsonicClient<Image>
-    {   
+    {
         public SubsonicClientWindows(Uri serverUrl, string userName, string password, string clientName) : base(serverUrl, userName, password, clientName)
         {
             var windowsResponse = new WindowsResponse<Image>(this);
             SubsonicResponse = windowsResponse;
             SubsonicRequest = windowsResponse.WindowsRequest;
+        }
+
+        public SubsonicClientWindows(Uri serverUrl, string userName, string password, string proxyServer, int proxyPort, string proxyUserName, string proxyPassword, string clientName) : base(serverUrl, userName, password, clientName)
+        {
+            var windowsResponse = new WindowsResponse<Image>(this);
+            SubsonicResponse = windowsResponse;
+            SubsonicRequest = windowsResponse.WindowsRequest;
+
+            ProxyServerUrl = proxyServer;
+            ProxyPort = proxyPort;
+            ProxyUserName = proxyUserName;
+            ProxyPassword = proxyPassword;
         }
 
         public override async Task<long> StreamAsync(string id, string path, int? maxBitRate = null, StreamFormat? format = null, int? timeOffset = null, string size = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)

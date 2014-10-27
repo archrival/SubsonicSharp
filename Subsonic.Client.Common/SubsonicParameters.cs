@@ -23,7 +23,7 @@ namespace Subsonic.Client
                     parameters.Parameters = new List<KeyValuePair<string, string>>();
                     break;
                 case SubsonicParameterType.Single:
-                    parameters.Parameters = new Dictionary<string, object>();
+                    parameters.Parameters = new Dictionary<string, string>();
                     break;
             }
 
@@ -46,11 +46,11 @@ namespace Subsonic.Client
                     break;
                 case SubsonicParameterType.Single:
                     {
-                        var parameters = Parameters as Dictionary<string, object>;
+                        var parameters = Parameters as Dictionary<string, string>;
 
                         if (parameters != null)
                             if (value != null)
-                                parameters.Add(key, value);
+                                parameters.Add(key, value.ToString());
                             else if (required)
                                 throw new SubsonicErrorException(string.Format("Parameter '{0}' is required, the value provided is null", key));
                     }

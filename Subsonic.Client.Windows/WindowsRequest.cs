@@ -195,5 +195,34 @@ namespace Subsonic.Client.Windows
 
             return bytesTransferred;
         }
+
+        /// <summary>
+        /// Build an HTTP request using the values provided in the class.
+        /// </summary>
+        /// <param name="requestUri">URI for the request.</param>
+        /// <param name="method"></param>
+        /// <returns>HttpWebRequest</returns>
+        protected override HttpWebRequest BuildRequest(Uri requestUri, string method = HttpMethod.Post)
+        {
+            HttpWebRequest request = base.BuildRequest(requestUri, method);
+
+            // Add proxy information if specified, limit to valid ports
+            if (!string.IsNullOrWhiteSpace(SubsonicClient.ProxyServerUrl) && (SubsonicClient.ProxyPort > 0 && SubsonicClient.ProxyPort < 65536))
+            {
+                var proxy = new WebProxy(SubsonicClient.ProxyServerUrl, SubsonicClient.ProxyPort);
+
+                if (!string.IsNullOrWhiteSpace(SubsonicClient.ProxyUserName))
+                {
+                    if (string.IsNullOrWhiteSpace(SubsonicClient.ProxyPassword))
+                        throw new SubsonicApiException("When specifying a proxy username, you must also specify a password.");
+
+                    proxy.Credentials = new NetworkCredential(SubsonicClient.ProxyUserName, SubsonicClient.ProxyPassword);
+                }
+
+                request.Proxy = proxy;
+            }
+
+            return request;
+        }
     }
 }

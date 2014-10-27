@@ -18,7 +18,7 @@ namespace Subsonic.Client
 {
     public class SubsonicHttpRequest<T> : ISubsonicRequest<T>
     {
-        private SubsonicClient<T> SubsonicClient { get; set; }
+        protected SubsonicClient<T> SubsonicClient { get; set; }
 
         public SubsonicHttpRequest(SubsonicClient<T> client)
         {
@@ -128,7 +128,7 @@ namespace Subsonic.Client
         /// <param name="requestUri">URI for the request.</param>
         /// <param name="method"></param>
         /// <returns>HttpWebRequest</returns>
-        protected HttpWebRequest BuildRequest(Uri requestUri, string method = HttpMethod.Post)
+        protected virtual HttpWebRequest BuildRequest(Uri requestUri, string method = HttpMethod.Post)
         {
             var request = WebRequest.Create(requestUri) as HttpWebRequest;
 

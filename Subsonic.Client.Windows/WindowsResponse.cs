@@ -45,13 +45,12 @@ namespace Subsonic.Client.Windows
         /// <param name="cancelToken"></param>
         /// <param name="path"></param>
         /// <returns>bool</returns>
-        public virtual async Task<long> GetResponseAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        public override async Task<long> GetResponseAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             if (SubsonicClient.ServerApiVersion != null && methodApiVersion > SubsonicClient.ServerApiVersion)
                 throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicClient.ServerApiVersion));
 
             return await WindowsRequest.RequestAsync(path, pathOverride, method, methodApiVersion, parameters, cancelToken);
         }
-
     }
 }
