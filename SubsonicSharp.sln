@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subsonic.Common", "Subsonic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subsonic.Client.Windows", "Subsonic.Client.Windows\Subsonic.Client.Windows.csproj", "{3B48CBDF-812E-4D3D-AFAD-D09FE6786F52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subsonic.Client", "Subsonic.Client.Common\Subsonic.Client.csproj", "{CBB112D5-2507-4453-83BE-51232FB95CA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subsonic.Client", "Subsonic.Client\Subsonic.Client.csproj", "{CBB112D5-2507-4453-83BE-51232FB95CA6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTester", "ApiTester\ApiTester.csproj", "{ABA162BD-725A-4A91-B2F8-CD1DEF3A9D81}"
 EndProject

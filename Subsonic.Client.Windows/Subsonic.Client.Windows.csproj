@@ -47,6 +47,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileLogger.cs" />
+    <Compile Include="StreamProxy.cs" />
     <Compile Include="SubsonicClientWindows.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WindowsImageFormat.cs" />

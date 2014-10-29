@@ -1,13 +1,13 @@
-﻿using Subsonic.Client.Items;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using Subsonic.Client.Items;
 
-namespace StreamProxyWindows
+namespace Subsonic.Client.Windows
 {
     public sealed class StreamProxy : IDisposable
     {
@@ -40,7 +40,7 @@ namespace StreamProxyWindows
                 _thread = new Thread(Run);
                 _thread.Start();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
             }
         }
@@ -82,7 +82,7 @@ namespace StreamProxyWindows
                 else
                     _task.Dispose();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
             }
 
@@ -153,7 +153,7 @@ namespace StreamProxyWindows
                 if (string.IsNullOrWhiteSpace(request))
                     return false;
 
-                _localPath = Uri.EscapeDataString(request);
+                _localPath = Uri.UnescapeDataString(request);
 
                 const int timeToWaitForFile = 5000;
 
@@ -174,7 +174,7 @@ namespace StreamProxyWindows
                         if (file.Exists)
                             return true;
 
-                        Thread.Sleep(10);
+                        Thread.Sleep(2);
 
                         DateTime now = DateTime.UtcNow;
 
@@ -255,7 +255,7 @@ namespace StreamProxyWindows
                         }
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
                 }
                 finally

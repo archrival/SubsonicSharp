@@ -1,6 +1,6 @@
 ﻿namespace Subsonic.Client.Items
 {
-    public sealed class AlbumItem : ChildItem
+    public class AlbumItem : ChildItem
     {
         public string Name { get; set; }
         public string Artist { get; set; }
