@@ -68,7 +68,7 @@
       <Project>{A533A041-6D2D-46B3-A3E7-4CC7E64A16F3}</Project>
       <Name>Subsonic.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Subsonic.Client.Common\Subsonic.Client.csproj">
+    <ProjectReference Include="..\Subsonic.Client\Subsonic.Client.csproj">
       <Project>{CBB112D5-2507-4453-83BE-51232FB95CA6}</Project>
       <Name>Subsonic.Client</Name>
     </ProjectReference>

@@ -6,5 +6,7 @@
         public string Artist { get; set; }
         public int AlbumArtSize { get; set; }
         public int Rating { get; set; }
+        public int Year { get; set; }
+        public string Parent { get; set; }
     }
 }
