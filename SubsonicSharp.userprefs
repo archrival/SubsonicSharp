@@ -7,25 +7,13 @@
       <File FileName="Subsonic.Client.Windows\WindowsResponse.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Client.Windows\WindowsRequest.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Client.Windows\WindowsImageFormat.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Common\Constants.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Common\EnumHelper.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Common\Items\AlbumItem.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Common\Items\AlbumListItem.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Common\Items\NowPlayingItem.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Common\SubsonicHttpRequest.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Common\SubsonicParameters.cs" Line="1" Column="1" />
       <File FileName="C:\Program Files (x86)\MSBuild\12.0\bin\Microsoft.Common.CurrentVersion.targets" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Common\Items\ArtistItem.cs" Line="1" Column="1" />
       <File FileName="ApiTester\Program.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Common\Interfaces\ISubsonicClient.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Common\SubsonicClient.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <DisabledProjects>
-    <String>Subsonic.Client.Android\Subsonic.Client.Android.csproj</String>
-  </DisabledProjects>
 </Properties>

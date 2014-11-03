@@ -54,6 +54,7 @@
     <Compile Include="AndroidResponse.cs" />
     <Compile Include="AndroidRequest.cs" />
     <Compile Include="AndroidImageFormat.cs" />
+    <Compile Include="StreamProxy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -65,13 +66,13 @@
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <ItemGroup>
-    <ProjectReference Include="..\Subsonic.Client.Common\Subsonic.Client.csproj">
-      <Project>{CBB112D5-2507-4453-83BE-51232FB95CA6}</Project>
-      <Name>Subsonic.Client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Subsonic.Common\Subsonic.Common.csproj">
       <Project>{A533A041-6D2D-46B3-A3E7-4CC7E64A16F3}</Project>
       <Name>Subsonic.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Subsonic.Client\Subsonic.Client.csproj">
+      <Project>{CBB112D5-2507-4453-83BE-51232FB95CA6}</Project>
+      <Name>Subsonic.Client</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
