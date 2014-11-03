@@ -59,5 +59,13 @@ namespace Subsonic.Client
         public const string Get = "get";
         public const string Index = "index";
         public const string SetGain = "setGain";
+        public const string BitRate = "bitRate";
+        public const string IncludeEpisodes = "includeEpisodes";
+        public const string Url = "url";
+        public const string Position = "position";
+        public const string Email = "email";
+        public const string ShareRole = "shareRole";
+        public const string Description = "description";
+        public const string Expires = "expires";
     }
 }

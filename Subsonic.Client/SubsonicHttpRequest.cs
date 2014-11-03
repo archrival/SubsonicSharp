@@ -25,6 +25,74 @@ namespace Subsonic.Client
             SubsonicClient = client;
         }
 
+        public virtual async Task<string> StringRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        {
+            string resultString = null;
+
+            var requestUri = BuildRequestUri(method, methodApiVersion, parameters);
+            var request = BuildRequest(requestUri);
+
+            if (cancelToken.HasValue)
+                cancelToken.Value.ThrowIfCancellationRequested();
+
+            try
+            {
+                using (var response = await request.GetResponseAsync())
+                {
+                    if (response != null)
+                    {
+                        if (!response.ContentType.Contains(HttpContentTypes.TextXml))
+                        {
+                            if (cancelToken.HasValue)
+                                cancelToken.Value.ThrowIfCancellationRequested();
+
+                            using (var stream = response.GetResponseStream())
+                            using (var reader = new StreamReader(stream))
+                                if (stream != null)
+                                    return await reader.ReadToEndAsync();
+                        }
+                        else
+                        {
+                            string restResponse = null;
+                            var result = new Response();
+
+                            if (cancelToken.HasValue)
+                                cancelToken.Value.ThrowIfCancellationRequested();
+
+                            using (var stream = response.GetResponseStream())
+                                if (stream != null)
+                                    using (var streamReader = new StreamReader(stream))
+                                        restResponse = streamReader.ReadToEnd();
+
+                            if (!string.IsNullOrWhiteSpace(restResponse))
+                                result = restResponse.DeserializeFromXml<Response>();
+
+                            if (result.ItemElementName == ItemChoiceType.Error)
+                                throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
+
+                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
+                        }
+                    }
+                }
+            }
+            catch (WebException wex)
+            {
+                var response = wex.Response as HttpWebResponse;
+
+                if (response != null && response.StatusCode == HttpStatusCode.NotFound)
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw new SubsonicApiException(ex.Message, ex);
+            }
+
+            if (cancelToken.HasValue)
+                cancelToken.Value.ThrowIfCancellationRequested();
+
+            return resultString;
+        }
+
         public virtual async Task<Response> RequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             Response result;
@@ -42,7 +110,7 @@ namespace Subsonic.Client
                 {
                     if (response != null)
                     {
-                        if (response.ContentType.StartsWith(HttpContentTypes.TextXml))
+                        if (response.ContentType.StartsWith(HttpContentTypes.TextXml, StringComparison.Ordinal))
                         {
                             if (cancelToken.HasValue)
                                 cancelToken.Value.ThrowIfCancellationRequested();

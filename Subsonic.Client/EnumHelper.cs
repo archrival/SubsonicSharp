@@ -30,6 +30,5 @@ namespace Subsonic.Client
 
             return en.ToString();
         }
-
     }
 }

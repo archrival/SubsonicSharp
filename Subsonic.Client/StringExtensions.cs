@@ -15,7 +15,7 @@ namespace Subsonic.Client
         {
             var hexString = new StringBuilder();
 
-            if (!string.IsNullOrEmpty(text))
+            if (!string.IsNullOrWhiteSpace(text))
                 foreach (char character in text)
                     hexString.Append(Convert.ToInt32(character).ToString("x", CultureInfo.InvariantCulture));
 

@@ -16,6 +16,7 @@ namespace Subsonic.Client
         public static readonly Version Version180 = Version.Parse("1.8.0");
         public static readonly Version Version190 = Version.Parse("1.9.0");
         public static readonly Version Version1100 = Version.Parse("1.10.0");
+        public static readonly Version Version1101 = Version.Parse("1.10.1");
         public static readonly Version Version1102 = Version.Parse("1.10.2");
     }
 }

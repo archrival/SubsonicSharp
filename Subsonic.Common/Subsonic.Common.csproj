@@ -110,6 +110,11 @@
     <Compile Include="Classes\User.cs" />
     <Compile Include="Classes\Users.cs" />
     <Compile Include="Classes\Videos.cs" />
+    <Compile Include="Classes\Genre.cs" />
+    <Compile Include="Classes\InternetRadioStations.cs" />
+    <Compile Include="Classes\InternetRadioStation.cs" />
+    <Compile Include="Classes\Bookmarks.cs" />
+    <Compile Include="Classes\Bookmark.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

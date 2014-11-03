@@ -21,6 +21,9 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("duration")]
         public int Duration;
 
+        [XmlAttribute("genre")]
+        public string Genre;
+
         [XmlAttribute("id")]
         public string Id;
 
@@ -32,5 +35,8 @@ namespace Subsonic.Common.Classes
 
         [XmlAttribute("starred")]
         public DateTime Starred;
+
+        [XmlAttribute("year")]
+        public int Year;
     }
 }

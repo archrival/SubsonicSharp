@@ -8,6 +8,9 @@ namespace Subsonic.Common.Classes
         [XmlElement("child")]
         public List<Child> Child;
 
+        [XmlAttribute("ignoredArticles")]
+        public string IgnoredArticles;
+
         [XmlElement("index")]
         public List<Index> Index;
 

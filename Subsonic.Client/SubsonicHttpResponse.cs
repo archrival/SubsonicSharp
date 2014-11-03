@@ -125,7 +125,7 @@ namespace Subsonic.Client
         /// <param name="parameters">Parameters used by the method.</param>
         /// <param name="cancelToken"> </param>
         /// <returns>T</returns>
-        public async virtual Task<long> GetImageSizeAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        public virtual async Task<long> GetImageSizeAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             if (SubsonicClient.ServerApiVersion != null && methodApiVersion > SubsonicClient.ServerApiVersion)
                 throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicClient.ServerApiVersion));
@@ -147,6 +147,22 @@ namespace Subsonic.Client
                 throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicClient.ServerApiVersion));
 
             return await SubsonicRequest.ImageRequestAsync(method, methodApiVersion, parameters, cancelToken);
+        }
+
+        /// <summary>
+        /// Get a response from the Subsonic server for the given method.
+        /// </summary>
+        /// <param name="method">Subsonic API method to call.</param>
+        /// <param name="methodApiVersion">Subsonic API version of the method.</param>
+        /// <param name="parameters">Parameters used by the method.</param>
+        /// <param name="cancelToken"></param>
+        /// <returns>T</returns>
+        public virtual async Task<string> GetStringResponseAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        {
+            if (SubsonicClient.ServerApiVersion != null && methodApiVersion > SubsonicClient.ServerApiVersion)
+                throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicClient.ServerApiVersion));
+
+            return await SubsonicRequest.StringRequestAsync(method, methodApiVersion, parameters, cancelToken);
         }
     }
 }

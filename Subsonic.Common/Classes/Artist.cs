@@ -1,4 +1,5 @@
 ﻿using System.Xml.Serialization;
+using System;
 
 namespace Subsonic.Common.Classes
 {
@@ -9,5 +10,8 @@ namespace Subsonic.Common.Classes
 
         [XmlAttribute("name")]
         public string Name;
+
+        [XmlAttribute("starred")]
+        public DateTime Starred;
     }
 }

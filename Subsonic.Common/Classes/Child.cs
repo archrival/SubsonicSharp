@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 using Subsonic.Common.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Subsonic.Common.Classes
 {
@@ -20,11 +21,15 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("artistId")]
         public string ArtistId;
 
+        [Range(1, 5, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [XmlAttribute("averageRating")]
         public double AverageRating;
 
         [XmlAttribute("bitRate")]
         public int BitRate;
+
+        [XmlAttribute("bookmarkPosition")]
+        public long BookmarkPosition;
 
         [XmlAttribute("contentType")]
         public string ContentType;
@@ -83,6 +88,7 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("type")]
         public MediaType Type;
 
+        [Range(1, 5, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [XmlAttribute("userRating")]
         public int UserRating;
 

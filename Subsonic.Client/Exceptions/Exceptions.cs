@@ -28,30 +28,14 @@ namespace Subsonic.Client.Exceptions
     public class SubsonicApiException : Exception
     {
         public SubsonicApiException() { }
-
-        public SubsonicApiException(string message, Exception innerException) : base(message, innerException)
-        {
-
-        }
-
-        public SubsonicApiException(string message) : base(message)
-        {
-
-        }
+        public SubsonicApiException(string message, Exception innerException) : base(message, innerException) { }
+        public SubsonicApiException(string message) : base(message) { }
     }
 
     public class SubsonicInvalidApiException : Exception
     {
         public SubsonicInvalidApiException() { }
-
-        public SubsonicInvalidApiException(string message, Exception innerException) : base(message, innerException)
-        {
-
-        }
-
-        public SubsonicInvalidApiException(string message) : base(message)
-        {
-
-        }
+        public SubsonicInvalidApiException(string message, Exception innerException) : base(message, innerException) { }
+        public SubsonicInvalidApiException(string message) : base(message) { }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Subsonic.Common.Enums;
 using System.Xml.Serialization;
+using System;
 
 namespace Subsonic.Common.Classes
 {
@@ -11,11 +12,13 @@ namespace Subsonic.Common.Classes
         [XmlElement("albumList2", typeof(AlbumList2))]
         [XmlElement("artist", typeof(ArtistWithAlbumsID3))]
         [XmlElement("artists", typeof(ArtistsID3))]
+        [XmlElement("bookmarks", typeof(Bookmarks))]
         [XmlElement("chatMessages", typeof(ChatMessages))]
         [XmlElement("directory", typeof(Directory))]
         [XmlElement("error", typeof(Error))]
         [XmlElement("genres", typeof(Genres))]
         [XmlElement("indexes", typeof(Indexes))]
+        [XmlElement("internetRadioStations", typeof(InternetRadioStations))]
         [XmlElement("jukeboxPlaylist", typeof(JukeboxPlaylist))]
         [XmlElement("jukeboxStatus", typeof(JukeboxStatus))]
         [XmlElement("license", typeof(License))]
@@ -37,6 +40,7 @@ namespace Subsonic.Common.Classes
         [XmlElement("user", typeof(User))]
         [XmlElement("users", typeof(Users))]
         [XmlElement("videos", typeof(Videos))]
+
         [XmlChoiceIdentifier("ItemElementName")]
         public object Item;
 

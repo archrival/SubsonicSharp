@@ -20,76 +20,80 @@ namespace Subsonic.Client.Windows
 
         public override async Task<IImageFormat<T>> ImageRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
+            IImageFormat<T> image = null;
+
             var requestUri = BuildRequestUri(method, methodApiVersion, parameters);
             var request = BuildRequest(requestUri);
-            var content = new MemoryStream();
 
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
-
-            try
+            using (var content = new MemoryStream())
             {
-                using (var response = await request.GetResponseAsync())
+                if (cancelToken.HasValue)
+                    cancelToken.Value.ThrowIfCancellationRequested();
+                    
+                try
                 {
-                    if (response != null)
+                    using (var response = await request.GetResponseAsync())
                     {
-                        if (!response.ContentType.Contains(HttpContentTypes.TextXml))
+                        if (response != null)
                         {
-                            if (cancelToken.HasValue)
-                                cancelToken.Value.ThrowIfCancellationRequested();
+                            if (!response.ContentType.Contains(HttpContentTypes.TextXml))
+                            {
+                                if (cancelToken.HasValue)
+                                    cancelToken.Value.ThrowIfCancellationRequested();
 
-                            using (var stream = response.GetResponseStream())
-                                if (stream != null)
-                                    await stream.CopyToAsync(content);
-                        }
-                        else
-                        {
-                            string restResponse = null;
-                            var result = new Response();
+                                using (var stream = response.GetResponseStream())
+                                    if (stream != null)
+                                        await stream.CopyToAsync(content);
 
-                            if (cancelToken.HasValue)
-                                cancelToken.Value.ThrowIfCancellationRequested();
+                                image = new WindowsImageFormat(Image.FromStream(content)) as IImageFormat<T>;
+                            }
+                            else
+                            {
+                                string restResponse = null;
+                                var result = new Response();
 
-                            using (var stream = response.GetResponseStream())
-                                if (stream != null)
-                                    using (var streamReader = new StreamReader(stream))
-                                        restResponse = streamReader.ReadToEnd();
+                                if (cancelToken.HasValue)
+                                    cancelToken.Value.ThrowIfCancellationRequested();
 
-                            if (!string.IsNullOrWhiteSpace(restResponse))
-                                result = restResponse.DeserializeFromXml<Response>();
+                                using (var stream = response.GetResponseStream())
+                                    if (stream != null)
+                                        using (var streamReader = new StreamReader(stream))
+                                            restResponse = streamReader.ReadToEnd();
 
-                            if (result.ItemElementName == ItemChoiceType.Error)
-                                throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
+                                if (!string.IsNullOrWhiteSpace(restResponse))
+                                    result = restResponse.DeserializeFromXml<Response>();
 
-                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
+                                if (result.ItemElementName == ItemChoiceType.Error)
+                                    throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
+
+                                throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
+                            }
                         }
                     }
                 }
-            }
-            catch (WebException wex)
-            {
-                var response = wex.Response as HttpWebResponse;
+                catch (WebException wex)
+                {
+                    var response = wex.Response as HttpWebResponse;
                 
-                if (response != null && response.StatusCode == HttpStatusCode.NotFound)
-                    return null;
-            }
-            catch (Exception ex)
-            {
-                throw new SubsonicApiException(ex.Message, ex);
+                    if (response != null && response.StatusCode == HttpStatusCode.NotFound)
+                        return null;
+                }
+                catch (Exception ex)
+                {
+                    throw new SubsonicApiException(ex.Message, ex);
+                }
             }
 
             if (cancelToken.HasValue)
                 cancelToken.Value.ThrowIfCancellationRequested();
 
-            return new WindowsImageFormat(Image.FromStream(content)) as IImageFormat<T>;
-
+            return image;
         }
 
         public override async Task<long> RequestAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             long bytesTransferred = 0;
             var requestUri = BuildRequestUri(method, methodApiVersion, parameters);
-
             var request = BuildRequest(requestUri);
             var download = true;
 

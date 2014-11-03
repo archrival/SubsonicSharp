@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
+using System;
 
 namespace Subsonic.Common.Classes
 {
@@ -16,5 +17,8 @@ namespace Subsonic.Common.Classes
 
         [XmlAttribute("parent")]
         public string Parent;
+
+        [XmlAttribute("starred")]
+        public DateTime Starred;
     }
 }
