@@ -27,8 +27,6 @@ namespace Subsonic.Client
 
         public virtual async Task<string> StringRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
-            string resultString = null;
-
             var requestUri = BuildRequestUri(method, methodApiVersion, parameters);
             var request = BuildRequest(requestUri);
 
@@ -90,7 +88,7 @@ namespace Subsonic.Client
             if (cancelToken.HasValue)
                 cancelToken.Value.ThrowIfCancellationRequested();
 
-            return resultString;
+            return null;
         }
 
         public virtual async Task<Response> RequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)

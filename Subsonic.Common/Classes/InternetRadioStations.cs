@@ -5,7 +5,6 @@ namespace Subsonic.Common.Classes
 {
     public class InternetRadioStations
     {
-        [XmlElement("internetRadioStation")]
-        public List<InternetRadioStation> InternetRadioStation;
+        [XmlElement("internetRadioStation")] public List<InternetRadioStation> InternetRadioStation;
     }
 }

@@ -1,5 +1,4 @@
-﻿
-namespace Subsonic.Common.Interfaces
+﻿namespace Subsonic.Common.Interfaces
 {
     public interface IImageFormat<T>
     {

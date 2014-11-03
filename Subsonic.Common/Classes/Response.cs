@@ -40,17 +40,9 @@ namespace Subsonic.Common.Classes
         [XmlElement("user", typeof(User))]
         [XmlElement("users", typeof(Users))]
         [XmlElement("videos", typeof(Videos))]
-
-        [XmlChoiceIdentifier("ItemElementName")]
-        public object Item;
-
-        [XmlIgnore]
-        public ItemChoiceType ItemElementName;
-
-        [XmlAttribute("status")]
-        public ResponseStatus Status;
-
-        [XmlAttribute("version")]
-        public string Version;
+        [XmlChoiceIdentifier("ItemElementName")] public object Item;
+        [XmlIgnore] public ItemChoiceType ItemElementName;
+        [XmlAttribute("status")] public ResponseStatus Status;
+        [XmlAttribute("version")] public string Version;
     }
 }

@@ -1,11 +1,7 @@
-﻿
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Subsonic.Common.Enums
 {
-    /// <summary>
-    /// Action to be performed when calling JukeboxControl.
-    /// </summary>
     public enum JukeboxControlAction
     {
         [XmlEnum("get")] Get,

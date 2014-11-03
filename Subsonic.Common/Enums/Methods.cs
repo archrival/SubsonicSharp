@@ -1,11 +1,7 @@
-﻿
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Subsonic.Common.Enums
 {
-    /// <summary>
-    /// Methods available in the supported Subsonic API version.
-    /// </summary>
     public enum Methods
     {
         [XmlEnum("ping")] Ping,

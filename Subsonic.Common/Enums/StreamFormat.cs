@@ -1,11 +1,7 @@
-﻿
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Subsonic.Common.Enums
 {
-    /// <summary>
-    /// Stream formats.
-    /// </summary>
     public enum StreamFormat
     {
         [XmlEnum("mp3")] Mp3,

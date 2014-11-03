@@ -5,7 +5,6 @@ namespace Subsonic.Common.Classes
 {
     public class PlaylistWithSongs : Playlist
     {
-        [XmlElement("entry")]
-        public List<Child> Entry;
+        [XmlElement("entry")] public List<Child> Entry;
     }
 }

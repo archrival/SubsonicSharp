@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
-using Subsonic.Common;
 
 namespace Subsonic.Client
 {
@@ -226,7 +225,7 @@ namespace Subsonic.Client
         /// <param name="size">If specified, scale image to this size.</param>
         /// <param name="cancelToken"> </param>
         /// <returns>long</returns>
-        public virtual async Task<long> GetCoverArtSizeAsync(string id, int? size = null, CancellationToken? cancelToken = null)
+        public async Task<long> GetCoverArtSizeAsync(string id, int? size = null, CancellationToken? cancelToken = null)
         {
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);

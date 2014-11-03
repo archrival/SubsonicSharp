@@ -5,7 +5,6 @@ namespace Subsonic.Common.Classes
 {
     public class AlbumList
     {
-        [XmlElement("album")]
-        public List<Child> Album;
+        [XmlElement("album")] public List<Child> Album;
     }
 }

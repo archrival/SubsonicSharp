@@ -1,29 +1,17 @@
-﻿using System.Xml.Serialization;
-using Subsonic.Common.Classes;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using System.Xml.Serialization;
 
-namespace Subsonic.Common
+namespace Subsonic.Common.Classes
 {
     public class Bookmark
     {
-        [XmlElement("child")]
-        public List<Child> Entry;
-
-        [XmlAttribute("changed")]
-        public DateTime Changed;
-
-        [XmlAttribute("comment")]
-        public string Comment;
-
-        [XmlAttribute("created")]
-        public DateTime Created;
-
-        [XmlAttribute("position")]
-        public long Position;
-
-        [XmlAttribute("username")]
-        public string Username;
+        [XmlElement("child")] public List<Child> Entry;
+        [XmlAttribute("changed")] public DateTime Changed;
+        [XmlAttribute("comment")] public string Comment;
+        [XmlAttribute("created")] public DateTime Created;
+        [XmlAttribute("position")] public long Position;
+        [XmlAttribute("username")] public string Username;
     }
 }
 
