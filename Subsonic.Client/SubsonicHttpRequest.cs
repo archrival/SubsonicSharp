@@ -372,8 +372,8 @@ namespace Subsonic.Client
             string request = string.Format("{0}/rest/{1}.view?v={2}&c={3}&u={4}&p={5}", SubsonicClient.ServerUrl, method.GetXmlEnumAttribute(), methodApiVersion, Uri.EscapeDataString(SubsonicClient.Name), SubsonicClient.UserName, encodedPassword);
 
             if (parameters != null && parameters.Parameters.Count > 0)
-                request = parameters.Parameters.Cast<DictionaryEntry>().Aggregate(request, (current, parameter) => current + string.Format("&{0}={1}", Uri.EscapeDataString(parameter.Key.ToString()), Uri.EscapeDataString(parameter.Value.ToString())));
-
+                request = parameters.Parameters.Cast<KeyValuePair<string, string>>().Aggregate(request, (current, entry) => current + string.Format("&{0}={1}", Uri.EscapeDataString(entry.Key.ToString()), Uri.EscapeDataString(entry.Value.ToString())));
+            
             return new Uri(request);
         }
     }
