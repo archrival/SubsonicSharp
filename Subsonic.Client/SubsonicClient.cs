@@ -167,7 +167,7 @@ namespace Subsonic.Client
             if (!string.IsNullOrWhiteSpace(username))
             {
                 parameters.Add(Constants.Username, username);
-                methodApiVersion = SubsonicApiVersions.Version180;
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version180);
             }
 
             return await SubsonicResponse.GetResponseAsync<Playlists>(Methods.GetPlaylists, methodApiVersion, parameters, cancelToken);
@@ -256,7 +256,7 @@ namespace Subsonic.Client
             if (time != null)
             {
                 parameters.Add(Constants.Time, time);
-                methodApiVersion = SubsonicApiVersions.Version180;
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version180);
             }
 
             return await SubsonicResponse.GetResponseAsync(Methods.Scrobble, methodApiVersion, parameters, cancelToken);
@@ -385,7 +385,7 @@ namespace Subsonic.Client
             var methodApiVersion = SubsonicApiVersions.Version120;
 
             if (type == AlbumListType.AlphabeticalByArtist || type == AlbumListType.AlphabeticalByName || type == AlbumListType.Starred)
-                methodApiVersion = SubsonicApiVersions.Version180;
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version180);
 
             var albumListTypeName = type.GetXmlEnumAttribute();
 
@@ -398,15 +398,13 @@ namespace Subsonic.Client
             {
                 parameters.Add(Constants.FromYear, fromYear, true);
                 parameters.Add(Constants.ToYear, toYear, true);
-
-                methodApiVersion = SubsonicApiVersions.Version1101;
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1101);
             }
 
             if (type == AlbumListType.ByGenre)
             {
                 parameters.Add(Constants.Genre, genre, true);
-
-                methodApiVersion = SubsonicApiVersions.Version1101;
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1101);
             }
 
             return await SubsonicResponse.GetResponseAsync<AlbumList>(Methods.GetAlbumList, methodApiVersion, parameters, cancelToken);
@@ -427,15 +425,13 @@ namespace Subsonic.Client
             {
                 parameters.Add(Constants.FromYear, fromYear, true);
                 parameters.Add(Constants.ToYear, toYear, true);
-
-                methodApiVersion = SubsonicApiVersions.Version1101;
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1101);
             }
 
             if (type == AlbumListType.ByGenre)
             {
                 parameters.Add(Constants.Genre, genre, true);
-
-                methodApiVersion = SubsonicApiVersions.Version1101;
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1101);
 
             }
 
@@ -516,13 +512,13 @@ namespace Subsonic.Client
             if (!string.IsNullOrWhiteSpace(id))
             {
                 parameters.Add(Constants.Id, id);
-                methodApiVersion = SubsonicApiVersions.Version190;
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version190);
             }
 
             if (includeEpisodes != null)
             {
                 parameters.Add(Constants.IncludeEpisodes, includeEpisodes);
-                methodApiVersion = SubsonicApiVersions.Version190;
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version190);
             }
 
             return await SubsonicResponse.GetResponseAsync<Podcasts>(Methods.GetPodcasts, methodApiVersion, parameters.Parameters.Count > 0 ? parameters : null, cancelToken);
@@ -682,11 +678,6 @@ namespace Subsonic.Client
             return await SubsonicResponse.GetResponseAsync<Users>(Methods.GetUsers, SubsonicApiVersions.Version180, null, cancelToken);
         }
 
-        /// <summary>
-        /// Downloads a given media file. Similar to stream, but this method returns the original media data without transcoding or downsampling.
-        /// </summary>
-        /// <param name="id">A string which uniquely identifies the file to download. Obtained by calls to GetMusicDirectory.</param>W
-        /// <returns>long</returns>
         public Uri BuildDownloadUrl(string id)
         {
             var parameters = SubsonicParameters.Create();
@@ -695,25 +686,36 @@ namespace Subsonic.Client
             return SubsonicRequest.BuildRequestUriUser(Methods.Download, SubsonicApiVersions.Version100, parameters);
         }
 
-        /// <summary>
-        /// Streams a given media file.
-        /// </summary>
-        /// <param name="id">A string which uniquely identifies the file to stream. Obtained by calls to getMusicDirectory.</param>
-        /// <param name="maxBitRate">(Since 1.2.0) If specified, the server will attempt to limit the bitrate to this value, in kilobits per second. If set to zero, no limit is imposed.</param>
-        /// <param name="format">(Since 1.6.0) Specifies the preferred target format (e.g., "mp3" or "flv") in case there are multiple applicable transcodings</param>
-        /// <param name="timeOffset">Only applicable to video streaming. If specified, start streaming at the given offset (in seconds) into the video. Typically used to implement video skipping.</param>
-        /// <param name="size">(Since 1.6.0) Only applicable to video streaming. Requested video size specified as WxH, for instance "640x480".</param>
-        /// <param name="estimateContentLength">(Since 1.8.0). If set to "true", the Content-Length HTTP header will be set to an estimated value for transcoded or downsampled media.</param>
-        /// <returns>long</returns>
-        public Uri BuildStreamUrl(string id, int? maxBitRate = null, StreamFormat? format = null, int? timeOffset = null, string size = null, bool? estimateContentLength = null)
+        public Uri BuildStreamUrl(string id, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null)
         {
             var methodApiVersion = SubsonicApiVersions.Version120;
 
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            if (maxBitRate != null && maxBitRate != 0)
-                parameters.Add(Constants.MaxBitRate, maxBitRate);
+            if (streamParameters != null)
+            {
+                if (streamParameters.BitRate > 0)
+                    parameters.Add(Constants.MaxBitRate, streamParameters.BitRate);
+
+                if (streamParameters.Width > 0 && streamParameters.Height > 0)
+                {
+                    parameters.Add(Constants.Size, streamParameters);
+                    methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version160);
+                }
+            }
+
+            if (timeOffset != null)
+            {
+                parameters.Add(Constants.TimeOffset, timeOffset);
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version160);
+            }
+
+            if (estimateContentLength != null)
+            {
+                parameters.Add(Constants.EstimateContentLength, estimateContentLength);
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version180);
+            }
 
             if (format != null)
             {
@@ -722,26 +724,8 @@ namespace Subsonic.Client
                 if (streamFormatName != null)
                 {
                     parameters.Add(Constants.StreamFormat, streamFormatName);
-                    methodApiVersion = SubsonicApiVersions.Version160;
+                    methodApiVersion = format == StreamFormat.Raw ? methodApiVersion.Max(SubsonicApiVersions.Version190) : methodApiVersion.Max(SubsonicApiVersions.Version160);
                 }
-            }
-
-            if (timeOffset != null)
-            {
-                parameters.Add(Constants.TimeOffset, timeOffset);
-                methodApiVersion = SubsonicApiVersions.Version160;
-            }
-
-            if (!string.IsNullOrWhiteSpace(size))
-            {
-                parameters.Add(Constants.Size, size);
-                methodApiVersion = SubsonicApiVersions.Version160;
-            }
-
-            if (estimateContentLength != null)
-            {
-                parameters.Add(Constants.EstimateContentLength, estimateContentLength);
-                methodApiVersion = SubsonicApiVersions.Version180;
             }
 
             return SubsonicRequest.BuildRequestUriUser(Methods.Stream, methodApiVersion, parameters);

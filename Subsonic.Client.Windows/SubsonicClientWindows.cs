@@ -43,8 +43,20 @@ namespace Subsonic.Client.Windows
                 if (streamParameters.Width > 0 && streamParameters.Height > 0)
                 {
                     parameters.Add(Constants.Size, streamParameters);
-                    methodApiVersion = SubsonicApiVersions.Version160;
+                    methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version160);
                 }
+            }
+
+            if (timeOffset != null)
+            {
+                parameters.Add(Constants.TimeOffset, timeOffset);
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version160);
+            }
+
+            if (estimateContentLength != null)
+            {
+                parameters.Add(Constants.EstimateContentLength, estimateContentLength);
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version180);
             }
 
             if (format != null)
@@ -54,20 +66,8 @@ namespace Subsonic.Client.Windows
                 if (streamFormatName != null)
                 {
                     parameters.Add(Constants.StreamFormat, streamFormatName);
-                    methodApiVersion = format == StreamFormat.Raw ? SubsonicApiVersions.Version190 : SubsonicApiVersions.Version160;
+                    methodApiVersion = format == StreamFormat.Raw ? methodApiVersion.Max(SubsonicApiVersions.Version190) : methodApiVersion.Max(SubsonicApiVersions.Version160);
                 }
-            }
-
-            if (timeOffset != null)
-            {
-                parameters.Add(Constants.TimeOffset, timeOffset);
-                methodApiVersion = SubsonicApiVersions.Version160;
-            }
-
-            if (estimateContentLength != null)
-            {
-                parameters.Add(Constants.EstimateContentLength, estimateContentLength);
-                methodApiVersion = SubsonicApiVersions.Version180;
             }
 
             if (noResponse)
