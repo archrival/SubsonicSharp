@@ -62,6 +62,7 @@
     <Compile Include="Classes\Genres.cs" />
     <Compile Include="Classes\Response.cs" />
     <Compile Include="Classes\Songs.cs" />
+    <Compile Include="StreamParameters.cs" />
     <Compile Include="Enums\AlbumListType.cs" />
     <Compile Include="Classes\AlbumWithSongsID3.cs" />
     <Compile Include="Classes\Artist.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Classes\InternetRadioStation.cs" />
     <Compile Include="Classes\Bookmarks.cs" />
     <Compile Include="Classes\Bookmark.cs" />
+    <Compile Include="Versions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

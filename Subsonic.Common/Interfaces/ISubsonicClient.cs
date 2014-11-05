@@ -257,18 +257,15 @@ namespace Subsonic.Common.Interfaces
         /// </summary>
         /// <param name="id">A string which uniquely identifies the file to stream. Obtained by calls to getMusicDirectory.</param>
         /// <param name="path"></param>
-        /// <param name="maxBitRate">(Since 1.2.0) If specified, the server will attempt to limit the bitrate to this value, in kilobits per second. If set to zero, no limit is imposed.</param>
+        /// <param name="streamParameters">Combination of the maxBitRate and size parameters. maxBitRate: (Since 1.2.0) If specified, the server will attempt to limit the bitrate to this value, in kilobits per second. If set to zero, no limit is imposed. size: (Since 1.6.0) Only applicable to video streaming. Requested video size specified as WxH, for instance "640x480".</param>
         /// <param name="format">(Since 1.6.0) Specifies the preferred target format (e.g., "mp3" or "flv") in case there are multiple applicable transcodings. (Since 1.9.0) you can use the special value "raw" to disable transcoding.</param>
         /// <param name="timeOffset">Only applicable to video streaming. If specified, start streaming at the given offset (in seconds) into the video. Typically used to implement video skipping.</param>
-        /// <param name="size">(Since 1.6.0) Only applicable to video streaming. Requested video size specified as WxH, for instance "640x480".</param>
         /// <param name="estimateContentLength">(Since 1.8.0). If set to "true", the Content-Length HTTP header will be set to an estimated value for transcoded or downsampled media.</param>
         /// <param name="cancelToken"></param>
         /// <param name="noResponse"></param>
         /// <returns>long</returns>
-        Task<long> StreamAsync(string id, string path, int? maxBitRate = null, StreamFormat? format = null,
-            int? timeOffset = null, string size = null, bool? estimateContentLength = null,
-            CancellationToken? cancelToken = null, bool noResponse = false);
-
+        Task<long> StreamAsync(string id, string path, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false);
+        
         /// <summary>
         /// Downloads a given media file. Similar to stream, but this method returns the original media data without transcoding or downsampling.
         /// </summary>
@@ -287,7 +284,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="bitRate">If specified, the server will attempt to limit the bitrate to this value, in kilobits per second. If this parameter is specified more than once, the server will create a variant playlist, suitable for adaptive bitrate streaming. The playlist will support streaming at all the specified bitrates. The server will automatically choose video dimensions that are suitable for the given bitrates. Since 1.9.0 you may explicitly request a certain width (480) and height (360) like so: bitRate=1000@480x360</param>
         /// <param name="cancelToken"></param>
         /// <returns>string</returns>
-        Task<string> HlsAsync(string id, int? bitRate = null, CancellationToken? cancelToken = null);
+        Task<string> HlsAsync(string id, StreamParameters bitRate = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Returns a cover art image.

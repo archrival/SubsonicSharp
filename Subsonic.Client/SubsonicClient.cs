@@ -1,6 +1,7 @@
 ﻿using Subsonic.Client.Enums;
 using Subsonic.Client.Exceptions;
 using Subsonic.Client.Interfaces;
+using Subsonic.Common;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
 using Subsonic.Common.Interfaces;
@@ -202,6 +203,7 @@ namespace Subsonic.Client
         public virtual async Task<bool> UpdatePlaylistAsync(string playlistId, string name = null, string comment = null, IEnumerable<string> songIdToAdd = null, IEnumerable<string> songIndexToRemove = null, CancellationToken? cancelToken = null)
         {
             var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
+            parameters.Add(Constants.PlaylistId, playlistId, true);
             parameters.Add(Constants.Name, name);
             parameters.Add(Constants.Comment, comment);
             parameters.Add(Constants.SongIdToAdd, songIdToAdd);
@@ -373,7 +375,7 @@ namespace Subsonic.Client
         public virtual async Task<bool> AddChatMessageAsync(string message, CancellationToken? cancelToken = null)
         {
             var parameters = SubsonicParameters.Create();
-            parameters.Add(Constants.Message, message);
+            parameters.Add(Constants.Message, message, true);
 
             return await SubsonicResponse.GetResponseAsync(Methods.AddChatMessage, Versions.Version120, parameters, cancelToken);
         }
@@ -541,7 +543,7 @@ namespace Subsonic.Client
             return await SubsonicResponse.GetResponseAsync<Songs>(Methods.GetSongsByGenre, Versions.Version190, parameters, cancelToken);
         }
 
-        public virtual Task<long> StreamAsync(string id, string path, int? maxBitRate = null, StreamFormat? format = null, int? timeOffset = null, string size = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)
+        public virtual Task<long> StreamAsync(string id, string path, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)
         {
             throw new NotImplementedException();
         }
@@ -551,7 +553,7 @@ namespace Subsonic.Client
             throw new NotImplementedException();
         }
 
-        public virtual async Task<string> HlsAsync(string id, int? bitRate = null, CancellationToken? cancelToken = null)
+        public virtual async Task<string> HlsAsync(string id, StreamParameters bitRate = null, CancellationToken? cancelToken = null)
         {
             var methodApiVersion = Versions.Version180;
 
@@ -559,11 +561,7 @@ namespace Subsonic.Client
             parameters.Add(Constants.Id, id, true);
 
             if (bitRate != null)
-            {
-                parameters.Add(Constants.BitRate, bitRate);
-
-                methodApiVersion = Versions.Version190;
-            }
+                parameters.Add(Constants.BitRate, bitRate.ToHlsString(ref methodApiVersion));
 
             return await SubsonicResponse.GetStringResponseAsync(Methods.Hls, methodApiVersion, parameters, cancelToken);
         }

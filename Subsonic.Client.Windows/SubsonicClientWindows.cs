@@ -1,4 +1,5 @@
-﻿using Subsonic.Common.Enums;
+﻿using Subsonic.Common;
+using Subsonic.Common.Enums;
 using System;
 using System.Drawing;
 using System.Threading;
@@ -27,15 +28,24 @@ namespace Subsonic.Client.Windows
             ProxyPassword = proxyPassword;
         }
 
-        public override async Task<long> StreamAsync(string id, string path, int? maxBitRate = null, StreamFormat? format = null, int? timeOffset = null, string size = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)
+        public override async Task<long> StreamAsync(string id, string path, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)
         {
             var methodApiVersion = Versions.Version120;
 
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            if (maxBitRate != null && maxBitRate != 0)
-                parameters.Add(Constants.MaxBitRate, maxBitRate);
+            if (streamParameters != null)
+            {
+                if (streamParameters.BitRate > 0)
+                    parameters.Add(Constants.MaxBitRate, streamParameters.BitRate);
+
+                if (streamParameters.Width > 0 && streamParameters.Height > 0)
+                {
+                    parameters.Add(Constants.Size, streamParameters);
+                    methodApiVersion = Versions.Version160;
+                }
+            }
 
             if (format != null)
             {
@@ -51,12 +61,6 @@ namespace Subsonic.Client.Windows
             if (timeOffset != null)
             {
                 parameters.Add(Constants.TimeOffset, timeOffset);
-                methodApiVersion = Versions.Version160;
-            }
-
-            if (!string.IsNullOrWhiteSpace(size))
-            {
-                parameters.Add(Constants.Size, size);
                 methodApiVersion = Versions.Version160;
             }
 

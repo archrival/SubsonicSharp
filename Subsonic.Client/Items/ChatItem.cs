@@ -8,6 +8,7 @@ namespace Subsonic.Client.Items
         public string User { get; set; }
         public string Message { get; set; }
         public DateTime TimeStamp { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)

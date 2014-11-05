@@ -10,6 +10,7 @@ namespace Subsonic.Client.Items
         public int Tracks { get; set; }
         public TimeSpan Duration { get; set; }
         public Playlist Playlist { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)

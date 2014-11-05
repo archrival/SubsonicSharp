@@ -7,6 +7,7 @@ namespace Subsonic.Client.Items
     {
         public AlbumListType AlbumListType { get; set; }
         public int Current { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)

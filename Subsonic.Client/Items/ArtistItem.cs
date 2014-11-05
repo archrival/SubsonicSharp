@@ -15,6 +15,7 @@ namespace Subsonic.Client.Items
         public string Name { get; set; }
         public ICollection<ArtistItem> Children { get; set; }
         public Artist Artist { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)
