@@ -39,7 +39,7 @@ namespace Subsonic.Client
                         var stringValue = value as string;
 
                         if (stringValue != null)
-                            Add(key, new List<string> {stringValue});
+                            Add(key, new List<string> { stringValue });
                         else if (required)
                             throw new SubsonicErrorException(string.Format("Parameter '{0}' is required, the value provided is null", key));
                     }

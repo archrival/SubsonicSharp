@@ -1,4 +1,5 @@
 ﻿using Android.Graphics;
+using Subsonic.Common;
 using Subsonic.Common.Enums;
 using System;
 using System.Threading;
@@ -27,15 +28,36 @@ namespace Subsonic.Client.Android
             ProxyPassword = proxyPassword;
         }
 
-        public override async Task<long> StreamAsync(string id, string path, int? maxBitRate = null, StreamFormat? format = null, int? timeOffset = null, string size = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)
+        public override async Task<long> StreamAsync(string id, string path, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)
         {
-            var methodApiVersion = Versions.Version120;
+            var methodApiVersion = SubsonicApiVersions.Version120;
 
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            if (maxBitRate != null && maxBitRate != 0)
-                parameters.Add(Constants.MaxBitRate, maxBitRate);
+            if (streamParameters != null)
+            {
+                if (streamParameters.BitRate > 0)
+                    parameters.Add(Constants.MaxBitRate, streamParameters.BitRate);
+
+                if (streamParameters.Width > 0 && streamParameters.Height > 0)
+                {
+                    parameters.Add(Constants.Size, streamParameters);
+                    methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version160);
+                }
+            }
+
+            if (timeOffset != null)
+            {
+                parameters.Add(Constants.TimeOffset, timeOffset);
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version160);
+            }
+
+            if (estimateContentLength != null)
+            {
+                parameters.Add(Constants.EstimateContentLength, estimateContentLength);
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version180);
+            }
 
             if (format != null)
             {
@@ -44,26 +66,8 @@ namespace Subsonic.Client.Android
                 if (streamFormatName != null)
                 {
                     parameters.Add(Constants.StreamFormat, streamFormatName);
-                    methodApiVersion = format == StreamFormat.Raw ? Versions.Version190 : Versions.Version160;
+                    methodApiVersion = format == StreamFormat.Raw ? methodApiVersion.Max(SubsonicApiVersions.Version190) : methodApiVersion.Max(SubsonicApiVersions.Version160);
                 }
-            }
-
-            if (timeOffset != null)
-            {
-                parameters.Add(Constants.TimeOffset, timeOffset);
-                methodApiVersion = Versions.Version160;
-            }
-
-            if (!string.IsNullOrWhiteSpace(size))
-            {
-                parameters.Add(Constants.Size, size);
-                methodApiVersion = Versions.Version160;
-            }
-
-            if (estimateContentLength != null)
-            {
-                parameters.Add(Constants.EstimateContentLength, estimateContentLength);
-                methodApiVersion = Versions.Version180;
             }
 
             if (noResponse)
@@ -78,7 +82,7 @@ namespace Subsonic.Client.Android
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return await SubsonicResponse.GetResponseAsync(path, pathOverride, Methods.Download, Versions.Version100, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync(path, pathOverride, Methods.Download, SubsonicApiVersions.Version100, parameters, cancelToken);
         }
     }
 }

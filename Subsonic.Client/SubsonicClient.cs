@@ -8,6 +8,7 @@ using Subsonic.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -549,15 +550,36 @@ namespace Subsonic.Client
             throw new NotImplementedException();
         }
 
-        public virtual async Task<string> HlsAsync(string id, StreamParameters bitRate = null, CancellationToken? cancelToken = null)
+        public virtual async Task<string> HlsAsync(string id, IList<StreamParameters> streamParameters = null, CancellationToken? cancelToken = null)
         {
             var methodApiVersion = SubsonicApiVersions.Version180;
 
-            var parameters = SubsonicParameters.Create();
+            var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
             parameters.Add(Constants.Id, id, true);
 
-            if (bitRate != null)
-                parameters.Add(Constants.BitRate, bitRate.ToHlsString(ref methodApiVersion));
+            if (streamParameters != null)
+            {
+                if (streamParameters.Count() == 1)
+                {
+                    var streamParameter = streamParameters.First();
+
+                    if (streamParameter.Width > 0 && streamParameter.Height > 0)
+                    {
+                        methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version190);
+                        parameters.Add(Constants.BitRate, string.Format("{0}@{1}x{2}", streamParameter.BitRate, streamParameter.Width, streamParameter.Height));
+                    }
+                    else
+                    {
+                        parameters.Add(Constants.BitRate, streamParameter.BitRate.ToString());
+                    }
+                }
+                else if (streamParameters.Count() > 1)
+                {
+                    // If mulitple streamParameters are provided, use the aggregate of all of the distinct bitrates, this should return a playlist which then lists a separate playlist
+                    //  for each bitrate/player combination
+                    parameters.Add(Constants.BitRate, streamParameters.Where(sp => sp.BitRate > 0).Select(sp => sp.BitRate.ToString()).Distinct());
+                }
+            }
 
             return await SubsonicResponse.GetStringResponseAsync(Methods.Hls, methodApiVersion, parameters, cancelToken);
         }

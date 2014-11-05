@@ -1,19 +1,31 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Subsonic.Client.Windows\SubsonicClientWindows.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Subsonic.Client\SubsonicClient.cs">
     <Files>
       <File FileName="Subsonic.Common\Classes\AlbumID3.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Windows\SubsonicClientWindows.cs" Line="2" Column="2" />
+      <File FileName="Subsonic.Client.Windows\SubsonicClientWindows.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Client.Windows\WindowsResponse.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Client.Windows\WindowsRequest.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Client.Windows\WindowsImageFormat.cs" Line="1" Column="1" />
       <File FileName="C:\Program Files (x86)\MSBuild\12.0\bin\Microsoft.Common.CurrentVersion.targets" Line="1" Column="1" />
       <File FileName="ApiTester\Program.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Common\Interfaces\ISubsonicClient.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client.Android\SubsonicClientAndroid.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Common\SubsonicApiVersions.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client\SubsonicClient.cs" Line="59" Column="59" />
+      <File FileName="Subsonic.Common\StreamParameters.cs" Line="1" Column="1" />
+      <File FileName="d:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\SubsonicParameters.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\ApiTester\Program.cs" line="24" column="1" />
+      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\ApiTester\Program.cs" line="26" column="1" />
+      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\ApiTester\Program.cs" line="25" column="1" />
+      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\SubsonicClient.cs" line="562" column="30" />
+      <Breakpoint file="d:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\SubsonicParameters.cs" line="68" column="1" />
+      <Breakpoint file="d:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\SubsonicParameters.cs" line="44" column="52" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
