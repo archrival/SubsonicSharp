@@ -116,7 +116,7 @@
     <Compile Include="Classes\InternetRadioStation.cs" />
     <Compile Include="Classes\Bookmarks.cs" />
     <Compile Include="Classes\Bookmark.cs" />
-    <Compile Include="Versions.cs" />
+    <Compile Include="SubsonicApiVersions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

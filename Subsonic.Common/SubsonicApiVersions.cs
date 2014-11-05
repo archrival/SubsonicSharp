@@ -2,7 +2,7 @@
 
 namespace Subsonic.Common
 {
-    public static class Versions
+    public static class SubsonicApiVersions
     {
         public static readonly Version Version100 = Version.Parse("1.0.0");
         public static readonly Version Version110 = Version.Parse("1.1.0");
