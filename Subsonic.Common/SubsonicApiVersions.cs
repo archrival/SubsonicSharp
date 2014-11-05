@@ -18,5 +18,6 @@ namespace Subsonic.Common
         public static readonly Version Version1100 = Version.Parse("1.10.0");
         public static readonly Version Version1101 = Version.Parse("1.10.1");
         public static readonly Version Version1102 = Version.Parse("1.10.2");
+        public static readonly Version Version1120 = Version.Parse("1.12.0");
     }
 }

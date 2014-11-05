@@ -30,7 +30,7 @@ namespace Subsonic.Client.Windows
 
         public override async Task<long> StreamAsync(string id, string path, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)
         {
-            var methodApiVersion = Versions.Version120;
+            var methodApiVersion = SubsonicApiVersions.Version120;
 
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
@@ -43,7 +43,7 @@ namespace Subsonic.Client.Windows
                 if (streamParameters.Width > 0 && streamParameters.Height > 0)
                 {
                     parameters.Add(Constants.Size, streamParameters);
-                    methodApiVersion = Versions.Version160;
+                    methodApiVersion = SubsonicApiVersions.Version160;
                 }
             }
 
@@ -54,20 +54,20 @@ namespace Subsonic.Client.Windows
                 if (streamFormatName != null)
                 {
                     parameters.Add(Constants.StreamFormat, streamFormatName);
-                    methodApiVersion = format == StreamFormat.Raw ? Versions.Version190 : Versions.Version160;
+                    methodApiVersion = format == StreamFormat.Raw ? SubsonicApiVersions.Version190 : SubsonicApiVersions.Version160;
                 }
             }
 
             if (timeOffset != null)
             {
                 parameters.Add(Constants.TimeOffset, timeOffset);
-                methodApiVersion = Versions.Version160;
+                methodApiVersion = SubsonicApiVersions.Version160;
             }
 
             if (estimateContentLength != null)
             {
                 parameters.Add(Constants.EstimateContentLength, estimateContentLength);
-                methodApiVersion = Versions.Version180;
+                methodApiVersion = SubsonicApiVersions.Version180;
             }
 
             if (noResponse)
@@ -82,7 +82,7 @@ namespace Subsonic.Client.Windows
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return await SubsonicResponse.GetResponseAsync(path, pathOverride, Methods.Download, Versions.Version100, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync(path, pathOverride, Methods.Download, SubsonicApiVersions.Version100, parameters, cancelToken);
         }
     }
 }

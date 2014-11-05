@@ -11,9 +11,9 @@ namespace Subsonic.Common
         public string ToHlsString(ref Version methodApiVersion)
         {
             if (Width > 0 && Height > 0)
-                methodApiVersion = Versions.Version190;
+                methodApiVersion = SubsonicApiVersions.Version190;
 
-            return methodApiVersion == Versions.Version190 ? string.Format("{0}@{1}x{2}", BitRate, Width, Height) : BitRate.ToString();
+            return methodApiVersion == SubsonicApiVersions.Version190 ? string.Format("{0}@{1}", BitRate, ToString()) : BitRate.ToString();
         }
 
         public override string ToString()
