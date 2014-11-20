@@ -9,9 +9,9 @@ namespace Subsonic.Client
     public class SubsonicParameters
     {
         public ICollection Parameters { get; private set; }
-        private SubsonicParameterType ParameterType { get; set; }
+        SubsonicParameterType ParameterType { get; set; }
 
-        private SubsonicParameters() { }
+        SubsonicParameters() { }
 
         public static SubsonicParameters Create(SubsonicParameterType type = SubsonicParameterType.Single)
         {

@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel;
-using Subsonic.Client.Common.Properties;
 using System.Runtime.CompilerServices;
+using Subsonic.Client.Common.Properties;
 
 namespace Subsonic.Client.Items
 {
-    public class AlbumItem : ChildItem
+    public class GenreItem
     {
         public string Name { get; set; }
-        public string Parent { get; set; }
+        public int AlbumCount { get; set; }
+        public int SongCount { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -19,3 +20,4 @@ namespace Subsonic.Client.Items
         }
     }
 }
+

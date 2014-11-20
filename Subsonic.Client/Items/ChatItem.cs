@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using Subsonic.Client.Common.Properties;
+using System.Runtime.CompilerServices;
 
 namespace Subsonic.Client.Items
 {
-    public sealed class ChatItem : INotifyPropertyChanged
+    public class ChatItem : INotifyPropertyChanged
     {
         public string User { get; set; }
         public string Message { get; set; }
@@ -11,7 +13,8 @@ namespace Subsonic.Client.Items
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged(string propertyName)
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));

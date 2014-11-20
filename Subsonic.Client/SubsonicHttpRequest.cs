@@ -45,9 +45,12 @@ namespace Subsonic.Client
                                 cancelToken.Value.ThrowIfCancellationRequested();
 
                             using (var stream = response.GetResponseStream())
-                            using (var reader = new StreamReader(stream))
-                                if (stream != null)
+                            {
+                                if (stream == null) throw new SubsonicErrorException("HTTP response stream is null");
+
+                                using (var reader = new StreamReader(stream))
                                     return await reader.ReadToEndAsync();
+                            }
                         }
                         else
                         {
@@ -58,12 +61,15 @@ namespace Subsonic.Client
                                 cancelToken.Value.ThrowIfCancellationRequested();
 
                             using (var stream = response.GetResponseStream())
-                                if (stream != null)
-                                    using (var streamReader = new StreamReader(stream))
-                                        restResponse = streamReader.ReadToEnd();
+                            {
+                                if (stream == null) throw new SubsonicErrorException("HTTP response stream is null");
+
+                                using (var streamReader = new StreamReader(stream))
+                                    restResponse = await streamReader.ReadToEndAsync();
+                            }
 
                             if (!string.IsNullOrWhiteSpace(restResponse))
-                                result = restResponse.DeserializeFromXml<Response>();
+                                result = await restResponse.DeserializeFromXmlAsync<Response>();
 
                             if (result.ItemElementName == ItemChoiceType.Error)
                                 throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
@@ -114,9 +120,12 @@ namespace Subsonic.Client
                                 cancelToken.Value.ThrowIfCancellationRequested();
 
                             using (var stream = response.GetResponseStream())
-                                if (stream != null)
-                                    using (var streamReader = new StreamReader(stream))
-                                        restResponse = await streamReader.ReadToEndAsync();
+                            {
+                                if (stream == null) throw new SubsonicErrorException("HTTP response stream is null");
+
+                                using (var streamReader = new StreamReader(stream))
+                                    restResponse = await streamReader.ReadToEndAsync();
+                            }
                         }
                         else
                         {
@@ -129,7 +138,7 @@ namespace Subsonic.Client
                     }
                 }
 
-                result = DeserializeResponse(restResponse);
+                result = await DeserializeResponseAsync(restResponse);
             }
             catch (Exception ex)
             {
@@ -253,12 +262,15 @@ namespace Subsonic.Client
                                 cancelToken.Value.ThrowIfCancellationRequested();
 
                             using (var stream = response.GetResponseStream())
-                                if (stream != null)
-                                    using (var streamReader = new StreamReader(stream))
-                                        restResponse = streamReader.ReadToEnd();
+                            {
+                                if (stream == null) throw new SubsonicErrorException("HTTP response stream is null");
+
+                                using (var streamReader = new StreamReader(stream))
+                                    restResponse = await streamReader.ReadToEndAsync();
+                            }
 
                             if (!string.IsNullOrWhiteSpace(restResponse))
-                                result = restResponse.DeserializeFromXml<Response>();
+                                result = await restResponse.DeserializeFromXmlAsync<Response>();
 
                             if (result.ItemElementName == ItemChoiceType.Error)
                                 throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
@@ -299,13 +311,13 @@ namespace Subsonic.Client
             throw new NotImplementedException();
         }
 
-        private Response DeserializeResponse(string response)
+        private async Task<Response> DeserializeResponseAsync(string response)
         {
             Response result;
 
             if (!string.IsNullOrWhiteSpace(response))
             {
-                result = response.DeserializeFromXml<Response>();
+                result = await response.DeserializeFromXmlAsync<Response>();
 
                 if (SubsonicClient.ServerApiVersion == null)
                     SubsonicClient.ServerApiVersion = Version.Parse(result.Version);

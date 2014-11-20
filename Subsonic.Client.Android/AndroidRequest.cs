@@ -33,7 +33,7 @@ namespace Subsonic.Client.Android
                 {
                     if (response != null)
                     {
-                        if (!response.ContentType.Contains(HttpContentTypes.TextXml))
+                        if (response.ContentType == null || !response.ContentType.Contains(HttpContentTypes.TextXml))
                         {
                             if (cancelToken.HasValue)
                                 cancelToken.Value.ThrowIfCancellationRequested();
@@ -53,10 +53,10 @@ namespace Subsonic.Client.Android
                             using (var stream = response.GetResponseStream())
                                 if (stream != null)
                                     using (var streamReader = new StreamReader(stream))
-                                        restResponse = streamReader.ReadToEnd();
+                                        restResponse = await streamReader.ReadToEndAsync();
 
                             if (!string.IsNullOrWhiteSpace(restResponse))
-                                result = restResponse.DeserializeFromXml<Response>();
+                                result = await restResponse.DeserializeFromXmlAsync<Response>();
 
                             if (result.ItemElementName == ItemChoiceType.Error)
                                 throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
@@ -81,8 +81,10 @@ namespace Subsonic.Client.Android
             if (cancelToken.HasValue)
                 cancelToken.Value.ThrowIfCancellationRequested();
 
-            return new AndroidImageFormat(BitmapFactory.DecodeStream(content)) as IImageFormat<T>;
+            content.Position = 0;
+            var image = await BitmapFactory.DecodeStreamAsync(content);
 
+            return new AndroidImageFormat(image) as IImageFormat<T>;
         }
 
         public override async Task<long> RequestAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
@@ -136,7 +138,7 @@ namespace Subsonic.Client.Android
                                         restResponse = await streamReader.ReadToEndAsync();
 
                             if (!string.IsNullOrWhiteSpace(restResponse))
-                                result = restResponse.DeserializeFromXml<Response>();
+                                result = await restResponse.DeserializeFromXmlAsync<Response>();
 
                             if (result.ItemElementName == ItemChoiceType.Error)
                                 throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);

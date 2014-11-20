@@ -6,7 +6,7 @@ namespace Subsonic.Common.Classes
     public class Lyrics
     {
         [XmlAttribute("artist")] public string Artist;
-        [XmlText] public List<string> Text;
+        [XmlText] public string Text;
         [XmlAttribute("title")] public string Title;
     }
 }

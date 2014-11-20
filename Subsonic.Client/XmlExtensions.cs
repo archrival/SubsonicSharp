@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using System.Threading.Tasks;
 
 namespace Subsonic.Client
 {
@@ -13,7 +14,7 @@ namespace Subsonic.Client
         /// <param name="xml">XML string to deserialize.</param>
         /// <param name="ignoreNamespace"></param>
         /// <returns>T</returns>
-        public static T DeserializeFromXml<T>(this string xml, bool ignoreNamespace = true)
+        internal static T DeserializeFromXml<T>(this string xml, bool ignoreNamespace = true)
         {
             T result;
 
@@ -26,6 +27,11 @@ namespace Subsonic.Client
                 result = (T) xmlSerializer.Deserialize(sr);
 
             return result;
+        }
+
+        public static async Task<T> DeserializeFromXmlAsync<T>(this string xml, bool ignoreNamespace = true)
+        {
+            return await TaskEx.Run(() => xml.DeserializeFromXml<T>(ignoreNamespace));
         }
     }
 }

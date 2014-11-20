@@ -9,10 +9,12 @@ namespace Subsonic.Client.Items
     {
         public string Artist { get; set; }
         public string Genre { get; set; }
+        public string Id { get; set; }
         public int Year { get; set; }
         public int Rating { get; set; }
         public bool Starred { get; set; }
         public int AlbumArtSize { get; set; }
+        public string CoverArt { get; set; }
         public Child Child { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
