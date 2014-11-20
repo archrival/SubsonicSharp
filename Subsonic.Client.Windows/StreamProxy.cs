@@ -5,20 +5,18 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Subsonic.Client.Items;
 
 namespace Subsonic.Client.Windows
 {
     public sealed class StreamProxy : IDisposable
     {
-        private Task _task;
+        private Thread _thread;
         private bool _isRunning;
         private TcpListener _socket;
         private int _port;
         private TrackItem _trackItem;
-        private StreamToMediaPlayerTask _mediaPlayerTask;
-        private CancellationTokenSource _cancelTokenSource;
+        private StreamToMediaPlayerTask _task;
         private static readonly Lazy<StreamProxy> StreamProxyInstance = new Lazy<StreamProxy>(() => new StreamProxy());
 
         private StreamProxy() { }
@@ -47,9 +45,8 @@ namespace Subsonic.Client.Windows
                 _socket.Start();
                 _port = ((IPEndPoint)_socket.LocalEndpoint).Port;
 
-                _cancelTokenSource = new CancellationTokenSource();
-                _task = new Task(StartQueue, _cancelTokenSource.Token);
-                _task.Start();
+                _thread = new Thread(Run);
+                _thread.Start();
             }
             catch (Exception ex)
             {
@@ -60,16 +57,16 @@ namespace Subsonic.Client.Windows
         {
             _isRunning = false;
 
-            if (_task == null) return;
+            if (_thread == null) return;
 
-            _cancelTokenSource.Cancel();
+            _thread.Abort();
         }
 
-        private void StartQueue()
+        private void Run()
         {
             _isRunning = true;
 
-            _mediaPlayerTask = new StreamToMediaPlayerTask(this);
+            _task = new StreamToMediaPlayerTask(this);
 
             SpinWait.SpinUntil(CheckForWork);
         }
@@ -86,12 +83,12 @@ namespace Subsonic.Client.Windows
                 if (!client.Connected)
                     return !_isRunning;
 
-                _mediaPlayerTask.SetClient(client);
+                _task.SetClient(client);
 
-                if (_mediaPlayerTask.ProcessRequest())
-                    _mediaPlayerTask.StreamToClient();
+                if (_task.ProcessRequest())
+                    _task.Run();
                 else
-                    _mediaPlayerTask.Dispose();
+                    _task.Dispose();
             }
             catch (Exception ex)
             {
@@ -105,8 +102,8 @@ namespace Subsonic.Client.Windows
             if (_isRunning)
                 Stop();
 
-            if (_mediaPlayerTask != null)
-                _mediaPlayerTask.Dispose();
+            if (_task != null)
+                _task.Dispose();
         }
 
         private sealed class StreamToMediaPlayerTask : IDisposable
@@ -117,7 +114,6 @@ namespace Subsonic.Client.Windows
             private readonly StreamProxy _instance;
             private NetworkStream _inputStream;
             private StreamReader _streamReader;
-            private const int TimeToWaitForFile = 10000;
 
             public StreamToMediaPlayerTask(StreamProxy streamProxy)
             {
@@ -131,10 +127,7 @@ namespace Subsonic.Client.Windows
 
                 _client = client;
                 _client.NoDelay = true;
-                _client.ReceiveBufferSize = 8096;
-                _client.SendBufferSize = 8096;
-                _client.SendTimeout = 100;
-                _client.ReceiveTimeout = 100;
+                _client.ReceiveBufferSize = 4096;
                 _cbSkip = 0;
                 _localPath = null;
             }
@@ -170,23 +163,47 @@ namespace Subsonic.Client.Windows
 
                 _localPath = Uri.UnescapeDataString(request);
 
-                if (_localPath == null)
-                    return false;
+                const int timeToWaitForFile = 5000;
 
-                FileInfo file = new FileInfo(_localPath);
+                if (_localPath != null)
+                {
+                    FileInfo file = new FileInfo(_localPath);
 
-                return file.Exists || SpinWait.SpinUntil(() => CheckFileToStreamExists(file), TimeToWaitForFile);
+                    if (file.Exists)
+                        return true;
+
+                    bool waitForFile = true;
+                    DateTime start = DateTime.UtcNow;
+
+                    while (waitForFile)
+                    {
+                        file.Refresh();
+
+                        if (file.Exists)
+                            return true;
+
+                        Thread.Sleep(2);
+
+                        DateTime now = DateTime.UtcNow;
+
+                        if ((now - start).Milliseconds > timeToWaitForFile)
+                            waitForFile = false;
+                    }
+                }
+
+                return false;
             }
 
-            private static bool CheckFileToStreamExists(FileSystemInfo file)
+            internal void Run()
             {
-                file.Refresh();
-                return file.Exists;
-            }
+                // Create HTTP header
+                string headers = "HTTP/1.1 200 OK\r\n";
+                headers += "Content-Type: application/octet-stream\r\n";
+                headers += "Connection: close\r\n";
+                headers += "\r\n";
 
-            internal void StreamToClient()
-            {
-                var headerBytes = GetHeaderBytes();
+                var headerBytes = Encoding.ASCII.GetBytes(headers);
+                var buff = new byte[4096];
 
                 try
                 {
@@ -196,7 +213,54 @@ namespace Subsonic.Client.Windows
 
                         // See if there's more to send
                         var file = new FileInfo(_localPath);
-                        SpinWait.SpinUntil(() => SendData(output, file));
+
+                        // Loop as long as there's stuff to send
+                        while (_instance._isRunning && _client.Connected)
+                        {
+                            file.Refresh();
+
+                            int cbSentThisBatch = 0;
+
+                            if (file.Exists)
+                            {
+                                using (FileStream input = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+                                {
+                                    input.Seek(_cbSkip, SeekOrigin.Current);
+                                    long cbToSendThisBatch = input.Length;
+
+                                    while (cbToSendThisBatch > 0)
+                                    {
+                                        int cbToRead = (int)Math.Min(cbToSendThisBatch, buff.Length);
+                                        int cbRead = input.Read(buff, 0, cbToRead);
+
+                                        if (cbRead == 0)
+                                            break;
+
+                                        cbToSendThisBatch -= cbRead;
+
+                                        if (output.CanWrite)
+                                            output.Write(buff, 0, cbRead);
+
+                                        _cbSkip += cbRead;
+                                        cbSentThisBatch += cbRead;
+                                    }
+                                }
+                            }
+
+                            // Done regardless of whether or not it thinks it is
+                            if (_instance._trackItem.Cached)
+                            {
+                                // Make sure we have the latest file information
+                                file.Refresh();
+
+                                if (_cbSkip >= file.Length)
+                                    break;
+                            }
+
+                            // If we did nothing this batch, block for a second
+                            if (cbSentThisBatch == 0)
+                                Thread.Sleep(100);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -209,55 +273,6 @@ namespace Subsonic.Client.Windows
                 }
             }
 
-            private static byte[] GetHeaderBytes()
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine("HTTP/1.1 200 OK");
-                sb.AppendLine("Content-Type: application/octet-stream");
-                sb.AppendLine("Connection: close");
-                sb.AppendLine();
-                
-                return Encoding.ASCII.GetBytes(sb.ToString());
-            }
-
-            private bool SendData(NetworkStream output, FileInfo file)
-            {
-                if (!_instance._isRunning || !_client.Connected || !output.CanWrite)
-                    return false;
-
-                file.Refresh();
-
-                using (FileStream input = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
-                {
-                    var buff = new byte[8096];
-
-                    input.Seek(_cbSkip, SeekOrigin.Current);
-                    long cbToSendThisBatch = input.Length;
-
-                    while (cbToSendThisBatch > 0)
-                    {
-                        int cbToRead = (int) Math.Min(cbToSendThisBatch, buff.Length);
-                        int cbRead = input.Read(buff, 0, cbToRead);
-
-                        if (cbRead == 0)
-                            break;
-
-                        cbToSendThisBatch -= cbRead;
-
-                        output.Write(buff, 0, cbRead);
-
-                        _cbSkip += cbRead;
-                    }
-                }
-
-                file.Refresh();
-
-                if (!_instance._trackItem.Cached)
-                    return false;
-                
-                return _cbSkip >= file.Length;
-            }
-
             public void Dispose()
             {
                 if (_streamReader != null)
@@ -267,12 +282,12 @@ namespace Subsonic.Client.Windows
                     _streamReader = null;
                 }
 
-                if (_inputStream == null)
-                    return;
-
-                _inputStream.Close();
-                _inputStream.Dispose();
-                _inputStream = null;
+                if (_inputStream != null)
+                {
+                    _inputStream.Close();
+                    _inputStream.Dispose();
+                    _inputStream = null;
+                }
             }
         }
     }

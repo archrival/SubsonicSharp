@@ -39,8 +39,11 @@ namespace Subsonic.Client.Windows
                                 cancelToken.Value.ThrowIfCancellationRequested();
 
                             using (var stream = response.GetResponseStream())
-                                if (stream != null)
-                                    await stream.CopyToAsync(content);
+                            {
+                                if (stream == null) throw new SubsonicErrorException("HTTP response stream is null");
+
+                                await stream.CopyToAsync(content);
+                            }
                         }
                         else
                         {
@@ -51,12 +54,15 @@ namespace Subsonic.Client.Windows
                                 cancelToken.Value.ThrowIfCancellationRequested();
 
                             using (var stream = response.GetResponseStream())
-                                if (stream != null)
-                                    using (var streamReader = new StreamReader(stream))
-                                        restResponse = streamReader.ReadToEnd();
+                            {
+                                if (stream == null) throw new SubsonicErrorException("HTTP response stream is null");
+
+                                using (var streamReader = new StreamReader(stream))
+                                    restResponse = await streamReader.ReadToEndAsync();
+                            }
 
                             if (!string.IsNullOrWhiteSpace(restResponse))
-                                result = restResponse.DeserializeFromXml<Response>();
+                                result = await restResponse.DeserializeFromXmlAsync<Response>();
 
                             if (result.ItemElementName == ItemChoiceType.Error)
                                 throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
@@ -129,12 +135,15 @@ namespace Subsonic.Client.Windows
                                 cancelToken.Value.ThrowIfCancellationRequested();
 
                             using (var stream = response.GetResponseStream())
-                                if (stream != null)
-                                    using (var streamReader = new StreamReader(stream))
-                                        restResponse = await streamReader.ReadToEndAsync();
+                            {
+                                if (stream == null) throw new SubsonicErrorException("HTTP response stream is null");
+
+                                using (var streamReader = new StreamReader(stream))
+                                    restResponse = await streamReader.ReadToEndAsync();
+                            }
 
                             if (!string.IsNullOrWhiteSpace(restResponse))
-                                result = restResponse.DeserializeFromXml<Response>();
+                                result = await restResponse.DeserializeFromXmlAsync<Response>();
 
                             if (result.ItemElementName == ItemChoiceType.Error)
                                 throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
@@ -162,9 +171,10 @@ namespace Subsonic.Client.Windows
                                 cancelToken.Value.ThrowIfCancellationRequested();
 
                             using (var stream = response.GetResponseStream())
-                            using (var fileStream = File.Open(path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
                             {
-                                if (stream != null)
+                                if (stream == null) throw new SubsonicErrorException("HTTP response stream is null");
+
+                                using (var fileStream = File.Open(path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
                                 {
                                     if (cancelToken.HasValue)
                                         cancelToken.Value.ThrowIfCancellationRequested();
@@ -172,9 +182,9 @@ namespace Subsonic.Client.Windows
                                     await stream.CopyToAsync(fileStream);
                                     bytesTransferred = fileStream.Length;
                                 }
-                            }
 
-                            File.SetLastWriteTime(path, response.LastModified);
+                                File.SetLastWriteTime(path, response.LastModified);
+                            }
                         }
                     }
                     else
