@@ -573,8 +573,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="comment">A user-defined comment.</param>
         /// <param name="cancelToken"></param>
         /// <returns>bool</returns>
-        Task<bool> CreateBookmarkAsync(string id, long position, string comment = null,
-            CancellationToken? cancelToken = null);
+        Task<bool> CreateBookmarkAsync(string id, long position, string comment = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Deletes the bookmark for a given file.
@@ -583,5 +582,43 @@ namespace Subsonic.Common.Interfaces
         /// <param name="cancelToken"></param>
         /// <returns>bool</returns>
         Task<bool> DeleteBookmarkAsync(string id, CancellationToken? cancelToken = null);
+
+        /// <summary>
+        /// Returns artist info with biography, image URLs and similar artists, using data from last.fm.
+        /// </summary>
+        /// <param name="id">The artist, album or song ID.</param>
+        /// <param name="count">Max number of similar artists to return.</param>
+        /// <param name="includeNotPresent">Whether to return artists that are not present in the media library.</param>
+        /// <param name="cancelToken"></param>
+        /// <returns>ArtistInfo</returns>
+        Task<ArtistInfo> GetArtistInfoAsync(string id, int? count = null, bool? includeNotPresent = null, CancellationToken? cancelToken = null);
+
+        /// <summary>
+        /// Returns artist info with biography, image URLs and similar artists, using data from last.fm. Similar to getArtistInfo, but organizes music according to ID3 tags.
+        /// </summary>
+        /// <param name="id">The artist ID.</param>
+        /// <param name="count">Max number of similar artists to return.</param>
+        /// <param name="includeNotPresent">Whether to return artists that are not present in the media library.</param>
+        /// <param name="cancelToken"></param>
+        /// <returns>ArtistInfo2</returns>
+        Task<ArtistInfo2> GetArtistInfo2Async(string id, int? count = null, bool? includeNotPresent = null, CancellationToken? cancelToken = null);
+
+        /// <summary>
+        /// Returns a random collection of songs from the given artist and similar artists, using data from last.fm. Typically used for artist radio features.
+        /// </summary>
+        /// <param name="id">The artist, album or song ID.</param>
+        /// <param name="count">Max number of songs to return.</param>
+        /// <param name="cancelToken"></param>
+        /// <returns>SimilarSongs</returns>
+        Task<SimilarSongs> GetSimilarSongsAsync(string id, int? count = null, CancellationToken? cancelToken = null);
+
+        /// <summary>
+        /// Returns a random collection of songs from the given artist and similar artists, using data from last.fm. Typically used for artist radio features. Similar to getSimilarSongs, but organizes music according to ID3 tags.
+        /// </summary>
+        /// <param name="id">The artist, album or song ID.</param>
+        /// <param name="count">Max number of songs to return.</param>
+        /// <param name="cancelToken"></param>
+        /// <returns>SimilarSongs2</returns>
+        Task<SimilarSongs2> GetSimilarSongs2Async(string id, int? count = null, CancellationToken? cancelToken = null);
     }
 }

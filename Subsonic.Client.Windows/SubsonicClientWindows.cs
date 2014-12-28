@@ -30,7 +30,7 @@ namespace Subsonic.Client.Windows
 
         public override async Task<long> StreamAsync(string id, string path, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)
         {
-            var methodApiVersion = SubsonicApiVersions.Version120;
+            var methodApiVersion = SubsonicApiVersions.Version1_2_0;
 
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
@@ -43,20 +43,20 @@ namespace Subsonic.Client.Windows
                 if (streamParameters.Width > 0 && streamParameters.Height > 0)
                 {
                     parameters.Add(Constants.Size, streamParameters);
-                    methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version160);
+                    methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1_6_0);
                 }
             }
 
             if (timeOffset != null)
             {
                 parameters.Add(Constants.TimeOffset, timeOffset);
-                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version160);
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1_6_0);
             }
 
             if (estimateContentLength != null)
             {
                 parameters.Add(Constants.EstimateContentLength, estimateContentLength);
-                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version180);
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1_8_0);
             }
 
             if (format != null)
@@ -66,7 +66,7 @@ namespace Subsonic.Client.Windows
                 if (streamFormatName != null)
                 {
                     parameters.Add(Constants.StreamFormat, streamFormatName);
-                    methodApiVersion = format == StreamFormat.Raw ? methodApiVersion.Max(SubsonicApiVersions.Version190) : methodApiVersion.Max(SubsonicApiVersions.Version160);
+                    methodApiVersion = format == StreamFormat.Raw ? methodApiVersion.Max(SubsonicApiVersions.Version1_9_0) : methodApiVersion.Max(SubsonicApiVersions.Version1_6_0);
                 }
             }
 
@@ -82,7 +82,7 @@ namespace Subsonic.Client.Windows
             var parameters = SubsonicParameters.Create();
             parameters.Add(Constants.Id, id, true);
 
-            return await SubsonicResponse.GetResponseAsync(path, pathOverride, Methods.Download, SubsonicApiVersions.Version100, parameters, cancelToken);
+            return await SubsonicResponse.GetResponseAsync(path, pathOverride, Methods.Download, SubsonicApiVersions.Version1_0_0, parameters, cancelToken);
         }
     }
 }

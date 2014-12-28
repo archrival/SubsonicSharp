@@ -67,5 +67,6 @@ namespace Subsonic.Client
         public const string ShareRole = "shareRole";
         public const string Description = "description";
         public const string Expires = "expires";
+        public const string IncludeNotPresent = "includeNotPresent";
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
-using System.Xml.Serialization;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Subsonic.Client
 {

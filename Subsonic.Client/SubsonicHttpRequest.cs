@@ -1,18 +1,18 @@
-﻿using Subsonic.Client.Exceptions;
-using Subsonic.Client.Interfaces;
-using Subsonic.Common.Classes;
-using Subsonic.Common.Enums;
-using Subsonic.Common.Interfaces;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Subsonic.Client.Exceptions;
+using Subsonic.Client.Interfaces;
+using Subsonic.Common.Classes;
+using Subsonic.Common.Enums;
+using Subsonic.Common.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace Subsonic.Client
 {
@@ -339,36 +339,44 @@ namespace Subsonic.Client
         /// <returns>string</returns>
         public virtual Uri BuildRequestUri(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
         {
-            string request = string.Format(CultureInfo.InvariantCulture, "{0}/rest/{1}.view?v={2}&c={3}", SubsonicClient.ServerUrl, method.GetXmlEnumAttribute(), methodApiVersion, SubsonicClient.Name);
+            UriBuilder uriBuilder = new UriBuilder(SubsonicClient.ServerUrl);
 
-            if (parameters == null || parameters.Parameters.Count <= 0)
-                return new Uri(request);
+            StringBuilder pathBuilder = new StringBuilder(uriBuilder.Path);
+            pathBuilder.AppendFormat("/rest/{0}.view", method.GetXmlEnumAttribute());
+            uriBuilder.Path = Regex.Replace(pathBuilder.ToString(), "/+", "/");
 
-            foreach (var parameter in parameters.Parameters)
+            StringBuilder queryBuilder = new StringBuilder();
+            queryBuilder.AppendFormat("v={0}&c={1}", methodApiVersion, SubsonicClient.Name);
+
+            if (parameters != null && parameters.Parameters.Count > 0)
             {
-                string key = string.Empty;
-                string value = string.Empty;
-
-                if (parameter is DictionaryEntry)
+                foreach (var parameter in parameters.Parameters)
                 {
-                    var entry = (DictionaryEntry)parameter;
+                    string key = string.Empty;
+                    string value = string.Empty;
 
-                    key = entry.Key.ToString();
-                    value = entry.Value.ToString();
+                    if (parameter is DictionaryEntry)
+                    {
+                        var entry = (DictionaryEntry)parameter;
+
+                        key = entry.Key.ToString();
+                        value = entry.Value.ToString();
+                    }
+
+                    if (parameter is KeyValuePair<string, string>)
+                    {
+                        var entry = (KeyValuePair<string, string>)parameter;
+
+                        key = entry.Key;
+                        value = entry.Value;
+                    }
+
+                    queryBuilder.AppendFormat("&{0}={1}", Uri.EscapeDataString(key), Uri.EscapeDataString(value));
                 }
-
-                if (parameter is KeyValuePair<string, string>)
-                {
-                    var entry = (KeyValuePair<string, string>)parameter;
-
-                    key = entry.Key;
-                    value = entry.Value;
-                }
-
-                request += string.Format("&{0}={1}", Uri.EscapeDataString(key), Uri.EscapeDataString(value));
             }
 
-            return new Uri(request);
+            uriBuilder.Query = queryBuilder.ToString();
+            return uriBuilder.Uri;
         }
 
         /// <summary>
@@ -380,13 +388,15 @@ namespace Subsonic.Client
         /// <returns>string</returns>
         public virtual Uri BuildRequestUriUser(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
         {
-            string encodedPassword = string.Format("enc:{0}", SubsonicClient.Password.ToHex());
-            string request = string.Format("{0}/rest/{1}.view?v={2}&c={3}&u={4}&p={5}", SubsonicClient.ServerUrl, method.GetXmlEnumAttribute(), methodApiVersion, Uri.EscapeDataString(SubsonicClient.Name), SubsonicClient.UserName, encodedPassword);
+            UriBuilder uriBuilder = new UriBuilder(BuildRequestUri(method, methodApiVersion, parameters));
 
-            if (parameters != null && parameters.Parameters.Count > 0)
-                request = parameters.Parameters.Cast<KeyValuePair<string, string>>().Aggregate(request, (current, entry) => current + string.Format("&{0}={1}", Uri.EscapeDataString(entry.Key.ToString()), Uri.EscapeDataString(entry.Value.ToString())));
+            StringBuilder queryBuilder = new StringBuilder(uriBuilder.Query);
+            string encodedPassword = string.Format("enc:{0}", SubsonicClient.Password.ToHex());
+            queryBuilder.AppendFormat("&u={0}&p={1}", SubsonicClient.UserName, encodedPassword);
+
+            uriBuilder.Query = queryBuilder.ToString();
             
-            return new Uri(request);
+            return uriBuilder.Uri;
         }
     }
 }

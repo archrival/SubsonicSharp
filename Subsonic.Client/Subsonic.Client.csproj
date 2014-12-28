@@ -38,6 +38,18 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\..\packages\Rx-Core.2.2.5\lib\portable-net40+sl5+win8+wp8\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\..\packages\Rx-Interfaces.2.2.5\lib\portable-net40+sl5+win8+wp8\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\..\packages\Rx-Linq.2.2.5\lib\portable-net40+sl5+win8+wp8\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\..\packages\Rx-PlatformServices.2.2.5\lib\portable-net40+sl5+win8+wp8\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.IO">
       <HintPath>..\..\packages\Microsoft.Bcl.1.1.9\lib\portable-net40+sl5+win8+wp8+wpa81\System.IO.dll</HintPath>
@@ -56,7 +68,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="Enums\LoggingLevel.cs" />
+    <Compile Include="EventArgs\ChatEventArgs.cs" />
+    <Compile Include="Handlers\ChatHandler.cs" />
+    <Compile Include="Handlers\Unsubscriber.cs" />
+    <Compile Include="Monitors\ChatMonitor.cs" />
     <Compile Include="SubsonicHttpRequest.cs" />
     <Compile Include="SubsonicHttpResponse.cs" />
     <Compile Include="Interfaces\IFileLogger.cs" />

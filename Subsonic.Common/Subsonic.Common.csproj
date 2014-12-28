@@ -117,6 +117,11 @@
     <Compile Include="Classes\Bookmarks.cs" />
     <Compile Include="Classes\Bookmark.cs" />
     <Compile Include="SubsonicApiVersions.cs" />
+    <Compile Include="Classes\ArtistInfo.cs" />
+    <Compile Include="Classes\ArtistInfoBase.cs" />
+    <Compile Include="Classes\ArtistInfo2.cs" />
+    <Compile Include="Classes\SimilarSongs.cs" />
+    <Compile Include="Classes\SimilarSongs2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

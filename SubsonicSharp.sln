@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subsonic.Client.Windows", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subsonic.Client", "Subsonic.Client\Subsonic.Client.csproj", "{CBB112D5-2507-4453-83BE-51232FB95CA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTester", "ApiTester\ApiTester.csproj", "{ABA162BD-725A-4A91-B2F8-CD1DEF3A9D81}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subsonic.Client.Android", "Subsonic.Client.Android\Subsonic.Client.Android.csproj", "{62125682-B913-4281-87FE-BB3E5DF75248}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subsonic.Client.Windows.Tests", "Tests\Subsonic.Client.Windows.Tests.csproj", "{07ED127C-23A3-4B2D-80F7-8A59A0EF3929}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +19,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07ED127C-23A3-4B2D-80F7-8A59A0EF3929}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07ED127C-23A3-4B2D-80F7-8A59A0EF3929}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07ED127C-23A3-4B2D-80F7-8A59A0EF3929}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07ED127C-23A3-4B2D-80F7-8A59A0EF3929}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3B48CBDF-812E-4D3D-AFAD-D09FE6786F52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3B48CBDF-812E-4D3D-AFAD-D09FE6786F52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B48CBDF-812E-4D3D-AFAD-D09FE6786F52}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -31,17 +35,10 @@ Global
 		{A533A041-6D2D-46B3-A3E7-4CC7E64A16F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A533A041-6D2D-46B3-A3E7-4CC7E64A16F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A533A041-6D2D-46B3-A3E7-4CC7E64A16F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ABA162BD-725A-4A91-B2F8-CD1DEF3A9D81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ABA162BD-725A-4A91-B2F8-CD1DEF3A9D81}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ABA162BD-725A-4A91-B2F8-CD1DEF3A9D81}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ABA162BD-725A-4A91-B2F8-CD1DEF3A9D81}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CBB112D5-2507-4453-83BE-51232FB95CA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CBB112D5-2507-4453-83BE-51232FB95CA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBB112D5-2507-4453-83BE-51232FB95CA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBB112D5-2507-4453-83BE-51232FB95CA6}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = ApiTester\ApiTester.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
