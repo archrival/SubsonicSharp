@@ -5,6 +5,6 @@ namespace Subsonic.Common.Classes
 {
     public class JukeboxPlaylist : JukeboxStatus
     {
-        [XmlElement("entry")] public List<Child> Entry;
+        [XmlElement("entry")] public List<Child> Entries;
     }
 }

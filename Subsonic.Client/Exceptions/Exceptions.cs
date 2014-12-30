@@ -1,5 +1,6 @@
 ﻿using System;
 using Subsonic.Common.Classes;
+using Subsonic.Common.Enums;
 
 namespace Subsonic.Client.Exceptions
 {
@@ -14,15 +15,15 @@ namespace Subsonic.Client.Exceptions
 
         public SubsonicErrorException(string message) : base(message)
         {
-            Error = new Error {Message = message, Code = -1};
+            Error = new Error {Message = message, Code = ErrorCodes.Unspecified};
         }
 
         public SubsonicErrorException(string message, Exception innerException) : base(message, innerException)
         {
-            Error = new Error {Message = message, Code = -1};
+            Error = new Error {Message = message, Code = ErrorCodes.Unspecified};
         }
 
-        private Error Error { get; set; }
+        public Error Error { get; set; }
     }
 
     public class SubsonicApiException : Exception

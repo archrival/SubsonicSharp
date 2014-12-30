@@ -15,7 +15,7 @@ namespace Subsonic.Client.Items
         {
             User = chatMessage.Username;
             Message = chatMessage.Message;
-            TimeStamp = DateTimeExtensions.DateTimeFromUnixTimestamp(chatMessage.Time).ToLocalTime();
+            TimeStamp = chatMessage.Time.FromUnixTimestampInMilliseconds().ToLocalTime();
         }
 
         // Overrides for equality

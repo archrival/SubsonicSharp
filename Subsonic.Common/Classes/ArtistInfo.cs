@@ -5,6 +5,6 @@ namespace Subsonic.Common.Classes
 {
     public class ArtistInfo : ArtistInfoBase
     {
-        [XmlElement("similarArtist")] public List<Artist> SimilarArtist;
+        [XmlElement("similarArtist")] public List<Artist> SimilarArtists;
     }
 }

@@ -6,7 +6,7 @@ namespace Subsonic.Common.Classes
 {
     public class Directory
     {
-        [XmlElement("child")] public List<Child> Child;
+        [XmlElement("child")] public List<Child> Children;
         [XmlAttribute("id")] public string Id;
         [XmlAttribute("name")] public string Name;
         [XmlAttribute("parent")] public string Parent;

@@ -5,10 +5,10 @@ namespace Subsonic.Common.Classes
 {
     public class Indexes
     {
-        [XmlElement("child")] public List<Child> Child;
+        [XmlElement("child")] public List<Child> Children;
         [XmlAttribute("ignoredArticles")] public string IgnoredArticles;
-        [XmlElement("index")] public List<Index> Index;
+        [XmlElement("index")] public List<Index> Items;
         [XmlAttribute("lastModified")] public long LastModified;
-        [XmlElement("shortcut")] public List<Artist> Shortcut;
+        [XmlElement("shortcut")] public List<Artist> Shortcuts;
     }
 }

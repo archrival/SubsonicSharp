@@ -5,7 +5,7 @@ namespace Subsonic.Common.Classes
 {
     public class Index
     {
-        [XmlElement("artist")] public List<Artist> Artist;
+        [XmlElement("artist")] public List<Artist> Artists;
         [XmlAttribute("name")] public string Name;
     }
 }

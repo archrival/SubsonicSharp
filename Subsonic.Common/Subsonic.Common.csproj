@@ -122,6 +122,7 @@
     <Compile Include="Classes\ArtistInfo2.cs" />
     <Compile Include="Classes\SimilarSongs.cs" />
     <Compile Include="Classes\SimilarSongs2.cs" />
+    <Compile Include="Enums\ErrorCode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

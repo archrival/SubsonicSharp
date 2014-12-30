@@ -33,7 +33,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="ifModifiedSince">If specified, only return a result if the artist collection has changed since the given time.</param>
         /// <param name="cancelToken"></param>
         /// <returns>Indexes</returns>
-        Task<Indexes> GetIndexesAsync(string musicFolderId = null, long? ifModifiedSince = null,
+        Task<Indexes> GetIndexesAsync(int? musicFolderId = null, long? ifModifiedSince = null,
             CancellationToken? cancelToken = null);
 
         /// <summary>

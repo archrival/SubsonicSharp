@@ -61,7 +61,7 @@ namespace Subsonic.Client.Handlers
 
                             var result = response.Result;
 
-                            foreach (var chatMessage in result.ChatMessage.OrderBy(ci => ci.Time))
+                            foreach (var chatMessage in result.Items.OrderBy(ci => ci.Time))
                             {
                                 var item = new ChatItem(chatMessage);
 

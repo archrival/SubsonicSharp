@@ -7,7 +7,7 @@ namespace Subsonic.Common.Classes
     public class PodcastChannel
     {
         [XmlAttribute("description")] public string Description;
-        [XmlElement("episode")] public List<PodcastEpisode> Episode;
+        [XmlElement("episode")] public List<PodcastEpisode> Episodes;
         [XmlAttribute("errorMessage")] public string ErrorMessage;
         [XmlAttribute("id")] public string Id;
         [XmlAttribute("status")] public PodcastStatus Status;

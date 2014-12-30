@@ -7,8 +7,9 @@ namespace Subsonic.Common.Classes
     [XmlInclude(typeof (PlaylistWithSongs))]
     public class Playlist
     {
-        [XmlElement("allowedUser")] public List<string> AllowedUser;
+        [XmlElement("allowedUser")] public List<string> AllowedUsers;
         [XmlAttribute("comment")] public string Comment;
+        [XmlAttribute("coverArt")] public string CoverArt;
         [XmlAttribute("created")] public DateTime Created;
         [XmlAttribute("duration")] public int Duration;
         [XmlAttribute("id")] public string Id;

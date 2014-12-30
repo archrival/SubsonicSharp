@@ -5,7 +5,7 @@ namespace Subsonic.Common.Classes
 {
     public class Bookmarks
     {
-        [XmlElement("bookmark")] public List<Bookmark> Bookmark;
+        [XmlElement("bookmark")] public List<Bookmark> Items;
     }
 }
 

@@ -1,8 +1,9 @@
 ﻿using System.Xml.Serialization;
-using System;
 
 namespace Subsonic.Common.Classes
 {
+    [XmlInclude(typeof (ArtistInfo))]
+    [XmlInclude(typeof (ArtistInfo2))]
     public class ArtistInfoBase
     {
         [XmlElement("biography")] public string Biography;
