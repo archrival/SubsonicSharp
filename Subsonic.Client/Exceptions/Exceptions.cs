@@ -15,12 +15,12 @@ namespace Subsonic.Client.Exceptions
 
         public SubsonicErrorException(string message) : base(message)
         {
-            Error = new Error {Message = message, Code = ErrorCodes.Unspecified};
+            Error = new Error {Message = message, Code = ErrorCode.Unspecified};
         }
 
         public SubsonicErrorException(string message, Exception innerException) : base(message, innerException)
         {
-            Error = new Error {Message = message, Code = ErrorCodes.Unspecified};
+            Error = new Error {Message = message, Code = ErrorCode.Unspecified};
         }
 
         public Error Error { get; set; }

@@ -216,42 +216,42 @@ namespace Subsonic.Client.Windows.Tests
         public void CreateAdminUserAsPlayUserOnSubsonicThrowsUserNotAuthorized()
         {
             SubsonicErrorException ex = Assert.Throws<SubsonicErrorException>(async () => await PlaySubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail, false, true));
-            Assert.That(ex.Error.Code.Equals(ErrorCodes.UserNotAuthorized));
+            Assert.That(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
         [Test]
         public void CreateAdminUserAsNoPlayUserOnSubsonicThrowsUserNotAuthorized()
         {
             SubsonicErrorException ex = Assert.Throws<SubsonicErrorException>(async () => await NoPlaySubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail, false, true));
-            Assert.That(ex.Error.Code.Equals(ErrorCodes.UserNotAuthorized));
+            Assert.That(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
         [Test]
         public void CreateAdminUserAsDownloadUserOnSubsonicThrowsUserNotAuthorized()
         {
             SubsonicErrorException ex = Assert.Throws<SubsonicErrorException>(async () => await DownloadSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail, false, true));
-            Assert.That(ex.Error.Code.Equals(ErrorCodes.UserNotAuthorized));
+            Assert.That(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
         [Test]
         public void CreateUserAsPlayUserOnSubsonicThrowsUserNotAuthorized()
         {
             SubsonicErrorException ex = Assert.Throws<SubsonicErrorException>(async () => await PlaySubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail));
-            Assert.That(ex.Error.Code.Equals(ErrorCodes.UserNotAuthorized));
+            Assert.That(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
         [Test]
         public void CreateUserAsNoPlayUserOnSubsonicThrowsUserNotAuthorized()
         {
             SubsonicErrorException ex = Assert.Throws<SubsonicErrorException>(async () => await NoPlaySubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail));
-            Assert.That(ex.Error.Code.Equals(ErrorCodes.UserNotAuthorized));
+            Assert.That(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
         [Test]
         public void CreateUserAsDownloadUserOnSubsonicThrowsUserNotAuthorized()
         {
             SubsonicErrorException ex = Assert.Throws<SubsonicErrorException>(async () => await DownloadSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail));
-            Assert.That(ex.Error.Code.Equals(ErrorCodes.UserNotAuthorized));
+            Assert.That(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
         [Test]
