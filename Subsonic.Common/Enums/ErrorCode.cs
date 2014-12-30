@@ -2,7 +2,7 @@
 
 namespace Subsonic.Common.Enums
 {
-    public enum ErrorCodes
+    public enum ErrorCode
     {
         [XmlEnum("-1")] Unspecified = -1,
         [XmlEnum("0")] GenericError = 0,
