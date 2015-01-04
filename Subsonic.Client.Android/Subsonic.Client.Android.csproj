@@ -51,9 +51,6 @@
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="SubsonicClientAndroid.cs" />
-    <Compile Include="AndroidResponse.cs" />
-    <Compile Include="AndroidRequest.cs" />
-    <Compile Include="AndroidImageFormat.cs" />
     <Compile Include="StreamProxy.cs" />
     <Compile Include="AndroidMediaStore.cs" />
     <Compile Include="Items\AndroidAlbumItem.cs" />
@@ -62,6 +59,10 @@
     <Compile Include="Items\AndroidNowPlayingItem.cs" />
     <Compile Include="Items\AndroidTrackItem.cs" />
     <Compile Include="Items\AndroidGenreItem.cs" />
+    <Compile Include="SubsonicServerAndroid.cs" />
+    <Compile Include="ImageFormat.cs" />
+    <Compile Include="SubsonicHttpResponseAndroid.cs" />
+    <Compile Include="SubsonicHttpRequestAndroid.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

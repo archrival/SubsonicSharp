@@ -2,8 +2,6 @@
 using System.Drawing;
 using System.Linq;
 using NUnit.Framework;
-using Subsonic.Client.Exceptions;
-using Subsonic.Client.Windows;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
 using Subsonic.Common.Interfaces;
@@ -39,11 +37,17 @@ namespace Subsonic.Client.Windows.Tests
         [TestFixtureSetUp]
         public void Setup()
         {
-            AdminSubsonicClient = new SubsonicClientWindows(SubsonicServer, AdminUser, Password, ClientName);
-            DownloadSubsonicClient = new SubsonicClientWindows(SubsonicServer, DownloadUser, Password, ClientName);
-            NoPlaySubsonicClient = new SubsonicClientWindows(SubsonicServer, NoPlayUser, Password, ClientName);
-            PlaySubsonicClient = new SubsonicClientWindows(SubsonicServer, PlayUser, Password, ClientName);
-            NonexistentSubsonicClient = new SubsonicClientWindows(NonexistentServer, AdminUser, Password, ClientName);
+            SubsonicServerWindows adminServer = new SubsonicServerWindows(SubsonicServer, AdminUser, Password, ClientName);
+            SubsonicServerWindows downloadServer = new SubsonicServerWindows(SubsonicServer, DownloadUser, Password, ClientName);
+            SubsonicServerWindows noPlayServer = new SubsonicServerWindows(SubsonicServer, NoPlayUser, Password, ClientName);
+            SubsonicServerWindows playServer = new SubsonicServerWindows(SubsonicServer, PlayUser, Password, ClientName);
+            SubsonicServerWindows nonexistentServer = new SubsonicServerWindows(NonexistentServer, AdminUser, Password, ClientName);
+
+            AdminSubsonicClient = new SubsonicClientWindows(adminServer);
+            DownloadSubsonicClient = new SubsonicClientWindows(downloadServer);
+            NoPlaySubsonicClient = new SubsonicClientWindows(noPlayServer);
+            PlaySubsonicClient = new SubsonicClientWindows(playServer);
+            NonexistentSubsonicClient = new SubsonicClientWindows(nonexistentServer);
             Random = new Random(DateTime.UtcNow.Millisecond * DateTime.UtcNow.Second * DateTime.UtcNow.Minute);
         }
 

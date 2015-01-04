@@ -1,5 +1,4 @@
-﻿using Subsonic.Client.Items;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using Subsonic.Client.Items;
 
 namespace Subsonic.Client.Windows
 {

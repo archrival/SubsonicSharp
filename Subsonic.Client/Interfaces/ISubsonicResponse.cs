@@ -1,8 +1,8 @@
-﻿using Subsonic.Common.Enums;
-using Subsonic.Common.Interfaces;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Subsonic.Common.Enums;
+using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Interfaces
 {

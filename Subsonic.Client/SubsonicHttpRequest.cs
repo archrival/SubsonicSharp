@@ -5,24 +5,26 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Subsonic.Client.Constants;
 using Subsonic.Client.Exceptions;
+using Subsonic.Client.Extensions;
 using Subsonic.Client.Interfaces;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
 using Subsonic.Common.Interfaces;
-using System.Text.RegularExpressions;
 
 namespace Subsonic.Client
 {
     public class SubsonicHttpRequest<T> : ISubsonicRequest<T>
     {
-        protected SubsonicClient<T> SubsonicClient { get; set; }
+        protected ISubsonicServer SubsonicServer { get; set; }
 
-        public SubsonicHttpRequest(SubsonicClient<T> client)
+        public SubsonicHttpRequest(ISubsonicServer subsonicServer)
         {
-            SubsonicClient = client;
+            SubsonicServer = subsonicServer;
         }
 
         public virtual async Task<string> StringRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
@@ -212,10 +214,10 @@ namespace Subsonic.Client
                 request.Method = method;
 
                 // Add credentials
-                request.Credentials = new NetworkCredential(SubsonicClient.UserName, SubsonicClient.Password);
+                request.Credentials = new NetworkCredential(SubsonicServer.GetUserName(), SubsonicServer.GetPassword());
 
                 // Add Authorization header
-                var authInfo = string.Format(CultureInfo.InvariantCulture, "{0}:{1}", SubsonicClient.UserName, SubsonicClient.Password);
+                var authInfo = string.Format(CultureInfo.InvariantCulture, "{0}:{1}", SubsonicServer.GetUserName(), SubsonicServer.GetPassword());
                 authInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(authInfo));
                 request.Headers[HttpHeaderField.Authorization] = string.Format(CultureInfo.InvariantCulture, "Basic {0}", authInfo);
             }
@@ -311,7 +313,7 @@ namespace Subsonic.Client
             throw new NotImplementedException();
         }
 
-        private async Task<Response> DeserializeResponseAsync(string response)
+        async Task<Response> DeserializeResponseAsync(string response)
         {
             Response result;
 
@@ -319,8 +321,8 @@ namespace Subsonic.Client
             {
                 result = await response.DeserializeFromXmlAsync<Response>();
 
-                if (SubsonicClient.ServerApiVersion == null)
-                    SubsonicClient.ServerApiVersion = Version.Parse(result.Version);
+                if (SubsonicServer.GetApiVersion() == null)
+                    SubsonicServer.SetApiVersion(Version.Parse(result.Version));
             }
             else
             {
@@ -339,14 +341,14 @@ namespace Subsonic.Client
         /// <returns>string</returns>
         public virtual Uri BuildRequestUri(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
         {
-            UriBuilder uriBuilder = new UriBuilder(SubsonicClient.ServerUrl);
+            UriBuilder uriBuilder = new UriBuilder(SubsonicServer.GetUrl());
 
             StringBuilder pathBuilder = new StringBuilder(uriBuilder.Path);
             pathBuilder.AppendFormat("/rest/{0}.view", method.GetXmlEnumAttribute());
             uriBuilder.Path = Regex.Replace(pathBuilder.ToString(), "/+", "/");
 
             StringBuilder queryBuilder = new StringBuilder();
-            queryBuilder.AppendFormat("v={0}&c={1}", methodApiVersion, SubsonicClient.Name);
+            queryBuilder.AppendFormat("v={0}&c={1}", methodApiVersion, SubsonicServer.GetClientName());
 
             if (parameters != null && parameters.Parameters.Count > 0)
             {
@@ -391,8 +393,8 @@ namespace Subsonic.Client
             UriBuilder uriBuilder = new UriBuilder(BuildRequestUri(method, methodApiVersion, parameters));
 
             StringBuilder queryBuilder = new StringBuilder(uriBuilder.Query);
-            string encodedPassword = string.Format("enc:{0}", SubsonicClient.Password.ToHex());
-            queryBuilder.AppendFormat("&u={0}&p={1}", SubsonicClient.UserName, encodedPassword);
+            string encodedPassword = string.Format("enc:{0}", SubsonicServer.GetPassword().ToHex());
+            queryBuilder.AppendFormat("&u={0}&p={1}", SubsonicServer.GetUserName(), encodedPassword);
 
             uriBuilder.Query = queryBuilder.ToString();
             

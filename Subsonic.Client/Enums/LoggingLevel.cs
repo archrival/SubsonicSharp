@@ -1,5 +1,4 @@
-﻿
-namespace Subsonic.Client.Enums
+﻿namespace Subsonic.Client.Enums
 {
     public enum LoggingLevel
     {

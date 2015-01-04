@@ -1,6 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
-using Subsonic.Client.Common.Properties;
+using Subsonic.Client.Extensions;
 using Subsonic.Common.Classes;
 
 namespace Subsonic.Client.Items

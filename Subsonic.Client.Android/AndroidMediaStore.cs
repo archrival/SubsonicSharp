@@ -1,7 +1,7 @@
-﻿using Android.Content;
-using Android.Provider;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Android.Content;
+using Android.Provider;
 
 namespace Subsonic.Client.Android
 {

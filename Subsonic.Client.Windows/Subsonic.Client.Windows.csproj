@@ -50,10 +50,11 @@
     <Compile Include="FileLogger.cs" />
     <Compile Include="SubsonicClientWindows.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WindowsImageFormat.cs" />
-    <Compile Include="WindowsRequest.cs" />
-    <Compile Include="WindowsResponse.cs" />
     <Compile Include="StreamProxy.cs" />
+    <Compile Include="SubsonicServerWindows.cs" />
+    <Compile Include="ImageFormat.cs" />
+    <Compile Include="SubsonicHttpRequestWindows.cs" />
+    <Compile Include="SubsonicHttpResponseWindows.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

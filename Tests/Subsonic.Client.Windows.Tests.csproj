@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{07ED127C-23A3-4B2D-80F7-8A59A0EF3929}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Tests</RootNamespace>
+    <RootNamespace>Subsonic.Client.Windows.Tests</RootNamespace>
     <AssemblyName>Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>

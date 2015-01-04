@@ -1,8 +1,7 @@
-﻿using Subsonic.Client.Common.Properties;
+﻿using System;
 using Subsonic.Client.EventArgs;
 using Subsonic.Client.Handlers;
 using Subsonic.Client.Items;
-using System;
 
 namespace Subsonic.Client.Monitors
 {
@@ -51,7 +50,6 @@ namespace Subsonic.Client.Monitors
 
         public event Action<ChatMonitor<T>, ChatEventArgs> PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(ChatItem chatItem)
         {
             Action<ChatMonitor<T>, ChatEventArgs> handler = PropertyChanged;

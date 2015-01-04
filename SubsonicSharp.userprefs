@@ -12,9 +12,7 @@
       <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\ApiTester\Program.cs" line="35" column="1" />
       <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\ApiTester\Program.cs" line="37" column="1" />
       <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\ApiTester\Program.cs" line="36" column="1" />
-      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\SubsonicClient.cs" line="562" column="30" />
       <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\XmlExtensions.cs" line="26" column="1" />
-      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\SubsonicHttpRequest.cs" line="141" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>

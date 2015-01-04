@@ -1,8 +1,7 @@
-﻿using Subsonic.Common.Classes;
-using System;
+﻿using System;
 using System.ComponentModel;
-using Subsonic.Client.Common.Properties;
 using System.Runtime.CompilerServices;
+using Subsonic.Common.Classes;
 
 namespace Subsonic.Client.Items
 {
@@ -15,7 +14,6 @@ namespace Subsonic.Client.Items
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChangedEventHandler handler = PropertyChanged;

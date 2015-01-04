@@ -1,5 +1,4 @@
-﻿using Subsonic.Client.Items;
-using Android.Graphics;
+﻿using Android.Graphics;
 
 namespace Subsonic.Client.Android
 {

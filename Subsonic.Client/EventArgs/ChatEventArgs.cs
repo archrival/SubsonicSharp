@@ -1,5 +1,4 @@
-﻿using System;
-using Subsonic.Client.Items;
+﻿using Subsonic.Client.Items;
 
 namespace Subsonic.Client.EventArgs
 {
