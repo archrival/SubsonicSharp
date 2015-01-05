@@ -561,5 +561,293 @@ namespace Subsonic.Client.Windows.Tests
             Assert.IsNotNullOrEmpty(artist.Id);
             Assert.IsNotNullOrEmpty(artist.Name);
         }
+
+        [Test]
+        public void GetRandomArtistInfo2AsAdminUserOnSubsonic()
+        {
+            ArtistsID3 artists = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    artists = await AdminSubsonicClient.GetArtistsAsync();
+                });
+
+            Assert.IsTrue(artists.Indexes.Any());
+
+            int randomArtistIndexNumber = Random.Next(0, artists.Indexes.Count - 1);
+            IndexID3 randomArtistIndex = artists.Indexes.ElementAt(randomArtistIndexNumber);
+
+            Assert.IsTrue(randomArtistIndex.Artists.Any());
+
+            int randomArtistNumber = Random.Next(0, randomArtistIndex.Artists.Count - 1);
+            ArtistID3 randomArtist = randomArtistIndex.Artists.ElementAt(randomArtistNumber);
+
+            ArtistID3 artist = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    artist = await AdminSubsonicClient.GetArtistAsync(randomArtist.Id);
+                });
+
+            Assert.IsNotNullOrEmpty(artist.Id);
+            Assert.IsNotNullOrEmpty(artist.Name);
+
+            ArtistInfo2 artistInfo2 = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    artistInfo2 = await AdminSubsonicClient.GetArtistInfo2Async(randomArtist.Id);
+                });
+
+            Assert.IsNotNull(artistInfo2);
+
+            if (!string.IsNullOrWhiteSpace(artistInfo2.LastFmUrl))
+            {
+                Assert.IsNotNull(artistInfo2.Biography);
+                Assert.IsNotNull(artistInfo2.MusicBrainzId);
+                Assert.IsNotNull(artistInfo2.SmallImageUrl);
+                Assert.IsNotNull(artistInfo2.MediumImageUrl);
+                Assert.IsNotNull(artistInfo2.LargeImageUrl);
+            }
+        }
+
+        [Test]
+        public void GetRandomArtistInfoAsAdminUserOnSubsonic()
+        {
+            MusicFolders musicFolders = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    musicFolders = await AdminSubsonicClient.GetMusicFoldersAsync();
+                });
+
+            Assert.IsTrue(musicFolders.Items.Any());
+
+            int randomMusicFolderNumber = Random.Next(0, musicFolders.Items.Count - 1);
+            MusicFolder randomMusicFolder = musicFolders.Items.ElementAt(randomMusicFolderNumber);
+
+            Indexes indexes = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    indexes = await AdminSubsonicClient.GetIndexesAsync(randomMusicFolder.Id);
+                });
+
+            Assert.IsTrue(indexes.Items.Any());
+
+            int randomIndexNumber = Random.Next(0, indexes.Items.Count - 1);
+            Index randomIndex = indexes.Items.ElementAt(randomIndexNumber);
+
+            int randomArtistNumber = Random.Next(0, randomIndex.Artists.Count - 1);
+            Artist randomArtist = randomIndex.Artists.ElementAt(randomArtistNumber);
+
+            ArtistInfo artistInfo = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    artistInfo = await AdminSubsonicClient.GetArtistInfoAsync(randomArtist.Id);
+                });
+
+            Assert.IsNotNull(artistInfo);
+
+            if (!string.IsNullOrWhiteSpace(artistInfo.LastFmUrl))
+            {
+                Assert.IsNotNull(artistInfo.Biography);
+                Assert.IsNotNull(artistInfo.MusicBrainzId);
+                Assert.IsNotNull(artistInfo.SmallImageUrl);
+                Assert.IsNotNull(artistInfo.MediumImageUrl);
+                Assert.IsNotNull(artistInfo.LargeImageUrl);
+            }
+        }
+
+        [Test]
+        public void GetRandomAlbumListAsAdminUserOnSubsonic()
+        {
+            AlbumList albumList = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.Random);
+                });
+
+            Assert.IsNotNull(albumList);
+            Assert.IsTrue(albumList.Albums.Any());
+        }
+
+        [Test]
+        public void GetNewestAlbumListAsAdminUserOnSubsonic()
+        {
+            AlbumList albumList = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.Newest);
+                });
+
+            Assert.IsNotNull(albumList);
+            Assert.IsTrue(albumList.Albums.Any());
+        }
+
+        [Test]
+        public void GetHighestAlbumListAsAdminUserOnSubsonic()
+        {
+            AlbumList albumList = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.Highest);
+                });
+
+            Assert.IsNotNull(albumList);
+            Assert.IsFalse(albumList.Albums.Any());
+        }
+
+        [Test]
+        public void GetFrequentAlbumListAsAdminUserOnSubsonic()
+        {
+            AlbumList albumList = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.Frequent);
+                });
+
+            Assert.IsNotNull(albumList);
+            Assert.IsTrue(albumList.Albums.Any());
+        }
+
+        [Test]
+        public void GetRecentAlbumListAsAdminUserOnSubsonic()
+        {
+            AlbumList albumList = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.Recent);
+                });
+
+            Assert.IsNotNull(albumList);
+            Assert.IsTrue(albumList.Albums.Any());
+        }
+
+        [Test]
+        public void GetAlphabeticalByNameAlbumListAsAdminUserOnSubsonic()
+        {
+            AlbumList albumList = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.AlphabeticalByName);
+                });
+
+            Assert.IsNotNull(albumList);
+            Assert.IsTrue(albumList.Albums.Any());
+        }
+
+        [Test]
+        public void GetAlphabeticalByArtistAlbumListAsAdminUserOnSubsonic()
+        {
+            AlbumList albumList = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.AlphabeticalByArtist);
+                });
+
+            Assert.IsNotNull(albumList);
+            Assert.IsTrue(albumList.Albums.Any());
+        }
+
+        [Test]
+        public void GetStarredAlbumListAsAdminUserOnSubsonic()
+        {
+            AlbumList albumList = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.Starred);
+                });
+
+            Assert.IsNotNull(albumList);
+            Assert.IsFalse(albumList.Albums.Any());
+        }
+
+        [Test]
+        public void GetByYearAlbumListAsAdminUserOnSubsonic()
+        {
+            AlbumList albumList = null;
+
+            int randomFromYear = Random.Next(1950, DateTime.Now.Year);
+            int randomToYear = Random.Next(randomFromYear, DateTime.Now.Year);
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.ByYear, fromYear: randomFromYear, toYear: randomToYear);
+                });
+
+            Assert.IsNotNull(albumList);
+            Assert.IsTrue(albumList.Albums.Any());
+        }
+
+        [Test]
+        public void GetByGenreAlbumListAsAdminUserOnSubsonic()
+        {
+            AlbumList albumList = null;
+
+            Genres genres = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    genres = await AdminSubsonicClient.GetGenresAsync();
+                });
+
+            int randomNumberForGenre = Random.Next(0, genres.Items.Count - 1);
+            Genre randomGenre = genres.Items.ElementAt(randomNumberForGenre);
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.ByGenre, genre: randomGenre.Name);
+                });
+
+            Assert.IsNotNull(albumList);
+            Assert.IsTrue(albumList.Albums.Any());
+        }
+
+        [Test]
+        public void GetByGenreAlbumListWithInvalidServerVersionAsAdminUserOnSubsonic()
+        {
+            AlbumList albumList = null;
+
+            Genres genres = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    genres = await AdminSubsonicClient.GetGenresAsync();
+                });
+
+            int randomNumberForGenre = Random.Next(0, genres.Items.Count - 1);
+            Genre randomGenre = genres.Items.ElementAt(randomNumberForGenre);
+
+            Version previousApiVersion = AdminSubsonicServer.GetApiVersion();
+            AdminSubsonicServer.SetApiVersion(Subsonic.Common.SubsonicApiVersions.Version1_10_0);
+
+            SubsonicInvalidApiException ex = Assert.Throws<SubsonicInvalidApiException>(async () =>
+                {
+                    albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.ByGenre, genre: randomGenre.Name);
+                });
+
+            AdminSubsonicServer.SetApiVersion(previousApiVersion);
+        }
+
+        [Test]
+        public void GetByYearAlbumListWithInvalidParametersAsAdminUserOnSubsonic()
+        {
+            AlbumList albumList = null;
+
+            SubsonicErrorException ex = Assert.Throws<SubsonicErrorException>(async () =>
+                {
+                    albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.ByYear);
+                });
+        }
     }
 }
