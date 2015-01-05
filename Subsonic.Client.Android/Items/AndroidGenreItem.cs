@@ -1,4 +1,6 @@
-﻿namespace Subsonic.Client.Android
+﻿using Subsonic.Client.Items;
+
+namespace Subsonic.Client.Android
 {
     public class AndroidGenreItem : GenreItem
     {

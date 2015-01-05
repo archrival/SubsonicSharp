@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Linq;
 using NUnit.Framework;
+using Subsonic.Client.Exceptions;
+using Subsonic.Client.Extensions;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
 using Subsonic.Common.Interfaces;

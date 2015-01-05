@@ -2,8 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Android.Graphics;
+using Subsonic.Client.Constants;
 using Subsonic.Common;
 using Subsonic.Common.Enums;
+using Subsonic.Client.Extensions;
 
 namespace Subsonic.Client.Android
 {
