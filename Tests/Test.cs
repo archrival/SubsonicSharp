@@ -10,7 +10,7 @@ using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Windows.Tests
 {
-    [TestFixture()]
+    [TestFixture]
     public class Test
     {
         public static readonly Uri SubsonicServer = new Uri("http://localhost:8080/subsonic/");
@@ -831,7 +831,7 @@ namespace Subsonic.Client.Windows.Tests
             Version previousApiVersion = AdminSubsonicServer.GetApiVersion();
             AdminSubsonicServer.SetApiVersion(Subsonic.Common.SubsonicApiVersions.Version1_10_0);
 
-            SubsonicInvalidApiException ex = Assert.Throws<SubsonicInvalidApiException>(async () =>
+            Assert.Throws<SubsonicInvalidApiException>(async () =>
                 {
                     albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.ByGenre, genre: randomGenre.Name);
                 });
@@ -844,7 +844,7 @@ namespace Subsonic.Client.Windows.Tests
         {
             AlbumList albumList = null;
 
-            SubsonicErrorException ex = Assert.Throws<SubsonicErrorException>(async () =>
+            Assert.Throws<SubsonicErrorException>(async () =>
                 {
                     albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.ByYear);
                 });
