@@ -34,22 +34,27 @@ namespace Subsonic.Client.Windows.Tests
         public ISubsonicClient<Image> NoPlaySubsonicClient;
         public ISubsonicClient<Image> PlaySubsonicClient;
         public ISubsonicClient<Image> NonexistentSubsonicClient;
+        public SubsonicServerWindows AdminSubsonicServer;
+        public SubsonicServerWindows DownloadSubsonicServer;
+        public SubsonicServerWindows NoPlaySubsonicServer;
+        public SubsonicServerWindows PlaySubsonicServer;
+        public SubsonicServerWindows NonexistentSubsonicServer;
         public Random Random;
 
         [TestFixtureSetUp]
         public void Setup()
         {
-            SubsonicServerWindows adminServer = new SubsonicServerWindows(SubsonicServer, AdminUser, Password, ClientName);
-            SubsonicServerWindows downloadServer = new SubsonicServerWindows(SubsonicServer, DownloadUser, Password, ClientName);
-            SubsonicServerWindows noPlayServer = new SubsonicServerWindows(SubsonicServer, NoPlayUser, Password, ClientName);
-            SubsonicServerWindows playServer = new SubsonicServerWindows(SubsonicServer, PlayUser, Password, ClientName);
-            SubsonicServerWindows nonexistentServer = new SubsonicServerWindows(NonexistentServer, AdminUser, Password, ClientName);
+            AdminSubsonicServer = new SubsonicServerWindows(SubsonicServer, AdminUser, Password, ClientName);
+            DownloadSubsonicServer = new SubsonicServerWindows(SubsonicServer, DownloadUser, Password, ClientName);
+            NoPlaySubsonicServer = new SubsonicServerWindows(SubsonicServer, NoPlayUser, Password, ClientName);
+            PlaySubsonicServer = new SubsonicServerWindows(SubsonicServer, PlayUser, Password, ClientName);
+            NonexistentSubsonicServer = new SubsonicServerWindows(NonexistentServer, AdminUser, Password, ClientName);
 
-            AdminSubsonicClient = new SubsonicClientWindows(adminServer);
-            DownloadSubsonicClient = new SubsonicClientWindows(downloadServer);
-            NoPlaySubsonicClient = new SubsonicClientWindows(noPlayServer);
-            PlaySubsonicClient = new SubsonicClientWindows(playServer);
-            NonexistentSubsonicClient = new SubsonicClientWindows(nonexistentServer);
+            AdminSubsonicClient = new SubsonicClientWindows(AdminSubsonicServer);
+            DownloadSubsonicClient = new SubsonicClientWindows(DownloadSubsonicServer);
+            NoPlaySubsonicClient = new SubsonicClientWindows(NoPlaySubsonicServer);
+            PlaySubsonicClient = new SubsonicClientWindows(PlaySubsonicServer);
+            NonexistentSubsonicClient = new SubsonicClientWindows(NonexistentSubsonicServer);
             Random = new Random(DateTime.UtcNow.Millisecond * DateTime.UtcNow.Second * DateTime.UtcNow.Minute);
         }
 
@@ -75,6 +80,8 @@ namespace Subsonic.Client.Windows.Tests
                 });
 
             Assert.IsTrue(result);
+            Assert.IsNotNull(AdminSubsonicServer.GetApiVersion());
+            Assert.IsTrue(AdminSubsonicServer.GetApiVersion() >= Subsonic.Common.SubsonicApiVersions.Version1_0_0);
         }
 
         [Test]
@@ -88,6 +95,8 @@ namespace Subsonic.Client.Windows.Tests
                 });
 
             Assert.IsTrue(result);
+            Assert.IsNotNull(DownloadSubsonicServer.GetApiVersion());
+            Assert.IsTrue(DownloadSubsonicServer.GetApiVersion() >= Subsonic.Common.SubsonicApiVersions.Version1_0_0);
         }
 
         [Test]
@@ -101,6 +110,8 @@ namespace Subsonic.Client.Windows.Tests
                 });
 
             Assert.IsTrue(result);
+            Assert.IsNotNull(NoPlaySubsonicServer.GetApiVersion());
+            Assert.IsTrue(NoPlaySubsonicServer.GetApiVersion() >= Subsonic.Common.SubsonicApiVersions.Version1_0_0);
         }
 
         [Test]
@@ -114,12 +125,16 @@ namespace Subsonic.Client.Windows.Tests
                 });
 
             Assert.IsTrue(result);
+            Assert.IsNotNull(PlaySubsonicServer.GetApiVersion());
+            Assert.IsTrue(PlaySubsonicServer.GetApiVersion() >= Subsonic.Common.SubsonicApiVersions.Version1_0_0);
         }
 
         [Test]
         public void PingTestOnNonexistentServer()
         {
+            Assert.IsNull(NonexistentSubsonicServer.GetApiVersion());
             Assert.Throws<SubsonicApiException>(async () => await NonexistentSubsonicClient.PingAsync());
+            Assert.IsNull(NonexistentSubsonicServer.GetApiVersion());
         }
 
         [Test]
