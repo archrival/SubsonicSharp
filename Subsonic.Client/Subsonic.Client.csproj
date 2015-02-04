@@ -66,6 +66,15 @@
     <Reference Include="Microsoft.Threading.Tasks.Extensions">
       <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net40+sl4+win8+wp71+wpa81\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\portable-net40+sl4+win8+wp71+wpa81\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\LoggingLevel.cs" />
@@ -73,8 +82,6 @@
     <Compile Include="Handlers\ChatHandler.cs" />
     <Compile Include="Handlers\Unsubscriber.cs" />
     <Compile Include="Monitors\ChatMonitor.cs" />
-    <Compile Include="SubsonicHttpRequest.cs" />
-    <Compile Include="SubsonicHttpResponse.cs" />
     <Compile Include="Interfaces\IFileLogger.cs" />
     <Compile Include="Items\AlbumItem.cs" />
     <Compile Include="Items\AlbumListItem.cs" />
@@ -101,8 +108,15 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Constants\HttpContentTypes.cs" />
     <Compile Include="Constants\HttpHeaderField.cs" />
-    <Compile Include="Constants\HttpMethod.cs" />
     <Compile Include="Constants\ParameterConstants.cs" />
+    <Compile Include="Interfaces\ISubsonicActivity.cs" />
+    <Compile Include="Activities\SubsonicActivity.cs" />
+    <Compile Include="Activities\GenresActivity.cs" />
+    <Compile Include="Activities\MusicFoldersActivity.cs" />
+    <Compile Include="WebProxy.cs" />
+    <Compile Include="Constants\HttpMethod.cs" />
+    <Compile Include="SubsonicResponse.cs" />
+    <Compile Include="SubsonicRequest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -132,5 +146,6 @@
   <ItemGroup>
     <Folder Include="Extensions\" />
     <Folder Include="Constants\" />
+    <Folder Include="Activities\" />
   </ItemGroup>
 </Project>

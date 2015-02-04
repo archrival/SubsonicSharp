@@ -6,16 +6,17 @@ using Subsonic.Client.Constants;
 using Subsonic.Common;
 using Subsonic.Common.Enums;
 using Subsonic.Client.Extensions;
+using Subsonic.Client.Interfaces;
 
 namespace Subsonic.Client.Android
 {
     public class SubsonicClientAndroid : SubsonicClient<Bitmap>
     {
-        public SubsonicClientAndroid(SubsonicServerAndroid subsonicServer) : base(subsonicServer)
+        public SubsonicClientAndroid(ISubsonicServer subsonicServer) : base(subsonicServer)
         {
-            var windowsResponse = new SubsonicHttpResponseAndroid<Bitmap>(subsonicServer);
+            var windowsResponse = new SubsonicResponseAndroid<Bitmap>(subsonicServer);
             SubsonicResponse = windowsResponse;
-            SubsonicRequest = windowsResponse.AndroidRequest;
+            SubsonicRequest = windowsResponse.SubsonicRequest;
         }
 
         public override async Task<long> StreamAsync(string id, string path, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)

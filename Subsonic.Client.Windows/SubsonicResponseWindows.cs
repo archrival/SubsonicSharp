@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Subsonic.Client.Interfaces;
 using Subsonic.Common.Enums;
 using Subsonic.Common.Interfaces;
 
-namespace Subsonic.Client.Android
+namespace Subsonic.Client.Windows
 {
-    public class SubsonicHttpResponseAndroid<T> : SubsonicHttpResponse<T>
+    public class SubsonicResponseWindows<T> : SubsonicResponse<T>
     {
-        internal SubsonicServerAndroid SubsonicServerAndroid { get; set; }
-        internal SubsonicHttpRequestAndroid<T> AndroidRequest { get; private set; }
-
-        public SubsonicHttpResponseAndroid(SubsonicServerAndroid subsonicServer) : base(subsonicServer)
-        {
-            SubsonicServerAndroid = subsonicServer;
-            AndroidRequest = new SubsonicHttpRequestAndroid<T>(subsonicServer);
-        }
+        public SubsonicResponseWindows(ISubsonicServer subsonicServer) : base(subsonicServer, new SubsonicRequestWindows<T>(subsonicServer)) { }
 
         /// <summary>
         /// Get a response from the Subsonic server for the given method.
@@ -24,12 +18,12 @@ namespace Subsonic.Client.Android
         /// <param name="methodApiVersion">Subsonic API version of the method.</param>
         /// <param name="parameters">Parameters used by the method.</param>
         /// <param name="cancelToken"> </param>
-        /// <returns>T</returns>
+        /// <returns cref="IImageFormat{T}"></returns>
         public override async Task<IImageFormat<T>> GetImageResponseAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             ValidateApiVersion(method, methodApiVersion);
 
-            return await AndroidRequest.ImageRequestAsync(method, methodApiVersion, parameters, cancelToken);
+            return await SubsonicRequest.ImageRequestAsync(method, methodApiVersion, parameters, cancelToken);
         }
 
         /// <summary>
@@ -46,7 +40,7 @@ namespace Subsonic.Client.Android
         {
             ValidateApiVersion(method, methodApiVersion);
 
-            return await AndroidRequest.RequestAsync(path, pathOverride, method, methodApiVersion, parameters, cancelToken);
+            return await SubsonicRequest.RequestAsync(path, pathOverride, method, methodApiVersion, parameters, cancelToken);
         }
     }
 }

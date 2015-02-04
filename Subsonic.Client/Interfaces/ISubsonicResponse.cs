@@ -15,5 +15,6 @@ namespace Subsonic.Client.Interfaces
         Task<long> GetResponseAsyncNoResponse(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null);
         Task<long> GetImageSizeAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null);
         Task<IImageFormat<T>> GetImageResponseAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null);
+        Task<bool> GetSettingChangeResponseAsync(SettingMethods method, CancellationToken? cancelToken = null);
     }
 }

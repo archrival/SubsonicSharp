@@ -33,8 +33,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="ifModifiedSince">If specified, only return a result if the artist collection has changed since the given time.</param>
         /// <param name="cancelToken"></param>
         /// <returns>Indexes</returns>
-        Task<Indexes> GetIndexesAsync(int? musicFolderId = null, long? ifModifiedSince = null,
-            CancellationToken? cancelToken = null);
+        Task<Indexes> GetIndexesAsync(int? musicFolderId = null, long? ifModifiedSince = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Returns a listing of all files in a music directory. Typically used to get list of albums for an artist, or list of songs for an album.
@@ -95,10 +94,10 @@ namespace Subsonic.Common.Interfaces
         /// <param name="fromYear">The first year in the range.</param>
         /// <param name="toYear">The last year in the range.</param>
         /// <param name="genre">The name of the genre, e.g., "Rock".</param>
+        /// <param name="musicFolderId">(Since 1.11.0) Only return albums in the music folder with the given ID. See getMusicFolders</param>
         /// <param name="cancelToken"></param>
         /// <returns>AlbumList</returns>
-        Task<AlbumList> GetAlbumListAsync(AlbumListType type, int? size = null, int? offset = null, int? fromYear = null,
-            int? toYear = null, string genre = null, CancellationToken? cancelToken = null);
+        Task<AlbumList> GetAlbumListAsync(AlbumListType type, int? size = null, int? offset = null, int? fromYear = null, int? toYear = null, string genre = null, string musicFolderId = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Similar to getAlbumList, but organizes music according to ID3 tags.
@@ -111,8 +110,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="genre">The name of the genre, e.g., "Rock".</param>
         /// <param name="cancelToken"></param>
         /// <returns>AlbumList</returns>
-        Task<AlbumList2> GetAlbumList2Async(AlbumListType type, int? size = null, int? offset = null,
-            int? fromYear = null, int? toYear = null, string genre = null, CancellationToken? cancelToken = null);
+        Task<AlbumList2> GetAlbumList2Async(AlbumListType type, int? size = null, int? offset = null, int? fromYear = null, int? toYear = null, string genre = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Returns random songs matching the given criteria.
@@ -124,19 +122,17 @@ namespace Subsonic.Common.Interfaces
         /// <param name="musicFolderId">Only return songs in the music folder with the given ID. See GetMusicFolders.</param>
         /// <param name="cancelToken"></param>
         /// <returns>RandomSongs</returns>
-        Task<RandomSongs> GetRandomSongsAsync(int? size = null, string genre = null, int? fromYear = null,
-            int? toYear = null, string musicFolderId = null, CancellationToken? cancelToken = null);
+        Task<RandomSongs> GetRandomSongsAsync(int? size = null, string genre = null, int? fromYear = null, int? toYear = null, string musicFolderId = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Returns songs in a given genre.
         /// </summary>
         /// <param name="genre">The genre, as returned by getGenres.</param>
-        /// <param name="count">The maximum number of songs to return. Max 500.</param>
-        /// <param name="offset">The offset. Useful if you want to page through the songs in a genre.</param>
+        /// <param name="count">The maximum number of songs to return. Max 500. [Default = 10]</param>
+        /// <param name="offset">The offset. Useful if you want to page through the songs in a genre. [Default = 0]</param>
         /// <param name="cancelToken"></param>
         /// <returns>Songs</returns>
-        Task<Songs> GetSongsByGenreAsync(string genre, int? count = null, int? offset = null,
-            CancellationToken? cancelToken = null);
+        Task<Songs> GetSongsByGenreAsync(string genre, int? count = null, int? offset = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Returns what is currently being played by all users.
@@ -168,8 +164,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="newerThan">Only return matches that are newer this time. Given as milliseconds since Jan 1, 1970.</param>
         /// <param name="cancelToken"></param>
         /// <returns>SearchResult</returns>
-        Task<SearchResult> SearchAsync(string artist = null, string album = null, string title = null, string any = null,
-            int? count = null, int? offset = null, long? newerThan = null, CancellationToken? cancelToken = null);
+        Task<SearchResult> SearchAsync(string artist = null, string album = null, string title = null, string any = null, int? count = null, int? offset = null, long? newerThan = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Returns albums, artists and songs matching the given search criteria. Supports paging through the result.
@@ -183,9 +178,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="songOffset">Search result offset for songs. Used for paging. [Default = 0]</param>
         /// <param name="cancelToken"></param>
         /// <returns>SearchResult2</returns>
-        Task<SearchResult2> Search2Async(string query, int? artistCount = null, int? artistOffset = null,
-            int? albumCount = null, int? albumOffset = null, int? songCount = null, int? songOffset = null,
-            CancellationToken? cancelToken = null);
+        Task<SearchResult2> Search2Async(string query, int? artistCount = null, int? artistOffset = null, int? albumCount = null, int? albumOffset = null, int? songCount = null, int? songOffset = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Similar to search2, but organizes music according to ID3 tags.
@@ -199,9 +192,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="songOffset">Search result offset for songs. Used for paging. [Default = 0]</param>
         /// <param name="cancelToken"></param>
         /// <returns>SearchResult3</returns>
-        Task<SearchResult3> Search3Async(string query, int? artistCount = null, int? artistOffset = null,
-            int? albumCount = null, int? albumOffset = null, int? songCount = null, int? songOffset = null,
-            CancellationToken? cancelToken = null);
+        Task<SearchResult3> Search3Async(string query, int? artistCount = null, int? artistOffset = null, int? albumCount = null, int? albumOffset = null, int? songCount = null, int? songOffset = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Returns the ID and name of all saved playlists.
@@ -240,9 +231,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="songIndexToRemove">Remove the song at this position in the playlist. Multiple parameters allowed.</param>
         /// <param name="cancelToken"></param>
         /// <returns>bool</returns>
-        Task<bool> UpdatePlaylistAsync(string playlistId, string name = null, string comment = null,
-            IEnumerable<string> songIdToAdd = null, IEnumerable<string> songIndexToRemove = null,
-            CancellationToken? cancelToken = null);
+        Task<bool> UpdatePlaylistAsync(string playlistId, string name = null, string comment = null, IEnumerable<string> songIdToAdd = null, IEnumerable<string> songIndexToRemove = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Deletes a saved playlist.
@@ -260,7 +249,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="streamParameters">Combination of the maxBitRate and size parameters. maxBitRate: (Since 1.2.0) If specified, the server will attempt to limit the bitrate to this value, in kilobits per second. If set to zero, no limit is imposed. size: (Since 1.6.0) Only applicable to video streaming. Requested video size specified as WxH, for instance "640x480".</param>
         /// <param name="format">(Since 1.6.0) Specifies the preferred target format (e.g., "mp3" or "flv") in case there are multiple applicable transcodings. (Since 1.9.0) you can use the special value "raw" to disable transcoding.</param>
         /// <param name="timeOffset">Only applicable to video streaming. If specified, start streaming at the given offset (in seconds) into the video. Typically used to implement video skipping.</param>
-        /// <param name="estimateContentLength">(Since 1.8.0). If set to "true", the Content-Length HTTP header will be set to an estimated value for transcoded or downsampled media.</param>
+        /// <param name="estimateContentLength">(Since 1.8.0). If set to "true", the Content-Length HTTP header will be set to an estimated value for transcoded or downsampled media. [Default = false]</param>
         /// <param name="cancelToken"></param>
         /// <param name="noResponse"></param>
         /// <returns>long</returns>
@@ -274,8 +263,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="pathOverride"></param>
         /// <param name="cancelToken"></param>
         /// <returns>long</returns>
-        Task<long> DownloadAsync(string id, string path, bool pathOverride = false,
-            CancellationToken? cancelToken = null);
+        Task<long> DownloadAsync(string id, string path, bool pathOverride = false, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Creates an HLS (HTTP Live Streaming) playlist used for streaming video or audio. HLS is a streaming protocol implemented by Apple and works by breaking the overall stream into a sequence of small HTTP-based file downloads. It's supported by iOS and newer versions of Android. This method also supports adaptive bitrate streaming, see the bitRate parameter.
@@ -294,6 +282,15 @@ namespace Subsonic.Common.Interfaces
         /// <param name="cancelToken"> </param>
         /// <returns>bool</returns>
         Task<IImageFormat<T>> GetCoverArtAsync(string id, int? size = null, CancellationToken? cancelToken = null);
+
+        /// <summary>
+        /// Returns size of a cover art image.
+        /// </summary>
+        /// <param name="id">A string which uniquely identifies the cover art file to download. Obtained by calls to getMusicDirectory.</param>
+        /// <param name="size">If specified, scale image to this size.</param>
+        /// <param name="cancelToken"> </param>
+        /// <returns>long</returns>
+        Task<long> GetCoverArtSizeAsync(string id, int? size = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Searches for and returns lyrics for a given song.
@@ -320,8 +317,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="artistId">The ID of an artist to star. Use this rather than id if the client accesses the media collection according to ID3 tags rather than file structure. Multiple parameters allowed.</param>
         /// <param name="cancelToken"></param>
         /// <returns>bool</returns>
-        Task<bool> StarAsync(IEnumerable<string> id = null, IEnumerable<string> albumId = null,
-            IEnumerable<string> artistId = null, CancellationToken? cancelToken = null);
+        Task<bool> StarAsync(IEnumerable<string> id = null, IEnumerable<string> albumId = null, IEnumerable<string> artistId = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Removes the star from a song, album or artist.
@@ -331,8 +327,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="artistId">The ID of an artist to unstar. Use this rather than id if the client accesses the media collection according to ID3 tags rather than file structure. Multiple parameters allowed.</param>
         /// <param name="cancelToken"></param>
         /// <returns>bool</returns>
-        Task<bool> UnStarAsync(IEnumerable<string> id = null, IEnumerable<string> albumId = null,
-            IEnumerable<string> artistId = null, CancellationToken? cancelToken = null);
+        Task<bool> UnStarAsync(IEnumerable<string> id = null, IEnumerable<string> albumId = null, IEnumerable<string> artistId = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Sets the rating for a music file.
@@ -345,14 +340,14 @@ namespace Subsonic.Common.Interfaces
 
         /// <summary>
         /// "Scrobbles" a given music file on last.fm. Requires that the user has configured his/her last.fm credentials on the Subsonic server (Settings > Personal).
+        /// Since 1.11.0 this method will also update the play count and last played timestamp for the song and album. It will also make the song appear in the "Now playing" page in the web app, and appear in the list of songs returned by getNowPlaying.
         /// </summary>
         /// <param name="id">A string which uniquely identifies the file to scrobble.</param>
         /// <param name="submission">Whether this is a "submission" or a "now playing" notification. [Default = true]</param>
         /// <param name="time">(Since 1.8.0) The time (in milliseconds since 1 Jan 1970) at which the song was listened to.</param>
         /// <param name="cancelToken"></param>
         /// <returns>bool</returns>
-        Task<bool> ScrobbleAsync(string id, bool? submission = null, long? time = null,
-            CancellationToken? cancelToken = null);
+        Task<bool> ScrobbleAsync(string id, bool? submission = null, long? time = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Returns information about shared media this user is allowed to manage.
@@ -368,8 +363,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="expires">The time at which the share expires. Given as milliseconds since 1970.</param>
         /// <param name="cancelToken"></param>
         /// <returns>Shares</returns>
-        Task<Shares> CreateShareAsync(IEnumerable<string> id, string description = null, long? expires = null,
-            CancellationToken? cancelToken = null);
+        Task<Shares> CreateShareAsync(IEnumerable<string> id, string description = null, long? expires = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Updates the description and/or expiration date for an existing share.
@@ -379,8 +373,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="expires">The time at which the share expires. Given as milliseconds since 1970, or zero to remove the expiration.</param>
         /// <param name="cancelToken"></param>
         /// <returns>Shares</returns>
-        Task<bool> UpdateShareAsync(string id, string description = null, long? expires = null,
-            CancellationToken? cancelToken = null);
+        Task<bool> UpdateShareAsync(string id, string description = null, long? expires = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Deletes an existing share.
@@ -393,13 +386,16 @@ namespace Subsonic.Common.Interfaces
         /// <summary>
         /// Returns all podcast channels the server subscribes to and their episodes.
         /// </summary>
+        /// <param name="id">(Since 1.9.0) If specified, only return the Podcast channel with this ID.</param>
+        /// <param name="includeEpisodes">(Since 1.9.0) Whether to include Podcast episodes in the returned result. [Default = true]</param>
+        /// <param name="cancelToken"></param>
         /// <returns>Podcasts</returns>
-        Task<Podcasts> GetPodcastsAsync(string id = null, bool? includeEpisodes = null,
-            CancellationToken? cancelToken = null);
+        Task<Podcasts> GetPodcastsAsync(string id = null, bool? includeEpisodes = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Requests the server to check for new Podcast episodes. Note: The user must be authorized for Podcast administration.
         /// </summary>
+        /// <param name="cancelToken"></param>
         /// <returns>bool</returns>
         Task<bool> RefreshPodcastsAsync(CancellationToken? cancelToken = null);
 
@@ -435,8 +431,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="pathOverride"></param>
         /// <param name="cancelToken"></param>
         /// <returns>long</returns>
-        Task<long> DownloadPodcastEpisodeAsync(string id, string path, bool pathOverride = false,
-            CancellationToken? cancelToken = null);
+        Task<long> DownloadPodcastEpisodeAsync(string id, string path, bool pathOverride = false, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Controls the jukebox, i.e., playback directly on the server's audio hardware. Note: The user must be authorized to control the jukebox.
@@ -447,8 +442,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="id">Used by add. ID of song to add to the jukebox playlist. Use multiple id parameters to add many songs in the same request.</param>
         /// <param name="cancelToken"></param>
         /// <returns>bool</returns>
-        Task<bool> JukeboxControlAsync(JukeboxControlAction action, int? index = null, float? gain = null,
-            IEnumerable<string> id = null, CancellationToken? cancelToken = null);
+        Task<bool> JukeboxControlAsync(JukeboxControlAction action, int? index = null, float? gain = null, IEnumerable<string> id = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Retrieves the jukebox playlist. Note: The user must be authorized to control the jukebox.
@@ -512,10 +506,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="podcastRole">Whether the user is allowed to administrate Podcasts. [Default = false]</param>
         /// <param name="cancelToken"></param>
         /// <returns>bool</returns>
-        Task<bool> CreateUserAsync(string username, string password, string email, bool? ldapAuthenticated = null,
-            bool? adminRole = null, bool? settingsRole = null, bool? streamRole = null, bool? jukeboxRole = null,
-            bool? downloadRole = null, bool? uploadRole = null, bool? playlistRole = null, bool? coverArtRole = null,
-            bool? commentRole = null, bool? podcastRole = null, CancellationToken? cancelToken = null);
+        Task<bool> CreateUserAsync(string username, string password, string email, bool? ldapAuthenticated = null, bool? adminRole = null, bool? settingsRole = null, bool? streamRole = null, bool? jukeboxRole = null, bool? downloadRole = null, bool? uploadRole = null, bool? playlistRole = null, bool? coverArtRole = null, bool? commentRole = null, bool? podcastRole = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Modifies an existing Subsonic user.
@@ -536,11 +527,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="shareRole">Whether the user is allowed to share files with anyone.</param>
         /// <param name="cancelToken"></param>
         /// <returns>bool</returns>
-        Task<bool> UpdateUserAsync(string username, string password = null, string email = null,
-            bool? ldapAuthenticated = null, bool? adminRole = null, bool? settingsRole = null, bool? streamRole = null,
-            bool? jukeboxRole = null, bool? downloadRole = null, bool? uploadRole = null, bool? coverArtRole = null,
-            bool? commentRole = null, bool? podcastRole = null, bool? shareRole = null,
-            CancellationToken? cancelToken = null);
+        Task<bool> UpdateUserAsync(string username, string password = null, string email = null, bool? ldapAuthenticated = null, bool? adminRole = null, bool? settingsRole = null, bool? streamRole = null, bool? jukeboxRole = null, bool? downloadRole = null, bool? uploadRole = null, bool? coverArtRole = null, bool? commentRole = null, bool? podcastRole = null, bool? shareRole = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Deletes an existing Subsonic user.
@@ -587,8 +574,8 @@ namespace Subsonic.Common.Interfaces
         /// Returns artist info with biography, image URLs and similar artists, using data from last.fm.
         /// </summary>
         /// <param name="id">The artist, album or song ID.</param>
-        /// <param name="count">Max number of similar artists to return.</param>
-        /// <param name="includeNotPresent">Whether to return artists that are not present in the media library.</param>
+        /// <param name="count">Max number of similar artists to return. [Default = 20]</param>
+        /// <param name="includeNotPresent">Whether to return artists that are not present in the media library. [Default = false]</param>
         /// <param name="cancelToken"></param>
         /// <returns>ArtistInfo</returns>
         Task<ArtistInfo> GetArtistInfoAsync(string id, int? count = null, bool? includeNotPresent = null, CancellationToken? cancelToken = null);
@@ -597,8 +584,8 @@ namespace Subsonic.Common.Interfaces
         /// Returns artist info with biography, image URLs and similar artists, using data from last.fm. Similar to getArtistInfo, but organizes music according to ID3 tags.
         /// </summary>
         /// <param name="id">The artist ID.</param>
-        /// <param name="count">Max number of similar artists to return.</param>
-        /// <param name="includeNotPresent">Whether to return artists that are not present in the media library.</param>
+        /// <param name="count">Max number of similar artists to return. [Default = 20]</param>
+        /// <param name="includeNotPresent">Whether to return artists that are not present in the media library. [Default = false]</param>
         /// <param name="cancelToken"></param>
         /// <returns>ArtistInfo2</returns>
         Task<ArtistInfo2> GetArtistInfo2Async(string id, int? count = null, bool? includeNotPresent = null, CancellationToken? cancelToken = null);
@@ -607,7 +594,7 @@ namespace Subsonic.Common.Interfaces
         /// Returns a random collection of songs from the given artist and similar artists, using data from last.fm. Typically used for artist radio features.
         /// </summary>
         /// <param name="id">The artist, album or song ID.</param>
-        /// <param name="count">Max number of songs to return.</param>
+        /// <param name="count">Max number of songs to return. [Default = 50]</param>
         /// <param name="cancelToken"></param>
         /// <returns>SimilarSongs</returns>
         Task<SimilarSongs> GetSimilarSongsAsync(string id, int? count = null, CancellationToken? cancelToken = null);
@@ -616,9 +603,23 @@ namespace Subsonic.Common.Interfaces
         /// Returns a random collection of songs from the given artist and similar artists, using data from last.fm. Typically used for artist radio features. Similar to getSimilarSongs, but organizes music according to ID3 tags.
         /// </summary>
         /// <param name="id">The artist, album or song ID.</param>
-        /// <param name="count">Max number of songs to return.</param>
+        /// <param name="count">Max number of songs to return. [Default = 50]</param>
         /// <param name="cancelToken"></param>
         /// <returns>SimilarSongs2</returns>
         Task<SimilarSongs2> GetSimilarSongs2Async(string id, int? count = null, CancellationToken? cancelToken = null);
+
+        /// <summary>
+        /// Begin scanning of media folders
+        /// </summary>
+        /// <param name="cancelToken"></param>
+        /// <returns cref="bool">True on success</returns>
+        Task<bool> ScanMediaFolders(CancellationToken? cancelToken = null);
+
+        /// <summary>
+        /// Subsonic stores information about all media files ever encountered. By cleaning up the database, information about files that are no longer in your media collection is permanently removed.
+        /// </summary>
+        /// <param name="cancelToken"></param>
+        /// <returns cref="bool">True on success</returns>
+        Task<bool> CleanupMediaFolders(CancellationToken? cancelToken = null);
     }
 }

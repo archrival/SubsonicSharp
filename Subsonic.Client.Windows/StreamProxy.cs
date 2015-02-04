@@ -60,6 +60,7 @@ namespace Subsonic.Client.Windows
 
             if (_thread == null) return;
 
+            _socket.Stop();
             _thread.Abort();
         }
 
@@ -76,9 +77,6 @@ namespace Subsonic.Client.Windows
         {
             try
             {
-                if (!_socket.Pending())
-                    return !_isRunning;
-
                 var client = _socket.AcceptTcpClient();
 
                 if (!client.Connected)

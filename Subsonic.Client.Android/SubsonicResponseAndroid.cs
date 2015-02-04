@@ -3,19 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Subsonic.Common.Enums;
 using Subsonic.Common.Interfaces;
+using Subsonic.Client.Interfaces;
 
-namespace Subsonic.Client.Windows
+namespace Subsonic.Client.Android
 {
-    public class SubsonicHttpResponseWindows<T> : SubsonicHttpResponse<T>
+    public class SubsonicResponseAndroid<T> : SubsonicResponse<T>
     {
-        internal SubsonicServerWindows SubsonicServerWindows { get; set; }
-        internal SubsonicHttpRequestWindows<T> WindowsRequest { get; private set; }
-
-        public SubsonicHttpResponseWindows(SubsonicServerWindows subsonicServer) : base(subsonicServer)
-        {
-            SubsonicServerWindows = subsonicServer;
-            WindowsRequest = new SubsonicHttpRequestWindows<T>(subsonicServer);
-        }
+        public SubsonicResponseAndroid(ISubsonicServer subsonicServer) : base(subsonicServer, new SubsonicRequestAndroid<T>(subsonicServer)) { }
 
         /// <summary>
         /// Get a response from the Subsonic server for the given method.
@@ -29,7 +23,7 @@ namespace Subsonic.Client.Windows
         {
             ValidateApiVersion(method, methodApiVersion);
 
-            return await WindowsRequest.ImageRequestAsync(method, methodApiVersion, parameters, cancelToken);
+            return await SubsonicRequest.ImageRequestAsync(method, methodApiVersion, parameters, cancelToken);
         }
 
         /// <summary>
@@ -46,7 +40,7 @@ namespace Subsonic.Client.Windows
         {
             ValidateApiVersion(method, methodApiVersion);
 
-            return await WindowsRequest.RequestAsync(path, pathOverride, method, methodApiVersion, parameters, cancelToken);
+            return await SubsonicRequest.RequestAsync(path, pathOverride, method, methodApiVersion, parameters, cancelToken);
         }
     }
 }

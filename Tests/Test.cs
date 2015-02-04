@@ -1,54 +1,60 @@
 ﻿using System;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using NUnit.Framework;
 using Subsonic.Client.Exceptions;
 using Subsonic.Client.Extensions;
+using Subsonic.Common;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
 using Subsonic.Common.Interfaces;
+using Subsonic.Client.Activities;
+using Subsonic.Client.Interfaces;
 
 namespace Subsonic.Client.Windows.Tests
 {
     [TestFixture]
     public class Test
     {
-        public static readonly Uri SubsonicServer = new Uri("http://localhost:8080/subsonic/");
-        public static readonly Uri MadsonicServer = new Uri("http://localhost:8080/madsonic/");
-        public static readonly Uri NonexistentServer = new Uri("http://localhost:8080/ultrasonic/");
-        public static readonly string AdminUser = "test_admin";
-        public static readonly string DownloadUser = "test_download";
-        public static readonly string NoPlayUser = "test_noplay";
-        public static readonly string PlayUser = "test_play";
-        public static readonly string Password = "password";
-        public static readonly string UserToCreate = "test_createduser";
-        public static readonly string UserToCreateEmail = "test_createduser@localhost";
-        public static readonly string ClientName = "Subsonic.Client.Windows.Tests";
+        public static readonly Uri SubsonicServer = new Uri("http://localhost/subsonic/");
+        public static readonly Uri MadsonicServer = new Uri("http://localhost/madsonic/");
+        public static readonly Uri NonexistentServer = new Uri("http://localhost/ultrasonic/");
+        public const string ProxyServer = "localhost";
+        public const int ProxyPort = 8888;
+        public const string AdminUser = "test_admin";
+        public const string DownloadUser = "test_download";
+        public const string NoPlayUser = "test_noplay";
+        public const string PlayUser = "test_play";
+        public const string Password = "password";
+        public const string UserToCreate = "test_createduser";
+        public const string UserToCreateEmail = "test_createduser@localhost";
+        public const string ClientName = "Subsonic.Client.Windows.Tests";
 
-        public static readonly int MaxRandomSongCount = 500;
-        public static readonly int MinRandomSongCount = 1;
-        public static readonly int InvalidRandomSongCount = 501;
+        public const int MaxRandomSongCount = 500;
+        public const int MinRandomSongCount = 1;
+        public const int InvalidRandomSongCount = 501;
 
         public ISubsonicClient<Image> AdminSubsonicClient;
         public ISubsonicClient<Image> DownloadSubsonicClient;
         public ISubsonicClient<Image> NoPlaySubsonicClient;
         public ISubsonicClient<Image> PlaySubsonicClient;
         public ISubsonicClient<Image> NonexistentSubsonicClient;
-        public SubsonicServerWindows AdminSubsonicServer;
-        public SubsonicServerWindows DownloadSubsonicServer;
-        public SubsonicServerWindows NoPlaySubsonicServer;
-        public SubsonicServerWindows PlaySubsonicServer;
-        public SubsonicServerWindows NonexistentSubsonicServer;
+        public ISubsonicServer AdminSubsonicServer;
+        public ISubsonicServer DownloadSubsonicServer;
+        public ISubsonicServer NoPlaySubsonicServer;
+        public ISubsonicServer PlaySubsonicServer;
+        public ISubsonicServer NonexistentSubsonicServer;
         public Random Random;
 
         [TestFixtureSetUp]
         public void Setup()
         {
-            AdminSubsonicServer = new SubsonicServerWindows(SubsonicServer, AdminUser, Password, ClientName);
-            DownloadSubsonicServer = new SubsonicServerWindows(SubsonicServer, DownloadUser, Password, ClientName);
-            NoPlaySubsonicServer = new SubsonicServerWindows(SubsonicServer, NoPlayUser, Password, ClientName);
-            PlaySubsonicServer = new SubsonicServerWindows(SubsonicServer, PlayUser, Password, ClientName);
-            NonexistentSubsonicServer = new SubsonicServerWindows(NonexistentServer, AdminUser, Password, ClientName);
+            AdminSubsonicServer = new SubsonicServer(SubsonicServer, AdminUser, Password, ClientName);
+            DownloadSubsonicServer = new SubsonicServer(SubsonicServer, DownloadUser, Password, ClientName);
+            NoPlaySubsonicServer = new SubsonicServer(SubsonicServer, NoPlayUser, Password, ClientName);
+            PlaySubsonicServer = new SubsonicServer(SubsonicServer, PlayUser, Password, ClientName);
+            NonexistentSubsonicServer = new SubsonicServer(NonexistentServer, AdminUser, Password, ClientName);
 
             AdminSubsonicClient = new SubsonicClientWindows(AdminSubsonicServer);
             DownloadSubsonicClient = new SubsonicClientWindows(DownloadSubsonicServer);
@@ -81,7 +87,7 @@ namespace Subsonic.Client.Windows.Tests
 
             Assert.IsTrue(result);
             Assert.IsNotNull(AdminSubsonicServer.GetApiVersion());
-            Assert.IsTrue(AdminSubsonicServer.GetApiVersion() >= Subsonic.Common.SubsonicApiVersions.Version1_0_0);
+            Assert.IsTrue(AdminSubsonicServer.GetApiVersion() >= SubsonicApiVersions.Version1_0_0);
         }
 
         [Test]
@@ -96,7 +102,7 @@ namespace Subsonic.Client.Windows.Tests
 
             Assert.IsTrue(result);
             Assert.IsNotNull(DownloadSubsonicServer.GetApiVersion());
-            Assert.IsTrue(DownloadSubsonicServer.GetApiVersion() >= Subsonic.Common.SubsonicApiVersions.Version1_0_0);
+            Assert.IsTrue(DownloadSubsonicServer.GetApiVersion() >= SubsonicApiVersions.Version1_0_0);
         }
 
         [Test]
@@ -111,7 +117,7 @@ namespace Subsonic.Client.Windows.Tests
 
             Assert.IsTrue(result);
             Assert.IsNotNull(NoPlaySubsonicServer.GetApiVersion());
-            Assert.IsTrue(NoPlaySubsonicServer.GetApiVersion() >= Subsonic.Common.SubsonicApiVersions.Version1_0_0);
+            Assert.IsTrue(NoPlaySubsonicServer.GetApiVersion() >= SubsonicApiVersions.Version1_0_0);
         }
 
         [Test]
@@ -126,7 +132,7 @@ namespace Subsonic.Client.Windows.Tests
 
             Assert.IsTrue(result);
             Assert.IsNotNull(PlaySubsonicServer.GetApiVersion());
-            Assert.IsTrue(PlaySubsonicServer.GetApiVersion() >= Subsonic.Common.SubsonicApiVersions.Version1_0_0);
+            Assert.IsTrue(PlaySubsonicServer.GetApiVersion() >= SubsonicApiVersions.Version1_0_0);
         }
 
         [Test]
@@ -280,7 +286,7 @@ namespace Subsonic.Client.Windows.Tests
         {
             bool result = false;
 
-            string chatMessage = DateTime.UtcNow.Ticks.ToString();
+            string chatMessage = DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture);
 
             Assert.DoesNotThrow(async () =>
                 {
@@ -304,7 +310,7 @@ namespace Subsonic.Client.Windows.Tests
         {
             bool result = false;
 
-            string chatMessage = DateTime.UtcNow.Ticks.ToString();
+            string chatMessage = DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture);
 
             Assert.DoesNotThrow(async () =>
                 {
@@ -328,7 +334,7 @@ namespace Subsonic.Client.Windows.Tests
         {
             bool result = false;
 
-            string chatMessage = DateTime.UtcNow.Ticks.ToString();
+            string chatMessage = DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture);
 
             Assert.DoesNotThrow(async () =>
                 {
@@ -816,8 +822,6 @@ namespace Subsonic.Client.Windows.Tests
         [Test]
         public void GetByGenreAlbumListWithInvalidServerVersionAsAdminUserOnSubsonic()
         {
-            AlbumList albumList = null;
-
             Genres genres = null;
 
             Assert.DoesNotThrow(async () =>
@@ -829,12 +833,9 @@ namespace Subsonic.Client.Windows.Tests
             Genre randomGenre = genres.Items.ElementAt(randomNumberForGenre);
 
             Version previousApiVersion = AdminSubsonicServer.GetApiVersion();
-            AdminSubsonicServer.SetApiVersion(Subsonic.Common.SubsonicApiVersions.Version1_10_0);
+            AdminSubsonicServer.SetApiVersion(SubsonicApiVersions.Version1_10_0);
 
-            Assert.Throws<SubsonicInvalidApiException>(async () =>
-                {
-                    albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.ByGenre, genre: randomGenre.Name);
-                });
+            Assert.Throws<SubsonicInvalidApiException>(async () => await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.ByGenre, genre: randomGenre.Name));
 
             AdminSubsonicServer.SetApiVersion(previousApiVersion);
         }
@@ -842,12 +843,103 @@ namespace Subsonic.Client.Windows.Tests
         [Test]
         public void GetByYearAlbumListWithInvalidParametersAsAdminUserOnSubsonic()
         {
+            Assert.Throws<SubsonicErrorException>(async () => await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.ByYear));
+        }
+
+        [Test]
+        public void GenresActivityTest()
+        {
+            var genresActivity = new GenresActivity<Image>(AdminSubsonicClient);
+
+            Genres genres = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    genres = await genresActivity.GetResult();
+                });
+
+            Assert.IsTrue(genres.Items.Any());
+
+            genres = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    genres = await genresActivity.GetResult();
+                });
+
+            Assert.IsTrue(genres.Items.Any());
+        }
+
+        [Test]
+        public void MusicFoldersActivityTest()
+        {
+            var activity = new MusicFoldersActivity<Image>(AdminSubsonicClient);
+
+            MusicFolders musicFolders = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    musicFolders = await activity.GetResult();
+                });
+
+            Assert.IsTrue(musicFolders.Items.Any());
+
+            musicFolders = null;
+
+            Assert.DoesNotThrow(async () =>
+                {
+                    musicFolders = await activity.GetResult();
+                });
+
+            Assert.IsTrue(musicFolders.Items.Any());
+        }
+
+        [Test]
+        public void ScanMediaFoldersAsAdminUserOnSubsonic()
+        {
+            bool success = false;
+
+            Assert.DoesNotThrow(async () => 
+                {
+                    success = await AdminSubsonicClient.ScanMediaFolders();
+                });
+
+            Assert.IsTrue(success);
+        }
+
+        [Test]
+        public void CleanupMediaFoldersAsAdminUserOnSubsonic()
+        {
+            bool success = false;
+
+            Assert.DoesNotThrow(async () =>
+            {
+                success = await AdminSubsonicClient.CleanupMediaFolders();
+            });
+
+            Assert.IsTrue(success);
+        }
+
+        [Test]
+        public void GetCoverArtSizeAsAdminUserOnSubsonic()
+        {
             AlbumList albumList = null;
 
-            Assert.Throws<SubsonicErrorException>(async () =>
-                {
-                    albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.ByYear);
-                });
+            Assert.DoesNotThrow(async () =>
+            {
+                albumList = await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.Random, 1);
+            });
+
+            Assert.IsNotNull(albumList);
+
+            long artSize = 0;
+
+            Assert.DoesNotThrow(async () =>
+            {
+                artSize = await AdminSubsonicClient.GetCoverArtSizeAsync(albumList.Albums.First().CoverArt);
+            });
+            
+            Assert.GreaterOrEqual(artSize, 0);
         }
     }
 }

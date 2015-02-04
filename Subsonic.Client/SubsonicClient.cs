@@ -19,9 +19,9 @@ namespace Subsonic.Client
     public class SubsonicClient<T> : ISubsonicClient<T>
     {
         protected ISubsonicResponse<T> SubsonicResponse { get; set; }
-        protected ISubsonicRequest<T> SubsonicRequest { private get; set; }
-        protected ISubsonicServer SubsonicServer { get; set; }
-        protected bool EncodePasswords { get; set; }
+        protected ISubsonicRequest<T> SubsonicRequest { get; set; }
+        private ISubsonicServer SubsonicServer { get; set; }
+        private bool EncodePasswords { get; set; }
 
         protected SubsonicClient(ISubsonicServer subsonicServer)
         {
@@ -219,7 +219,7 @@ namespace Subsonic.Client
         /// <param name="size">If specified, scale image to this size.</param>
         /// <param name="cancelToken"> </param>
         /// <returns>long</returns>
-        public async Task<long> GetCoverArtSizeAsync(string id, int? size = null, CancellationToken? cancelToken = null)
+        public virtual async Task<long> GetCoverArtSizeAsync(string id, int? size = null, CancellationToken? cancelToken = null)
         {
             var parameters = SubsonicParameters.Create();
             parameters.Add(ParameterConstants.Id, id, true);
@@ -372,7 +372,7 @@ namespace Subsonic.Client
             return await SubsonicResponse.GetResponseAsync(Methods.AddChatMessage, SubsonicApiVersions.Version1_2_0, parameters, cancelToken);
         }
 
-        public virtual async Task<AlbumList> GetAlbumListAsync(AlbumListType type, int? size = null, int? offset = null, int? fromYear = null, int? toYear = null, string genre = null, CancellationToken? cancelToken = null)
+        public virtual async Task<AlbumList> GetAlbumListAsync(AlbumListType type, int? size = null, int? offset = null, int? fromYear = null, int? toYear = null, string genre = null, string musicFolderId = null, CancellationToken? cancelToken = null)
         {
             var methodApiVersion = SubsonicApiVersions.Version1_2_0;
 
@@ -397,6 +397,12 @@ namespace Subsonic.Client
             {
                 parameters.Add(ParameterConstants.Genre, genre, true);
                 methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1_10_1);
+            }
+
+            if (!string.IsNullOrWhiteSpace(musicFolderId))
+            {
+                parameters.Add(ParameterConstants.MusicFolderId, musicFolderId);
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1_11_0);
             }
 
             return await SubsonicResponse.GetResponseAsync<AlbumList>(Methods.GetAlbumList, methodApiVersion, parameters, cancelToken);
@@ -727,6 +733,16 @@ namespace Subsonic.Client
             parameters.Add(ParameterConstants.Count, count);
 
             return await SubsonicResponse.GetResponseAsync<SimilarSongs2>(Methods.GetSimilarSongs2, SubsonicApiVersions.Version1_11_0, parameters, cancelToken);
+        }
+
+        public virtual async Task<bool> ScanMediaFolders(CancellationToken? cancelToken = null)
+        {
+            return await SubsonicResponse.GetSettingChangeResponseAsync(SettingMethods.ScanNow, cancelToken);
+        }
+
+        public virtual async Task<bool> CleanupMediaFolders(CancellationToken? cancelToken = null)
+        {
+            return await SubsonicResponse.GetSettingChangeResponseAsync(SettingMethods.Expunge, cancelToken);
         }
 
         public Uri BuildDownloadUrl(string id)

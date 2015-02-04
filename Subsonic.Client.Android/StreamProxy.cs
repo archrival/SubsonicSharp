@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -9,14 +10,22 @@ using Subsonic.Client.Items;
 
 namespace Subsonic.Client.Android
 {
-    public sealed class StreamProxy : IDisposable
+    public class StreamProxy : IDisposable
     {
-        private Thread _thread;
-        private bool _isRunning;
-        private TcpListener _socket;
-        private int _port;
-        private TrackItem _trackItem;
-        private StreamToMediaPlayerTask _task;
+        Thread _thread;
+        bool _isRunning;
+        TcpListener _socket;
+        int _port;
+        TrackItem _trackItem;
+        StreamToMediaPlayerTask _task;
+        static readonly Lazy<StreamProxy> StreamProxyInstance = new Lazy<StreamProxy>(() => new StreamProxy());
+
+        StreamProxy() { }
+
+        public static StreamProxy Instance
+        {
+            get { return StreamProxyInstance.Value; }
+        }
 
         public void SetTrackItem(TrackItem trackItem)
         {
@@ -40,7 +49,7 @@ namespace Subsonic.Client.Android
                 _thread = new Thread(Run);
                 _thread.Start();
             }
-            catch (Exception ex)
+            catch
             {
             }
         }
@@ -51,25 +60,23 @@ namespace Subsonic.Client.Android
 
             if (_thread == null) return;
 
+            _socket.Stop();
             _thread.Abort();
         }
 
-        private void Run()
+        void Run()
         {
             _isRunning = true;
 
-            _task = new StreamToMediaPlayerTask(this);
+            _task = new StreamToMediaPlayerTask();
 
             SpinWait.SpinUntil(CheckForWork);
         }
 
-        private bool CheckForWork()
+        bool CheckForWork()
         {
             try
             {
-                if (!_socket.Pending())
-                    return !_isRunning;
-
                 var client = _socket.AcceptTcpClient();
 
                 if (!client.Connected)
@@ -82,7 +89,7 @@ namespace Subsonic.Client.Android
                 else
                     _task.Dispose();
             }
-            catch (Exception ex)
+            catch
             {
             }
 
@@ -98,19 +105,14 @@ namespace Subsonic.Client.Android
                 _task.Dispose();
         }
 
-        private sealed class StreamToMediaPlayerTask : IDisposable
+        class StreamToMediaPlayerTask : IDisposable
         {
-            private string _localPath;
-            private TcpClient _client;
-            private int _cbSkip;
-            private readonly StreamProxy _instance;
-            private NetworkStream _inputStream;
-            private StreamReader _streamReader;
-
-            public StreamToMediaPlayerTask(StreamProxy streamProxy)
-            {
-                _instance = streamProxy;
-            }
+            string _localPath;
+            TcpClient _client;
+            int _cbSkip;
+            NetworkStream _inputStream;
+            StreamReader _streamReader;
+            const string Headers = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nConnection: close\r\n\r\n";
 
             internal void SetClient(TcpClient client)
             {
@@ -124,7 +126,7 @@ namespace Subsonic.Client.Android
                 _localPath = null;
             }
 
-            private string ReadRequest()
+            string ReadRequest()
             {
                 String firstLine;
 
@@ -157,45 +159,39 @@ namespace Subsonic.Client.Android
 
                 const int timeToWaitForFile = 5000;
 
-                if (_localPath != null)
+                if (_localPath == null)
+                    return false;
+
+                var file = new FileInfo(_localPath);
+
+                if (file.Exists)
+                    return true;
+
+                bool waitForFile = true;
+                var sw = new Stopwatch();
+                sw.Start();
+
+                while (waitForFile)
                 {
-                    FileInfo file = new FileInfo(_localPath);
+                    file.Refresh();
 
                     if (file.Exists)
                         return true;
 
-                    bool waitForFile = true;
-                    DateTime start = DateTime.UtcNow;
+                    Thread.Sleep(2);
 
-                    while (waitForFile)
-                    {
-                        file.Refresh();
-
-                        if (file.Exists)
-                            return true;
-
-                        Thread.Sleep(2);
-
-                        DateTime now = DateTime.UtcNow;
-
-                        if ((now - start).Milliseconds > timeToWaitForFile)
-                            waitForFile = false;
-                    }
+                    waitForFile &= sw.ElapsedMilliseconds <= timeToWaitForFile;
                 }
+
+                sw.Stop();
 
                 return false;
             }
 
             internal void Run()
             {
-                // Create HTTP header
-                string headers = "HTTP/1.1 200 OK\r\n";
-                headers += "Content-Type: application/octet-stream\r\n";
-                headers += "Connection: close\r\n";
-                headers += "\r\n";
-
-                var headerBytes = Encoding.ASCII.GetBytes(headers);
-                var buff = new byte[65536];
+                var headerBytes = Encoding.ASCII.GetBytes(Headers);
+                var buff = new byte[4096];
 
                 try
                 {
@@ -207,7 +203,7 @@ namespace Subsonic.Client.Android
                         var file = new FileInfo(_localPath);
 
                         // Loop as long as there's stuff to send
-                        while (_instance._isRunning && _client.Connected)
+                        while (Instance._isRunning && _client.Connected)
                         {
                             file.Refresh();
 
@@ -240,7 +236,7 @@ namespace Subsonic.Client.Android
                             }
 
                             // Done regardless of whether or not it thinks it is
-                            if (_instance._trackItem.Cached)
+                            if (Instance._trackItem.Cached)
                             {
                                 // Make sure we have the latest file information
                                 file.Refresh();
@@ -255,7 +251,7 @@ namespace Subsonic.Client.Android
                         }
                     }
                 }
-                catch(Exception ex)
+                catch
                 {
                 }
                 finally

@@ -14,7 +14,7 @@ namespace Subsonic.Client.Extensions
         /// <param name="xml">XML string to deserialize.</param>
         /// <param name="ignoreNamespace"></param>
         /// <returns>T</returns>
-        internal static T DeserializeFromXml<T>(this string xml, bool ignoreNamespace = true)
+        public static T DeserializeFromXml<T>(this string xml, bool ignoreNamespace = true)
         {
             T result;
 

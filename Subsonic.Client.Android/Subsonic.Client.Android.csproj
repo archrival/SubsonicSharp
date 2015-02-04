@@ -47,6 +47,13 @@
     <Reference Include="Microsoft.Threading.Tasks.Extensions">
       <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net45+win8+wpa81\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\monoandroid\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\monoandroid\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
@@ -59,10 +66,9 @@
     <Compile Include="Items\AndroidNowPlayingItem.cs" />
     <Compile Include="Items\AndroidTrackItem.cs" />
     <Compile Include="Items\AndroidGenreItem.cs" />
-    <Compile Include="SubsonicServerAndroid.cs" />
     <Compile Include="ImageFormat.cs" />
-    <Compile Include="SubsonicHttpResponseAndroid.cs" />
-    <Compile Include="SubsonicHttpRequestAndroid.cs" />
+    <Compile Include="SubsonicRequestAndroid.cs" />
+    <Compile Include="SubsonicResponseAndroid.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

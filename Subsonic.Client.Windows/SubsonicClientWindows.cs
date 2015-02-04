@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Subsonic.Client.Constants;
 using Subsonic.Client.Extensions;
+using Subsonic.Client.Interfaces;
 using Subsonic.Common;
 using Subsonic.Common.Enums;
 
@@ -10,11 +11,11 @@ namespace Subsonic.Client.Windows
 {
     public class SubsonicClientWindows : SubsonicClient<Image>
     {
-        public SubsonicClientWindows(SubsonicServerWindows subsonicServer) : base(subsonicServer)
+        public SubsonicClientWindows(ISubsonicServer subsonicServer) : base(subsonicServer)
         {
-            var windowsResponse = new SubsonicHttpResponseWindows<Image>(subsonicServer);
+            var windowsResponse = new SubsonicResponseWindows<Image>(subsonicServer);
             SubsonicResponse = windowsResponse;
-            SubsonicRequest = windowsResponse.WindowsRequest;
+            SubsonicRequest = windowsResponse.SubsonicRequest;
         }
 
         public override async Task<long> StreamAsync(string id, string path, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)

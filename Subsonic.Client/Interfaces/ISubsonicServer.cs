@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace Subsonic.Client.Interfaces
 {
@@ -15,6 +16,8 @@ namespace Subsonic.Client.Interfaces
         void SetClientName(string clientName);
         Version GetApiVersion();
         void SetApiVersion(Version apiVersion);
+        IWebProxy GetProxy();
+        void SetProxy(string host, int port);
     }
 }
 
