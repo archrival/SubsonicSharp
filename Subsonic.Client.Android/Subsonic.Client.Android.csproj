@@ -66,9 +66,10 @@
     <Compile Include="Items\AndroidNowPlayingItem.cs" />
     <Compile Include="Items\AndroidTrackItem.cs" />
     <Compile Include="Items\AndroidGenreItem.cs" />
-    <Compile Include="ImageFormat.cs" />
     <Compile Include="SubsonicRequestAndroid.cs" />
     <Compile Include="SubsonicResponseAndroid.cs" />
+    <Compile Include="ImageFormatFactoryAndroid.cs" />
+    <Compile Include="ImageFormatAndroid.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

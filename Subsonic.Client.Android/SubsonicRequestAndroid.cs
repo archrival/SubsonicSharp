@@ -16,57 +16,10 @@ namespace Subsonic.Client.Android
 {
     public class SubsonicRequestAndroid<T> : SubsonicRequest<T>
     {
-        public SubsonicRequestAndroid(ISubsonicServer subsonicServer) : base(subsonicServer)
+        public SubsonicRequestAndroid(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, imageFormatFactory)
         {
             SubsonicServer = subsonicServer;
-        }
-
-        public override async Task<IImageFormat<T>> ImageRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
-        {
-            var requestUri = SubsonicServer.BuildRequestUri(method, methodApiVersion, parameters);
-            var clientHandler = GetClientHandler();
-            var client = GetClient(clientHandler);
-
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
-
-            var content = new MemoryStream();
-
-            try
-            {
-                using (var response = cancelToken.HasValue ? await client.GetAsync(requestUri, cancelToken.Value) : await client.GetAsync(requestUri))
-                {
-                    if (response.Content.Headers.ContentType != null && response.Content.Headers.ContentType.MediaType.Contains(HttpContentTypes.TextXml))
-                    {
-                        var stringResponse = await response.Content.ReadAsStringAsync();
-
-                        if (stringResponse == null) throw new SubsonicErrorException("HTTP response contains no content");
-
-                        Response result = await DeserializeResponseAsync(stringResponse);
-
-                        if (result.ItemElementName == ItemChoiceType.Error)
-                            throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
-
-                        throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
-                    }
-
-                    await response.Content.CopyToAsync(content);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new SubsonicApiException(ex.Message, ex);
-            }
-
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
-
-            content.Position = 0;
-
-            var image = new ImageFormat();
-            image.SetImageFromStream(content);
-
-            return image as IImageFormat<T>;
+            ImageFormatFactory = imageFormatFactory;
         }
 
         public override async Task<long> RequestAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)

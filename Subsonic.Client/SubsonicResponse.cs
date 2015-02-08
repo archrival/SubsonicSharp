@@ -15,10 +15,10 @@ namespace Subsonic.Client
         private ISubsonicServer SubsonicServer { get; set; }
         protected ISubsonicRequest<T> SubsonicRequest { get; set; }
 
-        protected SubsonicResponse(ISubsonicServer subsonicServer)
+        protected SubsonicResponse(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormat)
         {
             SubsonicServer = subsonicServer;
-            SubsonicRequest = new SubsonicRequest<T>(subsonicServer);
+            SubsonicRequest = new SubsonicRequest<T>(subsonicServer, imageFormat);
         }
 
         protected SubsonicResponse(ISubsonicServer subsonicServer, ISubsonicRequest<T> subsonicRequest)

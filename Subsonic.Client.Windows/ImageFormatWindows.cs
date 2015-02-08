@@ -1,27 +1,27 @@
-﻿using Android.Graphics;
-using Subsonic.Common.Interfaces;
+﻿using Subsonic.Common.Interfaces;
+using System.Drawing;
 using System.IO;
 
-namespace Subsonic.Client.Android
+namespace Subsonic.Client.Windows
 {
-    public class ImageFormat : IImageFormat<Bitmap>
+    public class ImageFormatWindows : IImageFormat<Image>
     {
-        private Bitmap Image { get; set; }
+        private Image Image { get; set; }
         private Stream Stream { get; set; }
 
-        public Bitmap GetImage()
+        public Image GetImage()
         {
             return Image;
         }
 
-        public void SetImage(Bitmap image)
+        public void SetImage(Image image)
         {
             Image = image;
         }
 
         public void SetImageFromStream(Stream stream)
         {
-            Image = BitmapFactory.DecodeStream(stream);
+            Image = Image.FromStream(stream);
             Stream = stream;
         }
 

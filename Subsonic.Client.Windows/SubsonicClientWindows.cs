@@ -6,14 +6,15 @@ using Subsonic.Client.Extensions;
 using Subsonic.Client.Interfaces;
 using Subsonic.Common;
 using Subsonic.Common.Enums;
+using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Windows
 {
     public class SubsonicClientWindows : SubsonicClient<Image>
     {
-        public SubsonicClientWindows(ISubsonicServer subsonicServer) : base(subsonicServer)
+        public SubsonicClientWindows(ISubsonicServer subsonicServer, IImageFormatFactory<Image> imageFormatFactory) : base(subsonicServer)
         {
-            SubsonicResponse = new SubsonicResponseWindows<Image>(subsonicServer);
+            SubsonicResponse = new SubsonicResponseWindows<Image>(subsonicServer, imageFormatFactory);
         }
 
         public override async Task<long> StreamAsync(string id, string path, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)

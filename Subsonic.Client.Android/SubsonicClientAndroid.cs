@@ -7,14 +7,15 @@ using Subsonic.Common;
 using Subsonic.Common.Enums;
 using Subsonic.Client.Extensions;
 using Subsonic.Client.Interfaces;
+using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Android
 {
     public class SubsonicClientAndroid : SubsonicClient<Bitmap>
     {
-        public SubsonicClientAndroid(ISubsonicServer subsonicServer) : base(subsonicServer)
+        public SubsonicClientAndroid(ISubsonicServer subsonicServer, IImageFormatFactory<Bitmap> imageFormatFactory) : base(subsonicServer)
         {
-            SubsonicResponse = new SubsonicResponseAndroid<Bitmap>(subsonicServer);
+            SubsonicResponse = new SubsonicResponseAndroid<Bitmap>(subsonicServer, imageFormatFactory);
         }
 
         public override async Task<long> StreamAsync(string id, string path, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)

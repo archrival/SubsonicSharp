@@ -1,25 +1,25 @@
 ﻿<Properties StartupItem="Subsonic.Common\Subsonic.Common.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Subsonic.Client.Android\SubsonicRequestAndroid.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Tests\Test.cs">
     <Files>
-      <File FileName="Subsonic.Client\Interfaces\ISubsonicActivity.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\Interfaces\ISubsonicRequest.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\Interfaces\ISubsonicResponse.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client\Interfaces\ISubsonicActivity.cs" Line="42" Column="42" />
+      <File FileName="Subsonic.Client\Interfaces\ISubsonicRequest.cs" Line="41" Column="41" />
+      <File FileName="Subsonic.Client\Interfaces\ISubsonicResponse.cs" Line="42" Column="42" />
       <File FileName="Subsonic.Client\Activities\SubsonicActivity.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Client\Activities\GenresActivity.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Client\SubsonicClient.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Client\Activities\MusicFoldersActivity.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Common\Interfaces\ISubsonicClient.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Common\Interfaces\ISubsonicClient.cs" Line="40" Column="40" />
       <File FileName="Subsonic.Client\SubsonicRequest.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Common\Enums\MediaType.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Client\SubsonicResponse.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Common\Enums\Methods.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Common\Enums\SettingMethods.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Client\WebProxy.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Windows\SubsonicRequestWindows.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client.Windows\SubsonicRequestWindows.cs" Line="30" Column="30" />
       <File FileName="Subsonic.Client\SubsonicServer.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\Interfaces\ISubsonicServer.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Android\SubsonicRequestAndroid.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client\Interfaces\ISubsonicServer.cs" Line="37" Column="37" />
+      <File FileName="Subsonic.Client.Android\SubsonicRequestAndroid.cs" Line="43" Column="43" />
       <File FileName="Subsonic.Client.Android\SubsonicResponseAndroid.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Client\SubsonicParameters.cs" Line="1" Column="1" />
       <File FileName="Tests\Test.cs" Line="22" Column="22" />
@@ -32,13 +32,35 @@
       <File FileName="d:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\Extensions\XmlExtensions.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Common\Classes\Response.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Common\Classes\ChatMessage.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Android\SubsonicClientAndroid.cs" Line="46" Column="46" />
+      <File FileName="Subsonic.Client.Android\SubsonicClientAndroid.cs" Line="26" Column="26" />
       <File FileName="Subsonic.Common\SubsonicApiVersions.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Common\StreamParameters.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Android\StreamProxy.cs" Line="24" Column="24" />
+      <File FileName="Subsonic.Client.Android\StreamProxy.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Client.Android\ImageFormat.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Android\AndroidMediaStore.cs" Line="91" Column="91" />
+      <File FileName="Subsonic.Client.Android\AndroidMediaStore.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Common\Interfaces\IImageFormat.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client.Windows\ImageFormat.cs" Line="9" Column="9" />
+      <File FileName="Subsonic.Client.Windows\SubsonicClientWindows.cs" Line="26" Column="26" />
+      <File FileName="Subsonic.Client\Handlers\ChatHandler.cs" Line="35" Column="35" />
+      <File FileName="C:\Program Files (x86)\MSBuild\12.0\bin\Microsoft.Common.CurrentVersion.targets" Line="5" Column="5" />
     </Files>
+    <Pads>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True">
+          <Node name="Subsonic.Client.Windows.Tests" expanded="True">
+            <Node name="Subsonic" expanded="True">
+              <Node name="Client" expanded="True" selected="True">
+                <Node name="Windows" expanded="True">
+                  <Node name="Tests" expanded="True">
+                    <Node name="Test" expanded="True" />
+                  </Node>
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
