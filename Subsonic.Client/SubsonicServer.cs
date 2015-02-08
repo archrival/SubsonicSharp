@@ -105,15 +105,15 @@ namespace Subsonic.Client
             Proxy = new WebProxy(host, port);
         }
 
-        public virtual Uri BuildRequestUri(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
+        public Uri BuildRequestUri(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
         {
-            UriBuilder uriBuilder = new UriBuilder(GetUrl());
+            var uriBuilder = new UriBuilder(GetUrl());
 
-            StringBuilder pathBuilder = new StringBuilder(uriBuilder.Path);
+            var pathBuilder = new StringBuilder(uriBuilder.Path);
             pathBuilder.AppendFormat("/rest/{0}.view", method.GetXmlEnumAttribute());
             uriBuilder.Path = Regex.Replace(pathBuilder.ToString(), "/+", "/");
 
-            StringBuilder queryBuilder = new StringBuilder();
+            var queryBuilder = new StringBuilder();
             queryBuilder.AppendFormat("v={0}&c={1}", methodApiVersion, GetClientName());
 
             if (parameters != null && parameters.Parameters.Count > 0)
@@ -147,11 +147,11 @@ namespace Subsonic.Client
             return uriBuilder.Uri;
         }
 
-        public virtual Uri BuildRequestUriUser(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
+        public Uri BuildRequestUriUser(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
         {
-            UriBuilder uriBuilder = new UriBuilder(BuildRequestUri(method, methodApiVersion, parameters));
+            var uriBuilder = new UriBuilder(BuildRequestUri(method, methodApiVersion, parameters));
 
-            StringBuilder queryBuilder = new StringBuilder(uriBuilder.Query);
+            var queryBuilder = new StringBuilder(uriBuilder.Query.TrimStart('?'));
             string encodedPassword = string.Format("enc:{0}", GetPassword().ToHex());
             queryBuilder.AppendFormat("&u={0}&p={1}", GetUserName(), encodedPassword);
 
@@ -160,19 +160,19 @@ namespace Subsonic.Client
             return uriBuilder.Uri;
         }
 
-        public virtual Uri BuildSettingsRequestUri(SettingMethods method)
+        public Uri BuildSettingsRequestUri(SettingMethods method)
         {
-            UriBuilder uriBuilder = new UriBuilder(GetUrl())
+            var uriBuilder = new UriBuilder(GetUrl())
             {
                 UserName = GetUserName(),
                 Password = GetPassword()
             };
 
-            StringBuilder pathBuilder = new StringBuilder(uriBuilder.Path);
+            var pathBuilder = new StringBuilder(uriBuilder.Path);
             pathBuilder.Append("/musicFolderSettings.view");
             uriBuilder.Path = Regex.Replace(pathBuilder.ToString(), "/+", "/");
 
-            StringBuilder queryBuilder = new StringBuilder();
+            var queryBuilder = new StringBuilder();
             queryBuilder.AppendFormat("{0}", method.GetXmlEnumAttribute());
 
             uriBuilder.Query = queryBuilder.ToString();
@@ -181,4 +181,3 @@ namespace Subsonic.Client
         }
     }
 }
-

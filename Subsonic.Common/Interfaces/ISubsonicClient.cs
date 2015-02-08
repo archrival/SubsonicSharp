@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
-using System;
 
 namespace Subsonic.Common.Interfaces
 {

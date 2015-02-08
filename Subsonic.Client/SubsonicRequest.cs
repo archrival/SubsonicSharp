@@ -18,10 +18,10 @@ namespace Subsonic.Client
 {
     public class SubsonicRequest<T> : ISubsonicRequest<T>
     {
-        protected ISubsonicServer SubsonicServer { get; set; }
-        protected IImageFormatFactory<T> ImageFormatFactory { get; set; }
+        protected ISubsonicServer SubsonicServer { get; private set; }
+        private IImageFormatFactory<T> ImageFormatFactory { get; set; }
 
-        public SubsonicRequest(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory)
+        protected SubsonicRequest(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory)
         {
             SubsonicServer = subsonicServer;
             ImageFormatFactory = imageFormatFactory;
@@ -64,7 +64,7 @@ namespace Subsonic.Client
 
         public virtual Task<long> RequestAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
-            throw new NotImplementedException();
+            throw new SubsonicApiException("Unsupported method");
         }
 
         public virtual async Task RequestWithoutResponseAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
@@ -78,7 +78,7 @@ namespace Subsonic.Client
 
             try
             {
-                using (HttpRequestMessage message = new HttpRequestMessage(System.Net.Http.HttpMethod.Head, requestUri))
+                using (var message = new HttpRequestMessage(System.Net.Http.HttpMethod.Head, requestUri))
                 using (var ignored = cancelToken.HasValue ? await client.SendAsync(message, cancelToken.Value) : await client.SendAsync(message)) { }
             }
             catch (Exception ex)
@@ -186,7 +186,7 @@ namespace Subsonic.Client
 
             try
             {
-                using (HttpRequestMessage message = new HttpRequestMessage(System.Net.Http.HttpMethod.Head, requestUri))
+                using (var message = new HttpRequestMessage(System.Net.Http.HttpMethod.Head, requestUri))
                 using (HttpResponseMessage response = cancelToken.HasValue ? await client.SendAsync(message, cancelToken.Value) : await client.SendAsync(message))
                 {
                     if (!response.IsSuccessStatusCode)

@@ -16,11 +16,7 @@ namespace Subsonic.Client.Android
 {
     public class SubsonicRequestAndroid<T> : SubsonicRequest<T>
     {
-        public SubsonicRequestAndroid(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, imageFormatFactory)
-        {
-            SubsonicServer = subsonicServer;
-            ImageFormatFactory = imageFormatFactory;
-        }
+        public SubsonicRequestAndroid(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, imageFormatFactory) { }
 
         public override async Task<long> RequestAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {

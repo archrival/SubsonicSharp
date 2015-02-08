@@ -14,11 +14,7 @@ namespace Subsonic.Client.Windows
 {
     public class SubsonicRequestWindows<T> : SubsonicRequest<T>
     {
-        public SubsonicRequestWindows(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, imageFormatFactory)
-        {
-            SubsonicServer = subsonicServer;
-            ImageFormatFactory = imageFormatFactory;
-        }
+        public SubsonicRequestWindows(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, imageFormatFactory) { }
 
         public override async Task<long> RequestAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {

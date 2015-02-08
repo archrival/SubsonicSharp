@@ -18,13 +18,14 @@ namespace Subsonic.Client
 {
     public class SubsonicClient<T> : ISubsonicClient<T>
     {
-        protected ISubsonicResponse<T> SubsonicResponse { get; set; }
+        protected ISubsonicResponse<T> SubsonicResponse { private get; set; }
         private ISubsonicServer SubsonicServer { get; set; }
         private bool EncodePasswords { get; set; }
 
-        protected SubsonicClient(ISubsonicServer subsonicServer)
+        protected SubsonicClient(ISubsonicServer subsonicServer, bool encodePasswords = true)
         {
             SubsonicServer = subsonicServer;
+            EncodePasswords = encodePasswords;
         }
 
         public virtual async Task<bool> PingAsync(CancellationToken? cancelToken = null)
@@ -529,14 +530,63 @@ namespace Subsonic.Client
             return await SubsonicResponse.GetResponseAsync<Songs>(Methods.GetSongsByGenre, SubsonicApiVersions.Version1_9_0, parameters, cancelToken);
         }
 
-        public virtual Task<long> StreamAsync(string id, string path, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)
+        public virtual async Task<long> StreamAsync(string id, string path, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)
         {
-            throw new NotImplementedException();
+            var methodApiVersion = SubsonicApiVersions.Version1_2_0;
+
+            var parameters = SubsonicParameters.Create();
+            parameters.Add(ParameterConstants.Id, id, true);
+
+            if (streamParameters != null)
+            {
+                if (streamParameters.BitRate > 0)
+                    parameters.Add(ParameterConstants.MaxBitRate, streamParameters.BitRate);
+
+                if (streamParameters.Width > 0 && streamParameters.Height > 0)
+                {
+                    parameters.Add(ParameterConstants.Size, streamParameters);
+                    methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1_6_0);
+                }
+            }
+
+            if (timeOffset != null)
+            {
+                parameters.Add(ParameterConstants.TimeOffset, timeOffset);
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1_6_0);
+            }
+
+            if (estimateContentLength != null)
+            {
+                parameters.Add(ParameterConstants.EstimateContentLength, estimateContentLength);
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1_8_0);
+            }
+
+            if (format != null)
+            {
+                var streamFormatName = format.GetXmlEnumAttribute();
+
+                if (streamFormatName != null)
+                {
+                    parameters.Add(ParameterConstants.StreamFormat, streamFormatName);
+                    methodApiVersion = format == StreamFormat.Raw ? methodApiVersion.Max(SubsonicApiVersions.Version1_9_0) : methodApiVersion.Max(SubsonicApiVersions.Version1_6_0);
+                }
+            }
+
+            if (noResponse)
+            {
+                await SubsonicResponse.GetNoResponseAsync(Methods.Stream, methodApiVersion, parameters, cancelToken);
+                return 0;
+            }
+
+            return await SubsonicResponse.GetResponseAsync(path, true, Methods.Stream, methodApiVersion, parameters, cancelToken);
         }
 
-        public virtual Task<long> DownloadAsync(string id, string path, bool pathOverride = false, CancellationToken? cancelToken = null)
+        public virtual async Task<long> DownloadAsync(string id, string path, bool pathOverride = false, CancellationToken? cancelToken = null)
         {
-            throw new NotImplementedException();
+            var parameters = SubsonicParameters.Create();
+            parameters.Add(ParameterConstants.Id, id, true);
+
+            return await SubsonicResponse.GetResponseAsync(path, pathOverride, Methods.Download, SubsonicApiVersions.Version1_0_0, parameters, cancelToken);
         }
 
         public virtual async Task<string> HlsAsync(string id, IList<StreamParameters> streamParameters = null, CancellationToken? cancelToken = null)
@@ -602,9 +652,12 @@ namespace Subsonic.Client
             return await SubsonicResponse.GetResponseAsync(Methods.DeletePodcastEpisode, SubsonicApiVersions.Version1_9_0, parameters, cancelToken);
         }
 
-        public virtual Task<long> DownloadPodcastEpisodeAsync(string id, string path, bool pathOverride = false, CancellationToken? cancelToken = null)
+        public virtual async Task<long> DownloadPodcastEpisodeAsync(string id, string path, bool pathOverride = false, CancellationToken? cancelToken = null)
         {
-            throw new NotImplementedException();
+            var parameters = SubsonicParameters.Create();
+            parameters.Add(ParameterConstants.Id, id, true);
+
+            return await SubsonicResponse.GetResponseAsync(path, pathOverride, Methods.DownloadPodcastEpisode, SubsonicApiVersions.Version1_9_0, parameters, cancelToken);
         }
 
         public virtual async Task<InternetRadioStations> GetInternetRadioStationsAsync(CancellationToken? cancelToken = null)
