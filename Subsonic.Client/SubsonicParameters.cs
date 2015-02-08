@@ -1,8 +1,8 @@
-﻿using System.Collections;
+﻿using Subsonic.Client.Enums;
+using Subsonic.Client.Exceptions;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Subsonic.Client.Enums;
-using Subsonic.Client.Exceptions;
 
 namespace Subsonic.Client
 {

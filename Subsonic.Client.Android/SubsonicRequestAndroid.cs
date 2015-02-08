@@ -3,7 +3,6 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Android.Graphics;
 using Subsonic.Client.Constants;
 using Subsonic.Client.Exceptions;
 using Subsonic.Common.Classes;
@@ -24,7 +23,7 @@ namespace Subsonic.Client.Android
 
         public override async Task<IImageFormat<T>> ImageRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
-            var requestUri = BuildRequestUri(method, methodApiVersion, parameters);
+            var requestUri = SubsonicServer.BuildRequestUri(method, methodApiVersion, parameters);
             var clientHandler = GetClientHandler();
             var client = GetClient(clientHandler);
 
@@ -63,14 +62,16 @@ namespace Subsonic.Client.Android
                 cancelToken.Value.ThrowIfCancellationRequested();
 
             content.Position = 0;
-            var image = await BitmapFactory.DecodeStreamAsync(content);
 
-            return new ImageFormat(image) as IImageFormat<T>;
+            var image = new ImageFormat();
+            image.SetImageFromStream(content);
+
+            return image as IImageFormat<T>;
         }
 
         public override async Task<long> RequestAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
-            var requestUri = BuildRequestUri(method, methodApiVersion, parameters);
+            var requestUri = SubsonicServer.BuildRequestUri(method, methodApiVersion, parameters);
             var clientHandler = GetClientHandler();
             var client = GetClient(clientHandler);
 
@@ -124,8 +125,7 @@ namespace Subsonic.Client.Android
                         var fileInfo = new FileInfo(path);
 
                         // If the file on disk matches the file on the server, do not attempt a download
-                        if (response.Content.Headers.ContentLength >= 0 && response.Content.Headers.ContentLength == fileInfo.Length)
-                        if (response.Content.Headers.LastModified != null)
+                        if (response.Content.Headers.ContentLength >= 0 && response.Content.Headers.ContentLength == fileInfo.Length && response.Content.Headers.LastModified != null)
                             download = lastModified.LocalDateTime != fileInfo.LastWriteTime;
                     }
 

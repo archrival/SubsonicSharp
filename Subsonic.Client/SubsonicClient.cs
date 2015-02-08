@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Subsonic.Client.Constants;
+﻿using Subsonic.Client.Constants;
 using Subsonic.Client.Enums;
 using Subsonic.Client.Exceptions;
 using Subsonic.Client.Extensions;
@@ -13,13 +7,18 @@ using Subsonic.Common;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
 using Subsonic.Common.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Subsonic.Client
 {
     public class SubsonicClient<T> : ISubsonicClient<T>
     {
         protected ISubsonicResponse<T> SubsonicResponse { get; set; }
-        protected ISubsonicRequest<T> SubsonicRequest { get; set; }
         private ISubsonicServer SubsonicServer { get; set; }
         private bool EncodePasswords { get; set; }
 
@@ -212,20 +211,13 @@ namespace Subsonic.Client
             return await SubsonicResponse.GetResponseAsync(Methods.DeletePlaylist, SubsonicApiVersions.Version1_2_0, parameters, cancelToken);
         }
 
-        /// <summary>
-        /// Returns the size of a cover art image.
-        /// </summary>
-        /// <param name="id">A string which uniquely identifies the cover art file to download. Obtained by calls to getMusicDirectory.</param>
-        /// <param name="size">If specified, scale image to this size.</param>
-        /// <param name="cancelToken"> </param>
-        /// <returns>long</returns>
         public virtual async Task<long> GetCoverArtSizeAsync(string id, int? size = null, CancellationToken? cancelToken = null)
         {
             var parameters = SubsonicParameters.Create();
             parameters.Add(ParameterConstants.Id, id, true);
             parameters.Add(ParameterConstants.Size, size);
 
-            return await SubsonicResponse.GetImageSizeAsync(Methods.GetCoverArt, SubsonicApiVersions.Version1_0_0, parameters, cancelToken);
+            return await SubsonicResponse.GetContentLengthAsync(Methods.GetCoverArt, SubsonicApiVersions.Version1_0_0, parameters, cancelToken);
         }
 
         public virtual async Task<IImageFormat<T>> GetCoverArtAsync(string id, int? size = null, CancellationToken? cancelToken = null)
@@ -750,7 +742,7 @@ namespace Subsonic.Client
             var parameters = SubsonicParameters.Create();
             parameters.Add(ParameterConstants.Id, id, true);
 
-            return SubsonicRequest.BuildRequestUriUser(Methods.Download, SubsonicApiVersions.Version1_0_0, parameters);
+            return SubsonicServer.BuildRequestUriUser(Methods.Download, SubsonicApiVersions.Version1_0_0, parameters);
         }
 
         public Uri BuildStreamUrl(string id, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null)
@@ -795,7 +787,7 @@ namespace Subsonic.Client
                 }
             }
 
-            return SubsonicRequest.BuildRequestUriUser(Methods.Stream, methodApiVersion, parameters);
+            return SubsonicServer.BuildRequestUriUser(Methods.Stream, methodApiVersion, parameters);
         }
     }
 }

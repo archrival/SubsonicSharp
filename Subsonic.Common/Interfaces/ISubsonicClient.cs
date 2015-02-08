@@ -3,9 +3,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
+using System;
 
 namespace Subsonic.Common.Interfaces
 {
+    /// <summary>
+    /// Defines methods available on a Subsonic server.
+    /// </summary>
+    /// <typeparam name="T">Specifies the platform specific image format to be utilized.</typeparam>
     public interface ISubsonicClient<T>
     {
         /// <summary>
@@ -284,7 +289,7 @@ namespace Subsonic.Common.Interfaces
         Task<IImageFormat<T>> GetCoverArtAsync(string id, int? size = null, CancellationToken? cancelToken = null);
 
         /// <summary>
-        /// Returns size of a cover art image.
+        /// Returns the size of a cover art image.
         /// </summary>
         /// <param name="id">A string which uniquely identifies the cover art file to download. Obtained by calls to getMusicDirectory.</param>
         /// <param name="size">If specified, scale image to this size.</param>

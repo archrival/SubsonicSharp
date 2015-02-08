@@ -13,9 +13,7 @@ namespace Subsonic.Client.Windows
     {
         public SubsonicClientWindows(ISubsonicServer subsonicServer) : base(subsonicServer)
         {
-            var windowsResponse = new SubsonicResponseWindows<Image>(subsonicServer);
-            SubsonicResponse = windowsResponse;
-            SubsonicRequest = windowsResponse.SubsonicRequest;
+            SubsonicResponse = new SubsonicResponseWindows<Image>(subsonicServer);
         }
 
         public override async Task<long> StreamAsync(string id, string path, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)
@@ -61,7 +59,10 @@ namespace Subsonic.Client.Windows
             }
 
             if (noResponse)
-                return await SubsonicResponse.GetResponseAsyncNoResponse(Methods.Stream, methodApiVersion, parameters, cancelToken);
+            {
+                await SubsonicResponse.GetNoResponseAsync(Methods.Stream, methodApiVersion, parameters, cancelToken);
+                return 0;
+            }
 
             return await SubsonicResponse.GetResponseAsync(path, true, Methods.Stream, methodApiVersion, parameters, cancelToken);
 

@@ -13,7 +13,7 @@ namespace Subsonic.Client
     public class SubsonicResponse<T> : ISubsonicResponse<T>
     {
         private ISubsonicServer SubsonicServer { get; set; }
-        public ISubsonicRequest<T> SubsonicRequest { get; private set; }
+        protected ISubsonicRequest<T> SubsonicRequest { get; set; }
 
         protected SubsonicResponse(ISubsonicServer subsonicServer)
         {
@@ -27,14 +27,6 @@ namespace Subsonic.Client
             SubsonicRequest = subsonicRequest;
         }
 
-        /// <summary>
-        /// Get a boolean response from the Subsonic server for the given method.
-        /// </summary>
-        /// <param name="method" cref="Methods">Subsonic API method to call.</param>
-        /// <param name="methodApiVersion" cref="Version">Subsonic API version of the method.</param>
-        /// <param name="parameters" cref="SubsonicParameters">Parameters used by the method.</param>
-        /// <param name="cancelToken" cref="CancellationToken"></param>
-        /// <returns cref="bool">Returns true on success</returns>
         public virtual async Task<bool> GetResponseAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             ValidateApiVersion(method, methodApiVersion);
@@ -58,45 +50,18 @@ namespace Subsonic.Client
             return success;
         }
 
-        /// <summary>
-        /// Get a response and save it to a path from the Subsonic server for the given method.
-        /// </summary>
-        /// <param name="pathOverride"></param>
-        /// <param name="method">Subsonic API method to call.</param>
-        /// <param name="methodApiVersion">Subsonic API version of the method.</param>
-        /// <param name="parameters">Parameters used by the method.</param>
-        /// <param name="cancelToken"></param>
-        /// <param name="path"></param>
-        /// <returns cref="long">Returns bytes transferred</returns>
         public virtual Task<long> GetResponseAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Get a boolean response from the Subsonic server for the given method.
-        /// </summary>
-        /// <param name="method">Subsonic API method to call.</param>
-        /// <param name="methodApiVersion">Subsonic API version of the method.</param>
-        /// <param name="parameters">Parameters used by the method.</param>
-        /// <param name="cancelToken"> </param>
-        /// <returns>bool</returns>
-        public virtual async Task<long> GetResponseAsyncNoResponse(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        public virtual async Task GetNoResponseAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             ValidateApiVersion(method, methodApiVersion);
 
-            return await SubsonicRequest.RequestAsyncNoResponse(method, methodApiVersion, parameters, cancelToken);
+            await SubsonicRequest.RequestWithoutResponseAsync(method, methodApiVersion, parameters, cancelToken);
         }
 
-        /// <summary>
-        /// Get a response from the Subsonic server for the given method.
-        /// </summary>
-        /// <typeparam name="TResponse">Object type the method will return.</typeparam>
-        /// <param name="method">Subsonic API method to call.</param>
-        /// <param name="methodApiVersion">Subsonic API version of the method.</param>
-        /// <param name="parameters">Parameters used by the method.</param>
-        /// <param name="cancelToken"> </param>
-        /// <returns cref="{TResponse}"></returns>
         public virtual async Task<TResponse> GetResponseAsync<TResponse>(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             ValidateApiVersion(method, methodApiVersion);
@@ -120,54 +85,24 @@ namespace Subsonic.Client
             return result;
         }
 
-        /// <summary>
-        /// Get a response from the Subsonic server for the given method.
-        /// </summary>
-        /// <param name="method">Subsonic API method to call.</param>
-        /// <param name="methodApiVersion">Subsonic API version of the method.</param>
-        /// <param name="parameters">Parameters used by the method.</param>
-        /// <param name="cancelToken"> </param>
-        /// <returns>T</returns>
-        public virtual async Task<long> GetImageSizeAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        public virtual async Task<long> GetContentLengthAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             ValidateApiVersion(method, methodApiVersion);
-            return await SubsonicRequest.ImageSizeRequestAsync(method, methodApiVersion, parameters, cancelToken);
+            return await SubsonicRequest.ContentLengthRequestAsync(method, methodApiVersion, parameters, cancelToken);
         }
 
-        /// <summary>
-        /// Get a response from the Subsonic server for the given method.
-        /// </summary>
-        /// <param name="method">Subsonic API method to call.</param>
-        /// <param name="methodApiVersion">Subsonic API version of the method.</param>
-        /// <param name="parameters">Parameters used by the method.</param>
-        /// <param name="cancelToken"> </param>
-        /// <returns>T</returns>
         public virtual async Task<IImageFormat<T>> GetImageResponseAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             ValidateApiVersion(method, methodApiVersion);
             return await SubsonicRequest.ImageRequestAsync(method, methodApiVersion, parameters, cancelToken);
         }
 
-        /// <summary>
-        /// Get a response from the Subsonic server for the given method.
-        /// </summary>
-        /// <param name="method">Subsonic API method to call.</param>
-        /// <param name="methodApiVersion">Subsonic API version of the method.</param>
-        /// <param name="parameters">Parameters used by the method.</param>
-        /// <param name="cancelToken"></param>
-        /// <returns>T</returns>
         public virtual async Task<string> GetStringResponseAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             ValidateApiVersion(method, methodApiVersion);
             return await SubsonicRequest.StringRequestAsync(method, methodApiVersion, parameters, cancelToken);
         }
 
-        /// <summary>
-        /// Get a response from the Subsonic server for the given setting method.
-        /// </summary>
-        /// <param name="method">Subsonic API method to call.</param>
-        /// <param name="cancelToken"> </param>
-        /// <returns>HttpWebResponse</returns>
         public virtual async Task<bool> GetSettingChangeResponseAsync(SettingMethods method, CancellationToken? cancelToken = null)
         {
             return await SubsonicRequest.SettingChangeRequestAsync(method, cancelToken);
