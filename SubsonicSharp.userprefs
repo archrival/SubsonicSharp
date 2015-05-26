@@ -1,20 +1,22 @@
 ﻿<Properties StartupItem="Subsonic.Common\Subsonic.Common.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Tests\Test.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Subsonic.Client\Activities\SubsonicActivity.cs">
     <Files>
-      <File FileName="Tests\Test.cs" Line="978" Column="39" />
-      <File FileName="Subsonic.Common\Classes\PlayQueue.cs" Line="8" Column="21" />
-      <File FileName="Subsonic.Common\Interfaces\ISubsonicClient.cs" Line="649" Column="76" />
-      <File FileName="Subsonic.Client\SubsonicClient.cs" Line="862" Column="1" />
-      <File FileName="Subsonic.Client\SubsonicRequest.cs" Line="63" Column="1" />
-      <File FileName="Subsonic.Client\Interfaces\ISubsonicServer.cs" Line="98" Column="9" />
-      <File FileName="Subsonic.Client\SubsonicServer.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Common\Classes\Response.cs" Line="49" Column="38" />
-      <File FileName="Subsonic.Client\Interfaces\ISubsonicResponse.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\SubsonicResponse.cs" Line="82" Column="1" />
-      <File FileName="Subsonic.Client\Interfaces\ISubsonicRequest.cs" Line="25" Column="9" />
-      <File FileName="d:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\Extensions\XmlExtensions.cs" Line="41" Column="1" />
-      <File FileName="Subsonic.Common\Enums\ItemChoiceType.cs" Line="30" Column="35" />
+      <File FileName="Subsonic.Client\Activities\SubsonicActivity.cs" Line="53" Column="60" />
+      <File FileName="Subsonic.Client\Interfaces\ISubsonicActivityDelegate.cs" Line="3" Column="1" />
+      <File FileName="Subsonic.Client\Interfaces\ISubsonicActivity.cs" Line="7" Column="5" />
+      <File FileName="Subsonic.Client\Activities\MusicFoldersActivity.cs" Line="10" Column="16" />
+      <File FileName="Subsonic.Client\Activities\Search2ActivityDelegate.cs" Line="36" Column="1" />
+      <File FileName="Subsonic.Client\Activities\GenresActivity.cs" Line="9" Column="33" />
+      <File FileName="Subsonic.Client\Items\AlbumListItem.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client\Items\AlbumItem.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client\Items\ChildItem.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client\Items\ChatItem.cs" Line="64" Column="19" />
+      <File FileName="Subsonic.Client\Activities\Search2Activity.cs" Line="11" Column="40" />
+      <File FileName="Subsonic.Client\Activities\SubsonicActivityDelegate.cs" Line="19" Column="1" />
+      <File FileName="Subsonic.Client\SubsonicClient.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client\Extensions\XmlExtensions.cs" Line="41" Column="39" />
+      <File FileName="Tests\Test.cs" Line="911" Column="41" />
     </Files>
     <Pads>
       <Pad Id="MonoDevelop.NUnit.TestPad">
@@ -26,7 +28,7 @@
                   <Node name="Windows" expanded="True">
                     <Node name="Tests" expanded="True">
                       <Node name="Test" expanded="True">
-                        <Node name="GetPlayQueueAsAdminUserOnSubsonic" selected="True" />
+                        <Node name="GenresActivityTest" selected="True" />
                       </Node>
                     </Node>
                   </Node>
@@ -40,7 +42,8 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\Tests\Test.cs" line="978" column="39" />
+      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\Activities\SubsonicActivity.cs" line="43" column="1" />
+      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\Activities\SubsonicActivity.cs" line="57" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>

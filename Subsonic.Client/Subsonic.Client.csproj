@@ -117,6 +117,10 @@
     <Compile Include="Constants\HttpMethod.cs" />
     <Compile Include="SubsonicResponse.cs" />
     <Compile Include="SubsonicRequest.cs" />
+    <Compile Include="Interfaces\ISubsonicActivityDelegate.cs" />
+    <Compile Include="Activities\Search2ActivityDelegate.cs" />
+    <Compile Include="Activities\Search2Activity.cs" />
+    <Compile Include="Activities\SubsonicActivityDelegate.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

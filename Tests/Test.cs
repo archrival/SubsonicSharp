@@ -30,6 +30,7 @@ namespace Subsonic.Client.Windows.Tests
         public const string UserToCreate = "test_createduser";
         public const string UserToCreateEmail = "test_createduser@localhost";
         public const string ClientName = "Subsonic.Client.Windows.Tests";
+		public const string SearchQuery = "Smashing Pumpkins";
 
         public const int MaxRandomSongCount = 500;
         public const int MinRandomSongCount = 1;
@@ -896,6 +897,31 @@ namespace Subsonic.Client.Windows.Tests
 
             Assert.IsTrue(musicFolders.Items.Any());
         }
+
+		[Test]
+		public void Search2ActivityTest()
+		{
+			
+			var activity = new Search2Activity<Image> (AdminSubsonicClient, SearchQuery);
+
+			SearchResult2 searchResult2 = null;
+
+			Assert.DoesNotThrow(async () =>
+				{
+					searchResult2 = await activity.GetResult();
+				});
+
+			Assert.IsTrue(searchResult2.Artists.Any());
+
+			searchResult2 = null;
+
+			Assert.DoesNotThrow(async () =>
+				{
+					searchResult2 = await activity.GetResult();
+				});
+
+			Assert.IsTrue(searchResult2.Artists.Any());
+		}
 
         [Test]
         public void ScanMediaFoldersAsAdminUserOnSubsonic()

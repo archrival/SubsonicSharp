@@ -3,11 +3,13 @@ using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Activities
 {
-    public sealed class MusicFoldersActivity<T> : SubsonicActivity<MusicFolders, T>
-    {
-        public MusicFoldersActivity(ISubsonicClient<T> subsonicClient) : base(subsonicClient)
-        {
-            Function = (ignored) => subsonicClient.GetMusicFoldersAsync();
-        }
-    }
+	public class MusicFoldersActivity<T> : SubsonicActivity<MusicFolders, T>
+	{
+		public MusicFoldersActivity(ISubsonicClient<T> subsonicClient) : base(subsonicClient)
+		{
+			var activityDelegate = new SubsonicActivityDelegate<MusicFolders, T> ();
+			activityDelegate.Method = subsonicClient.GetMusicFoldersAsync;
+			ActivityDelegate = activityDelegate;
+		}
+	}
 }
