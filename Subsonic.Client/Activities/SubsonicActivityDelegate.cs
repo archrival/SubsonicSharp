@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Subsonic.Client.Interfaces;
 
-namespace Subsonic.Client
+namespace Subsonic.Client.Activities
 {
 	public class SubsonicActivityDelegate<T, TImageType> : ISubsonicActivityDelegate<T, TImageType>
 	{

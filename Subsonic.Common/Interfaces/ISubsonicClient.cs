@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Subsonic.Common.Classes;
@@ -661,5 +662,9 @@ namespace Subsonic.Common.Interfaces
         /// <param name="cancelToken">The CancellationToken associated with a managed CancellationTokenSource.</param>
         /// <returns cref="bool">True on success</returns>
         Task<bool> CleanupMediaFoldersAsync(CancellationToken? cancelToken = null);
+
+        Uri BuildDownloadUrl(string id);
+
+        Uri BuildStreamUrl(string id, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null);
     }
 }

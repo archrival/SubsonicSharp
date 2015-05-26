@@ -871,7 +871,7 @@ namespace Subsonic.Client
 			return await SubsonicResponse.GetResponseAsync(Methods.SavePlayQueue, SubsonicApiVersions.Version1_12_0, parameters, cancelToken);
 		}
 
-        public Uri BuildDownloadUrl(string id)
+        public virtual Uri BuildDownloadUrl(string id)
         {
             var parameters = SubsonicParameters.Create();
             parameters.Add(ParameterConstants.Id, id, true);
@@ -879,7 +879,7 @@ namespace Subsonic.Client
             return SubsonicServer.BuildRequestUriUser(Methods.Download, SubsonicApiVersions.Version1_0_0, parameters);
         }
 
-        public Uri BuildStreamUrl(string id, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null)
+        public virtual Uri BuildStreamUrl(string id, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null)
         {
             var methodApiVersion = SubsonicApiVersions.Version1_2_0;
 

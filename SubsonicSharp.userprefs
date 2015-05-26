@@ -1,22 +1,21 @@
 ﻿<Properties StartupItem="Subsonic.Common\Subsonic.Common.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Subsonic.Client\Activities\SubsonicActivity.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Subsonic.Client\Activities\Search2ActivityDelegate.cs">
     <Files>
-      <File FileName="Subsonic.Client\Activities\SubsonicActivity.cs" Line="53" Column="60" />
-      <File FileName="Subsonic.Client\Interfaces\ISubsonicActivityDelegate.cs" Line="3" Column="1" />
-      <File FileName="Subsonic.Client\Interfaces\ISubsonicActivity.cs" Line="7" Column="5" />
-      <File FileName="Subsonic.Client\Activities\MusicFoldersActivity.cs" Line="10" Column="16" />
-      <File FileName="Subsonic.Client\Activities\Search2ActivityDelegate.cs" Line="36" Column="1" />
-      <File FileName="Subsonic.Client\Activities\GenresActivity.cs" Line="9" Column="33" />
+      <File FileName="Subsonic.Client\Activities\SubsonicActivity.cs" Line="66" Column="1" />
+      <File FileName="Subsonic.Client\Interfaces\ISubsonicActivityDelegate.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client\Interfaces\ISubsonicActivity.cs" Line="10" Column="1" />
+      <File FileName="Subsonic.Client\Activities\MusicFoldersActivity.cs" Line="2" Column="34" />
+      <File FileName="Subsonic.Client\Activities\Search2ActivityDelegate.cs" Line="89" Column="18" />
+      <File FileName="Subsonic.Client\Activities\GenresActivity.cs" Line="15" Column="2" />
       <File FileName="Subsonic.Client\Items\AlbumListItem.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Client\Items\AlbumItem.cs" Line="1" Column="1" />
       <File FileName="Subsonic.Client\Items\ChildItem.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\Items\ChatItem.cs" Line="64" Column="19" />
-      <File FileName="Subsonic.Client\Activities\Search2Activity.cs" Line="11" Column="40" />
-      <File FileName="Subsonic.Client\Activities\SubsonicActivityDelegate.cs" Line="19" Column="1" />
+      <File FileName="Subsonic.Client\Items\ChatItem.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client\Activities\Search2Activity.cs" Line="2" Column="31" />
+      <File FileName="Subsonic.Client\Activities\SubsonicActivityDelegate.cs" Line="14" Column="31" />
       <File FileName="Subsonic.Client\SubsonicClient.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\Extensions\XmlExtensions.cs" Line="41" Column="39" />
-      <File FileName="Tests\Test.cs" Line="911" Column="41" />
+      <File FileName="Subsonic.Client\Extensions\XmlExtensions.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="MonoDevelop.NUnit.TestPad">
@@ -28,7 +27,7 @@
                   <Node name="Windows" expanded="True">
                     <Node name="Tests" expanded="True">
                       <Node name="Test" expanded="True">
-                        <Node name="GenresActivityTest" selected="True" />
+                        <Node name="Search2ActivityTest" selected="True" />
                       </Node>
                     </Node>
                   </Node>
@@ -41,10 +40,7 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\Activities\SubsonicActivity.cs" line="43" column="1" />
-      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\Activities\SubsonicActivity.cs" line="57" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
     <Watch file="Subsonic.Client\SubsonicClient.cs" line="287" offsetX="503" offsetY="4575" expression="parameters" liveUpdate="False" />

@@ -1,7 +1,7 @@
 ﻿using Subsonic.Common.Classes;
 using Subsonic.Common.Interfaces;
 
-namespace Subsonic.Client
+namespace Subsonic.Client.Activities
 {
 	public class Search2ActivityDelegate<TImageType> : SubsonicActivityDelegate<SearchResult2, TImageType>
 	{
