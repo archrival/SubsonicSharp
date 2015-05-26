@@ -2,57 +2,33 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Tests\Test.cs">
     <Files>
-      <File FileName="Subsonic.Client\Interfaces\ISubsonicActivity.cs" Line="42" Column="42" />
-      <File FileName="Subsonic.Client\Interfaces\ISubsonicRequest.cs" Line="41" Column="41" />
-      <File FileName="Subsonic.Client\Interfaces\ISubsonicResponse.cs" Line="42" Column="42" />
-      <File FileName="Subsonic.Client\Activities\SubsonicActivity.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\Activities\GenresActivity.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\SubsonicClient.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\Activities\MusicFoldersActivity.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Common\Interfaces\ISubsonicClient.cs" Line="40" Column="40" />
-      <File FileName="Subsonic.Client\SubsonicRequest.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Common\Enums\MediaType.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\SubsonicResponse.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Common\Enums\Methods.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Common\Enums\SettingMethods.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\WebProxy.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Windows\SubsonicRequestWindows.cs" Line="30" Column="30" />
+      <File FileName="Tests\Test.cs" Line="978" Column="39" />
+      <File FileName="Subsonic.Common\Classes\PlayQueue.cs" Line="8" Column="21" />
+      <File FileName="Subsonic.Common\Interfaces\ISubsonicClient.cs" Line="649" Column="76" />
+      <File FileName="Subsonic.Client\SubsonicClient.cs" Line="862" Column="1" />
+      <File FileName="Subsonic.Client\SubsonicRequest.cs" Line="63" Column="1" />
+      <File FileName="Subsonic.Client\Interfaces\ISubsonicServer.cs" Line="98" Column="9" />
       <File FileName="Subsonic.Client\SubsonicServer.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\Interfaces\ISubsonicServer.cs" Line="37" Column="37" />
-      <File FileName="Subsonic.Client.Android\SubsonicRequestAndroid.cs" Line="43" Column="43" />
-      <File FileName="Subsonic.Client.Android\SubsonicResponseAndroid.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\SubsonicParameters.cs" Line="1" Column="1" />
-      <File FileName="Tests\Test.cs" Line="22" Column="22" />
-      <File FileName="Subsonic.Client.Windows\SubsonicResponseWindows.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Windows\StreamProxy.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\Constants\HttpHeaderField.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\Constants\HttpMethod.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\Constants\ParameterConstants.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client\Constants\HttpContentTypes.cs" Line="1" Column="1" />
-      <File FileName="d:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\Extensions\XmlExtensions.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Common\Classes\Response.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Common\Classes\ChatMessage.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Android\SubsonicClientAndroid.cs" Line="26" Column="26" />
-      <File FileName="Subsonic.Common\SubsonicApiVersions.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Common\StreamParameters.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Android\StreamProxy.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Android\ImageFormat.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Android\AndroidMediaStore.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Common\Interfaces\IImageFormat.cs" Line="1" Column="1" />
-      <File FileName="Subsonic.Client.Windows\ImageFormat.cs" Line="9" Column="9" />
-      <File FileName="Subsonic.Client.Windows\SubsonicClientWindows.cs" Line="26" Column="26" />
-      <File FileName="Subsonic.Client\Handlers\ChatHandler.cs" Line="35" Column="35" />
-      <File FileName="C:\Program Files (x86)\MSBuild\12.0\bin\Microsoft.Common.CurrentVersion.targets" Line="5" Column="5" />
+      <File FileName="Subsonic.Common\Classes\Response.cs" Line="49" Column="38" />
+      <File FileName="Subsonic.Client\Interfaces\ISubsonicResponse.cs" Line="1" Column="1" />
+      <File FileName="Subsonic.Client\SubsonicResponse.cs" Line="82" Column="1" />
+      <File FileName="Subsonic.Client\Interfaces\ISubsonicRequest.cs" Line="25" Column="9" />
+      <File FileName="d:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\Extensions\XmlExtensions.cs" Line="41" Column="1" />
+      <File FileName="Subsonic.Common\Enums\ItemChoiceType.cs" Line="30" Column="35" />
     </Files>
     <Pads>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True">
-          <Node name="Subsonic.Client.Windows.Tests" expanded="True">
-            <Node name="Subsonic" expanded="True">
-              <Node name="Client" expanded="True" selected="True">
-                <Node name="Windows" expanded="True">
-                  <Node name="Tests" expanded="True">
-                    <Node name="Test" expanded="True" />
+        <State name="__root__">
+          <Node name="SubsonicSharp" expanded="True">
+            <Node name="Subsonic.Client.Windows.Tests" expanded="True">
+              <Node name="Subsonic" expanded="True">
+                <Node name="Client" expanded="True">
+                  <Node name="Windows" expanded="True">
+                    <Node name="Tests" expanded="True">
+                      <Node name="Test" expanded="True">
+                        <Node name="GetPlayQueueAsAdminUserOnSubsonic" selected="True" />
+                      </Node>
+                    </Node>
                   </Node>
                 </Node>
               </Node>
@@ -64,10 +40,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\ApiTester\Program.cs" line="35" column="1" />
-      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\ApiTester\Program.cs" line="37" column="1" />
-      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\ApiTester\Program.cs" line="36" column="1" />
-      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\Subsonic.Client\XmlExtensions.cs" line="26" column="1" />
+      <Breakpoint file="D:\GitHub\UltraSonic\SubsonicSharp\Tests\Test.cs" line="978" column="39" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>

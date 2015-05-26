@@ -27,6 +27,7 @@ namespace Subsonic.Common.Enums
         [XmlEnum("nowPlaying")] NowPlaying,
         [XmlEnum("playlist")] Playlist,
         [XmlEnum("playlists")] Playlists,
+		[XmlEnum("playQueue")] PlayQueue,
         [XmlEnum("podcasts")] Podcasts,
         [XmlEnum("randomSongs")] RandomSongs,
         [XmlEnum("searchResult")] SearchResult,

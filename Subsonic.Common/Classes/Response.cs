@@ -29,6 +29,7 @@ namespace Subsonic.Common.Classes
         [XmlElement("nowPlaying", typeof(NowPlaying))]
         [XmlElement("playlist", typeof(PlaylistWithSongs))]
         [XmlElement("playlists", typeof(Playlists))]
+		[XmlElement("playQueue", typeof(PlayQueue))]
         [XmlElement("podcasts", typeof(Podcasts))]
         [XmlElement("randomSongs", typeof(RandomSongs))]
         [XmlElement("searchResult", typeof(SearchResult))]

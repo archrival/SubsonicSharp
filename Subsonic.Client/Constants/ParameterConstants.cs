@@ -67,5 +67,6 @@
         public const string Description = "description";
         public const string Expires = "expires";
         public const string IncludeNotPresent = "includeNotPresent";
+		public const string Current = "current";
     }
 }

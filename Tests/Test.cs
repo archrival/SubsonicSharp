@@ -904,7 +904,7 @@ namespace Subsonic.Client.Windows.Tests
 
             Assert.DoesNotThrow(async () => 
                 {
-                    success = await AdminSubsonicClient.ScanMediaFolders();
+                    success = await AdminSubsonicClient.ScanMediaFoldersAsync();
                 });
 
             Assert.IsTrue(success);
@@ -917,7 +917,7 @@ namespace Subsonic.Client.Windows.Tests
 
             Assert.DoesNotThrow(async () =>
             {
-                success = await AdminSubsonicClient.CleanupMediaFolders();
+                success = await AdminSubsonicClient.CleanupMediaFoldersAsync();
             });
 
             Assert.IsTrue(success);
@@ -944,5 +944,38 @@ namespace Subsonic.Client.Windows.Tests
             
             Assert.GreaterOrEqual(artSize, 0);
         }
+
+		[Test]
+		public void SaveRandomSongToPlayQueueAsAdminUserOnSubsonic()
+		{
+			bool success = false;
+
+			RandomSongs randomSongs = null;
+
+			Assert.DoesNotThrow(async () =>
+				{
+					randomSongs = await AdminSubsonicClient.GetRandomSongsAsync(1);
+				});
+
+			Assert.DoesNotThrow(async () =>
+				{
+					success = await AdminSubsonicClient.SavePlayQueueAsync(randomSongs.Songs.First().Id, randomSongs.Songs.First().Id, randomSongs.Songs.First().Duration / 2);
+				});
+
+			Assert.IsTrue(success);
+		}
+
+		[Test]
+		public void GetPlayQueueAsAdminUserOnSubsonic()
+		{
+			PlayQueue playQueue = null;
+
+			Assert.DoesNotThrow(async () =>
+				{
+					playQueue = await AdminSubsonicClient.GetPlayQueueAsync();
+				});
+
+			Assert.IsNotNull(playQueue.Username);
+		}
     }
 }

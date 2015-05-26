@@ -67,6 +67,8 @@ namespace Subsonic.Common.Enums
         [XmlEnum("getArtistInfo")] GetArtistInfo,
         [XmlEnum("getArtistInfo2")] GetArtistInfo2,
         [XmlEnum("getSimilarSongs")] GetSimilarSongs,
-        [XmlEnum("getSimilarSongs2")] GetSimilarSongs2
+        [XmlEnum("getSimilarSongs2")] GetSimilarSongs2,
+		[XmlEnum("getPlayQueue")] GetPlayQueue,
+		[XmlEnum("savePlayQueue")] SavePlayQueue
     }
 }
