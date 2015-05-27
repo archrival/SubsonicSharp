@@ -77,6 +77,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\IndexesActivity.cs" />
+    <Compile Include="Activities\IndexesActivityDelegate.cs" />
+    <Compile Include="Activities\MusicDirectoryActivity.cs" />
+    <Compile Include="Activities\MusicDirectoryActivityDelegate.cs" />
     <Compile Include="Enums\LoggingLevel.cs" />
     <Compile Include="EventArgs\ChatEventArgs.cs" />
     <Compile Include="Handlers\ChatHandler.cs" />

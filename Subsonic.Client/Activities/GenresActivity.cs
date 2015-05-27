@@ -5,11 +5,9 @@ namespace Subsonic.Client.Activities
 {
 	public class GenresActivity<T> : SubsonicActivity<Genres, T>
 	{
-		public GenresActivity(ISubsonicClient<T> subsonicClient) : base(subsonicClient)
+		public GenresActivity(ISubsonicClient<T> subsonicClient)
 		{
-			var activityDelegate = new SubsonicActivityDelegate<Genres, T> ();
-			activityDelegate.Method = subsonicClient.GetGenresAsync;
-			ActivityDelegate = activityDelegate;
+		    ActivityDelegate = new SubsonicActivityDelegate<Genres, T> { Method = subsonicClient.GetGenresAsync };
 		}
 	}
 }

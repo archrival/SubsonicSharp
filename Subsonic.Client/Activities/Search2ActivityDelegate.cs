@@ -1,18 +1,21 @@
-﻿using Subsonic.Common.Classes;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Subsonic.Common.Classes;
 using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Activities
 {
 	public class Search2ActivityDelegate<TImageType> : SubsonicActivityDelegate<SearchResult2, TImageType>
 	{
-		public string Query { get; set; }
-		public int? ArtistCount { get; set; }
-		public int? ArtistOffset { get; set; }
-		public int? AlbumCount { get; set; }
-		public int? AlbumOffset { get; set; }
-		public int? SongCount { get; set; }
-		public int? SongOffset { get; set; }
-		public string MusicFolderId { get; set; }
+		private string Query { get; set; }
+		private int? ArtistCount { get; set; }
+		private int? ArtistOffset { get; set; }
+		private int? AlbumCount { get; set; }
+		private int? AlbumOffset { get; set; }
+		private int? SongCount { get; set; }
+		private int? SongOffset { get; set; }
+		private string MusicFolderId { get; set; }
 
 		public Search2ActivityDelegate(string query, int? artistCount = null, int? artistOffset = null, int? albumCount = null, int? albumOffset = null, int? songCount = null, int? songOffset = null, string musicFolderId = null)
 		{
@@ -26,9 +29,9 @@ namespace Subsonic.Client.Activities
 			MusicFolderId = musicFolderId;
 		}
 
-		public void CreateFunction(ISubsonicClient<TImageType> subsonicClient)
+		public Func<CancellationToken?, Task<SearchResult2>> CreateMethod(ISubsonicClient<TImageType> subsonicClient)
 		{
-			Method = (cancelToken) => subsonicClient.Search2Async(Query, ArtistCount, ArtistOffset, AlbumCount, AlbumOffset, SongCount, SongOffset, MusicFolderId, cancelToken);
+			return cancelToken => subsonicClient.Search2Async(Query, ArtistCount, ArtistOffset, AlbumCount, AlbumOffset, SongCount, SongOffset, MusicFolderId, cancelToken);
 		}
 
 		// Overrides for equality
@@ -73,9 +76,9 @@ namespace Subsonic.Client.Activities
 			return obj != null && Equals(obj as Search2ActivityDelegate<TImageType>);
 		}
 
-		private bool Equals(Search2ActivityDelegate<TImageType> search2Activity)
+		private bool Equals(Search2ActivityDelegate<TImageType> item)
 		{
-			return search2Activity != null && this == search2Activity;
+			return item != null && this == item;
 		}
 
 		public static bool operator ==(Search2ActivityDelegate<TImageType> left, Search2ActivityDelegate<TImageType> right)

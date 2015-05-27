@@ -5,11 +5,9 @@ namespace Subsonic.Client.Activities
 {
 	public class MusicFoldersActivity<T> : SubsonicActivity<MusicFolders, T>
 	{
-		public MusicFoldersActivity(ISubsonicClient<T> subsonicClient) : base(subsonicClient)
+		public MusicFoldersActivity(ISubsonicClient<T> subsonicClient)
 		{
-			var activityDelegate = new SubsonicActivityDelegate<MusicFolders, T> ();
-			activityDelegate.Method = subsonicClient.GetMusicFoldersAsync;
-			ActivityDelegate = activityDelegate;
+			ActivityDelegate = new SubsonicActivityDelegate<MusicFolders, T> { Method = subsonicClient.GetMusicFoldersAsync };
 		}
 	}
 }
