@@ -19,8 +19,8 @@ namespace Subsonic.Client
 	public class SubsonicClient<T> : ISubsonicClient<T>
 	{
 		protected ISubsonicResponse<T> SubsonicResponse { private get; set; }
-		private ISubsonicServer SubsonicServer { get; set; }
-		private bool EncodePasswords { get; set; }
+		ISubsonicServer SubsonicServer { get; set; }
+		bool EncodePasswords { get; set; }
 
 		protected SubsonicClient(ISubsonicServer subsonicServer, bool encodePasswords = true)
 		{
@@ -50,9 +50,9 @@ namespace Subsonic.Client
 
 		public virtual async Task<Starred> GetStarredAsync(string musicFolderId = null, CancellationToken? cancelToken = null)
 		{
-			var methodApiVersion = SubsonicApiVersions.Version1_8_0;
+			Version methodApiVersion = SubsonicApiVersions.Version1_8_0;
 
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 
 			if (!string.IsNullOrWhiteSpace(musicFolderId)) 
 			{
@@ -65,9 +65,9 @@ namespace Subsonic.Client
 
 		public virtual async Task<Starred2> GetStarred2Async(string musicFolderId = null, CancellationToken? cancelToken = null)
 		{
-			var methodApiVersion = SubsonicApiVersions.Version1_8_0;
+			Version methodApiVersion = SubsonicApiVersions.Version1_8_0;
 
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 
 			if (!string.IsNullOrWhiteSpace(musicFolderId)) 
 			{
@@ -80,7 +80,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<Indexes> GetIndexesAsync(int? musicFolderId = null, long? ifModifiedSince = null, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.MusicFolderId, musicFolderId);
 			parameters.Add(ParameterConstants.IfModifiedSince, ifModifiedSince);
 
@@ -89,7 +89,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<Directory> GetMusicDirectoryAsync(string id, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 
 			return await SubsonicResponse.GetResponseAsync<Directory>(Methods.GetMusicDirectory, SubsonicApiVersions.Version1_0_0, parameters, cancelToken);
@@ -97,7 +97,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<ArtistWithAlbumsID3> GetArtistAsync(string id, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 
 			return await SubsonicResponse.GetResponseAsync<ArtistWithAlbumsID3>(Methods.GetArtist, SubsonicApiVersions.Version1_8_0, parameters, cancelToken);
@@ -110,7 +110,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<AlbumID3> GetAlbumAsync(string id, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 
 			return await SubsonicResponse.GetResponseAsync<AlbumID3>(Methods.GetAlbum, SubsonicApiVersions.Version1_8_0, parameters, cancelToken);
@@ -118,7 +118,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<Child> GetSongAsync(string id, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 
 			return await SubsonicResponse.GetResponseAsync<Child>(Methods.GetSong, SubsonicApiVersions.Version1_8_0, parameters, cancelToken);
@@ -131,7 +131,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<SearchResult> SearchAsync(string artist = null, string album = null, string title = null, string any = null, int? count = null, int? offset = null, long? newerThan = null, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Artist, artist);
 			parameters.Add(ParameterConstants.Album, album);
 			parameters.Add(ParameterConstants.Title, title);
@@ -145,9 +145,9 @@ namespace Subsonic.Client
 
 		public virtual async Task<SearchResult2> Search2Async(string query, int? artistCount = null, int? artistOffset = null, int? albumCount = null, int? albumOffset = null, int? songCount = null, int? songOffset = null, string musicFolderId = null, CancellationToken? cancelToken = null)
 		{
-			var methodApiVersion = SubsonicApiVersions.Version1_4_0;
+			Version methodApiVersion = SubsonicApiVersions.Version1_4_0;
 
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Query, query, true);
 			parameters.Add(ParameterConstants.ArtistCount, artistCount);
 			parameters.Add(ParameterConstants.ArtistOffset, artistOffset);
@@ -167,9 +167,9 @@ namespace Subsonic.Client
 
 		public virtual async Task<SearchResult3> Search3Async(string query, int? artistCount = null, int? artistOffset = null, int? albumCount = null, int? albumOffset = null, int? songCount = null, int? songOffset = null, string musicFolderId = null, CancellationToken? cancelToken = null)
 		{
-			var methodApiVersion = SubsonicApiVersions.Version1_8_0;
+			Version methodApiVersion = SubsonicApiVersions.Version1_8_0;
 
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Query, query, true);
 			parameters.Add(ParameterConstants.ArtistCount, artistCount);
 			parameters.Add(ParameterConstants.ArtistOffset, artistOffset);
@@ -189,8 +189,8 @@ namespace Subsonic.Client
 
 		public virtual async Task<Playlists> GetPlaylistsAsync(string username = null, CancellationToken? cancelToken = null)
 		{
-			var methodApiVersion = SubsonicApiVersions.Version1_0_0;
-			var parameters = SubsonicParameters.Create();
+			Version methodApiVersion = SubsonicApiVersions.Version1_0_0;
+			SubsonicParameters parameters = SubsonicParameters.Create();
 
 			if (!string.IsNullOrWhiteSpace(username))
 			{
@@ -203,7 +203,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<PlaylistWithSongs> GetPlaylistAsync(string id, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 
 			return await SubsonicResponse.GetResponseAsync<PlaylistWithSongs>(Methods.GetPlaylist, SubsonicApiVersions.Version1_0_0, parameters, cancelToken);
@@ -214,7 +214,7 @@ namespace Subsonic.Client
 			if (!string.IsNullOrWhiteSpace(playlistId) && !string.IsNullOrWhiteSpace(name))
 				throw new SubsonicApiException("Only one of playlist ID and name can be specified.");
 
-			var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
+			SubsonicParameters parameters = SubsonicParameters.Create(SubsonicParameterType.List);
 
 			if (!string.IsNullOrWhiteSpace(playlistId))
 				parameters.Add(ParameterConstants.PlaylistId, playlistId);
@@ -230,7 +230,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> UpdatePlaylistAsync(string playlistId, string name = null, string comment = null, IEnumerable<string> songIdToAdd = null, IEnumerable<string> songIndexToRemove = null, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
+			SubsonicParameters parameters = SubsonicParameters.Create(SubsonicParameterType.List);
 			parameters.Add(ParameterConstants.PlaylistId, playlistId, true);
 			parameters.Add(ParameterConstants.Name, name);
 			parameters.Add(ParameterConstants.Comment, comment);
@@ -242,7 +242,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> DeletePlaylistAsync(string id, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 
 			return await SubsonicResponse.GetResponseAsync(Methods.DeletePlaylist, SubsonicApiVersions.Version1_2_0, parameters, cancelToken);
@@ -250,7 +250,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<long> GetCoverArtSizeAsync(string id, int? size = null, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 			parameters.Add(ParameterConstants.Size, size);
 
@@ -259,7 +259,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<IImageFormat<T>> GetCoverArtAsync(string id, int? size = null, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 			parameters.Add(ParameterConstants.Size, size);
 
@@ -268,9 +268,9 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> ScrobbleAsync(string id, bool? submission = null, long? time = null, CancellationToken? cancelToken = null)
 		{
-			var methodApiVersion = SubsonicApiVersions.Version1_5_0;
+			Version methodApiVersion = SubsonicApiVersions.Version1_5_0;
 
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 			parameters.Add(ParameterConstants.Submission, submission);
 
@@ -290,11 +290,11 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> ChangePasswordAsync(string username, string password, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Username, username, true);
 
 			if (EncodePasswords)
-				password = string.Format(CultureInfo.InvariantCulture, "enc:{0}", password.ToHex());
+				password = string.Format(CultureInfo.InvariantCulture, "enc:{0}", password.ToHexString());
 
 			parameters.Add("password", password, true);
 
@@ -303,7 +303,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<User> GetUserAsync(string username, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Username, username, true);
 
 			return await SubsonicResponse.GetResponseAsync<User>(Methods.GetUser, SubsonicApiVersions.Version1_3_0, parameters, cancelToken);
@@ -311,7 +311,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<IImageFormat<T>> GetAvatarAsync(string username, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Username, username, true);
 
 			return await SubsonicResponse.GetImageResponseAsync(Methods.GetAvatar, SubsonicApiVersions.Version1_8_0, parameters, cancelToken);
@@ -322,7 +322,7 @@ namespace Subsonic.Client
 			if (id == null && albumId == null && artistId == null)
 				throw new SubsonicApiException("You must provide one of id, albumId or artistId");
 
-			var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
+			SubsonicParameters parameters = SubsonicParameters.Create(SubsonicParameterType.List);
 			parameters.Add(ParameterConstants.Id, id);
 			parameters.Add(ParameterConstants.AlbumId, albumId);
 			parameters.Add(ParameterConstants.ArtistId, artistId);
@@ -335,7 +335,7 @@ namespace Subsonic.Client
 			if (id == null && albumId == null && artistId == null)
 				throw new SubsonicApiException("You must provide one of id, albumId or artistId");
 
-			var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
+			SubsonicParameters parameters = SubsonicParameters.Create(SubsonicParameterType.List);
 			parameters.Add(ParameterConstants.Id, id);
 			parameters.Add(ParameterConstants.AlbumId, albumId);
 			parameters.Add(ParameterConstants.ArtistId, artistId);
@@ -345,7 +345,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> SetRatingAsync(string id, int rating, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 			parameters.Add(ParameterConstants.Rating, rating, true);
 
@@ -354,13 +354,13 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> CreateUserAsync(string username, string password, string email, bool? ldapAuthenticated = null, bool? adminRole = null, bool? settingsRole = null, bool? streamRole = null, bool? jukeboxRole = null, bool? downloadRole = null, bool? uploadRole = null, bool? playlistRole = null, bool? coverArtRole = null, bool? commentRole = null, bool? podcastRole = null, string musicFolderId = null, CancellationToken? cancelToken = null)
 		{
-			var methodApiVersion = SubsonicApiVersions.Version1_3_0;
+			Version methodApiVersion = SubsonicApiVersions.Version1_3_0;
 
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Username, username, true);
 
 			if (EncodePasswords)
-				password = string.Format(CultureInfo.InvariantCulture, "enc:{0}", password.ToHex());
+				password = string.Format(CultureInfo.InvariantCulture, "enc:{0}", password.ToHexString());
 
 			parameters.Add(ParameterConstants.Password, password, true);
 			parameters.Add(ParameterConstants.Email, email, true);
@@ -387,7 +387,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> DeleteUserAsync(string username, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Username, username, true);
 
 			return await SubsonicResponse.GetResponseAsync(Methods.DeleteUser, SubsonicApiVersions.Version1_3_0, parameters, cancelToken);
@@ -395,7 +395,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<ChatMessages> GetChatMessagesAsync(double? since = null, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Since, since);
 
 			return await SubsonicResponse.GetResponseAsync<ChatMessages>(Methods.GetChatMessages, SubsonicApiVersions.Version1_2_0, parameters, cancelToken);
@@ -403,7 +403,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> AddChatMessageAsync(string message, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Message, message, true);
 
 			return await SubsonicResponse.GetResponseAsync(Methods.AddChatMessage, SubsonicApiVersions.Version1_2_0, parameters, cancelToken);
@@ -411,14 +411,14 @@ namespace Subsonic.Client
 
 		public virtual async Task<AlbumList> GetAlbumListAsync(AlbumListType type, int? size = null, int? offset = null, int? fromYear = null, int? toYear = null, string genre = null, string musicFolderId = null, CancellationToken? cancelToken = null)
 		{
-			var methodApiVersion = SubsonicApiVersions.Version1_2_0;
+			Version methodApiVersion = SubsonicApiVersions.Version1_2_0;
 
 			if (type == AlbumListType.AlphabeticalByArtist || type == AlbumListType.AlphabeticalByName || type == AlbumListType.Starred)
 				methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1_8_0);
 
-			var albumListTypeName = type.GetXmlEnumAttribute();
+			string albumListTypeName = type.GetXmlEnumAttribute();
 
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Type, albumListTypeName, true);
 			parameters.Add(ParameterConstants.Size, size);
 			parameters.Add(ParameterConstants.Offset, offset);
@@ -447,11 +447,11 @@ namespace Subsonic.Client
 
 		public virtual async Task<AlbumList2> GetAlbumList2Async(AlbumListType type, int? size = null, int? offset = null, int? fromYear = null, int? toYear = null, string genre = null, string musicFolderId = null, CancellationToken? cancelToken = null)
 		{
-			var methodApiVersion = SubsonicApiVersions.Version1_8_0;
+			Version methodApiVersion = SubsonicApiVersions.Version1_8_0;
 
-			var albumListTypeName = type.GetXmlEnumAttribute();
+			string albumListTypeName = type.GetXmlEnumAttribute();
 
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Type, albumListTypeName, true);
 			parameters.Add(ParameterConstants.Size, size);
 			parameters.Add(ParameterConstants.Offset, offset);
@@ -481,7 +481,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<RandomSongs> GetRandomSongsAsync(int? size = null, string genre = null, int? fromYear = null, int? toYear = null, string musicFolderId = null, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Size, size);
 			parameters.Add(ParameterConstants.Genre, genre);
 			parameters.Add(ParameterConstants.FromYear, fromYear);
@@ -496,7 +496,7 @@ namespace Subsonic.Client
 			if (string.IsNullOrWhiteSpace(artist) && string.IsNullOrWhiteSpace(title))
 				throw new SubsonicApiException("You must specify an artist and/or a title");
 
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Artist, artist);
 			parameters.Add(ParameterConstants.Title, title);
 
@@ -505,7 +505,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<JukeboxPlaylist> JukeboxControlAsync(CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Action, ParameterConstants.Get);
 
 			return await SubsonicResponse.GetResponseAsync<JukeboxPlaylist>(Methods.JukeboxControl, SubsonicApiVersions.Version1_2_0, parameters, cancelToken);
@@ -513,12 +513,12 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> JukeboxControlAsync(JukeboxControlAction action, int? index = null, float? gain = null, IEnumerable<string> id = null, CancellationToken? cancelToken = null)
 		{
-			var actionName = action.GetXmlEnumAttribute();
+			string actionName = action.GetXmlEnumAttribute();
 
 			if (string.IsNullOrWhiteSpace(actionName))
 				throw new SubsonicApiException("You must provide valid action");
 
-			var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
+			SubsonicParameters parameters = SubsonicParameters.Create(SubsonicParameterType.List);
 
 			parameters.Add(ParameterConstants.Action, actionName);
 
@@ -546,9 +546,9 @@ namespace Subsonic.Client
 
 		public virtual async Task<Podcasts> GetPodcastsAsync(string id = null, bool? includeEpisodes = null, CancellationToken? cancelToken = null)
 		{
-			var methodApiVersion = SubsonicApiVersions.Version1_6_0;
+			Version methodApiVersion = SubsonicApiVersions.Version1_6_0;
 
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 
 			if (!string.IsNullOrWhiteSpace(id))
 			{
@@ -572,9 +572,9 @@ namespace Subsonic.Client
 
 		public virtual async Task<Songs> GetSongsByGenreAsync(string genre, int? count = null, int? offset = null, string musicFolderId = null, CancellationToken? cancelToken = null)
 		{
-			var methodApiVersion = SubsonicApiVersions.Version1_9_0;
+			Version methodApiVersion = SubsonicApiVersions.Version1_9_0;
 
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Genre, genre, true);
 			parameters.Add(ParameterConstants.Count, count);
 			parameters.Add(ParameterConstants.Offset, offset);
@@ -588,19 +588,19 @@ namespace Subsonic.Client
 			return await SubsonicResponse.GetResponseAsync<Songs>(Methods.GetSongsByGenre, methodApiVersion, parameters, cancelToken);
 		}
 
-		public virtual async Task<long> StreamAsync(string id, string path, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)
+		public virtual async Task<long> StreamAsync(string id, string path, StreamParameters? streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false)
 		{
-			var methodApiVersion = SubsonicApiVersions.Version1_2_0;
+			Version methodApiVersion = SubsonicApiVersions.Version1_2_0;
 
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 
-			if (streamParameters != null)
+            if (streamParameters.HasValue)
 			{
-				if (streamParameters.BitRate > 0)
-					parameters.Add(ParameterConstants.MaxBitRate, streamParameters.BitRate);
+				if (streamParameters.Value.BitRate > 0)
+					parameters.Add(ParameterConstants.MaxBitRate, streamParameters.Value.BitRate);
 
-				if (streamParameters.Width > 0 && streamParameters.Height > 0)
+				if (streamParameters.Value.Width > 0 && streamParameters.Value.Height > 0)
 				{
 					parameters.Add(ParameterConstants.Size, streamParameters);
 					methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1_6_0);
@@ -621,7 +621,7 @@ namespace Subsonic.Client
 
 			if (format != null)
 			{
-				var streamFormatName = format.GetXmlEnumAttribute();
+				string streamFormatName = format.GetXmlEnumAttribute();
 
 				if (streamFormatName != null)
 				{
@@ -641,7 +641,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<long> DownloadAsync(string id, string path, bool pathOverride = false, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 
 			return await SubsonicResponse.GetResponseAsync(path, pathOverride, Methods.Download, SubsonicApiVersions.Version1_0_0, parameters, cancelToken);
@@ -649,16 +649,16 @@ namespace Subsonic.Client
 
 		public virtual async Task<string> HlsAsync(string id, IList<StreamParameters> streamParameters = null, CancellationToken? cancelToken = null)
 		{
-			var methodApiVersion = SubsonicApiVersions.Version1_8_0;
+			Version methodApiVersion = SubsonicApiVersions.Version1_8_0;
 
-			var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
+			SubsonicParameters parameters = SubsonicParameters.Create(SubsonicParameterType.List);
 			parameters.Add(ParameterConstants.Id, id, true);
 
 			if (streamParameters != null)
 			{
 				if (streamParameters.Count() == 1)
 				{
-					var streamParameter = streamParameters.First();
+					StreamParameters streamParameter = streamParameters.First();
 
 					if (streamParameter.Width > 0 && streamParameter.Height > 0)
 					{
@@ -688,7 +688,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> CreatePodcastChannelAsync(string url, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Url, url, true);
 
 			return await SubsonicResponse.GetResponseAsync(Methods.CreatePodcastChannel, SubsonicApiVersions.Version1_9_0, parameters, cancelToken);
@@ -696,7 +696,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> DeletePodcastChannelAsync(string id, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 
 			return await SubsonicResponse.GetResponseAsync(Methods.DeletePodcastChannel, SubsonicApiVersions.Version1_9_0, parameters, cancelToken);
@@ -704,7 +704,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> DeletePodcastEpisodeAsync(string id, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 
 			return await SubsonicResponse.GetResponseAsync(Methods.DeletePodcastEpisode, SubsonicApiVersions.Version1_9_0, parameters, cancelToken);
@@ -712,7 +712,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<long> DownloadPodcastEpisodeAsync(string id, string path, bool pathOverride = false, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 
 			return await SubsonicResponse.GetResponseAsync(path, pathOverride, Methods.DownloadPodcastEpisode, SubsonicApiVersions.Version1_9_0, parameters, cancelToken);
@@ -730,7 +730,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> CreateBookmarkAsync(string id, long position, string comment = null, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 			parameters.Add(ParameterConstants.Position, position, true);
 			parameters.Add(ParameterConstants.Comment, comment);
@@ -740,17 +740,17 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> DeleteBookmarkAsync(string id, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 
 			return await SubsonicResponse.GetResponseAsync(Methods.DeleteBookmark, SubsonicApiVersions.Version1_9_0, parameters, cancelToken);
 		}
 
-		public virtual async Task<bool> UpdateUserAsync(string username, string password = null, string email = null, bool? ldapAuthenticated = null, bool? adminRole = null, bool? settingsRole = null, bool? streamRole = null, bool? jukeboxRole = null, bool? downloadRole = null, bool? uploadRole = null, bool? coverArtRole = null, bool? commentRole = null, bool? podcastRole = null, bool? shareRole = null, string musicFolderId = null, CancellationToken? cancelToken = null)
+        public virtual async Task<bool> UpdateUserAsync(string username, string password = null, string email = null, bool? ldapAuthenticated = null, bool? adminRole = null, bool? settingsRole = null, bool? streamRole = null, bool? jukeboxRole = null, bool? downloadRole = null, bool? uploadRole = null, bool? coverArtRole = null, bool? commentRole = null, bool? podcastRole = null, bool? shareRole = null, string musicFolderId = null, AudioBitrate? maxBitRate = null, CancellationToken? cancelToken = null)
 		{
-			var methodApiVersion = SubsonicApiVersions.Version1_10_1;
+			Version methodApiVersion = SubsonicApiVersions.Version1_10_1;
 
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Username, username, true);
 			parameters.Add(ParameterConstants.Password, password);
 			parameters.Add(ParameterConstants.Email, email);
@@ -772,12 +772,18 @@ namespace Subsonic.Client
 				methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1_12_0);
 			}
 
+            if (maxBitRate.HasValue)
+            {
+                parameters.Add(ParameterConstants.MaxBitRate, maxBitRate.Value.GetXmlEnumAttribute(), true);
+                methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1_13_0);
+            }
+
 			return await SubsonicResponse.GetResponseAsync(Methods.UpdateUser, methodApiVersion, parameters, cancelToken);
 		}
 
 		public virtual async Task<Shares> CreateShareAsync(IEnumerable<string> id, string description = null, long? expires = null, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create(SubsonicParameterType.List);
+			SubsonicParameters parameters = SubsonicParameters.Create(SubsonicParameterType.List);
 			parameters.Add(ParameterConstants.Id, id, true);
 			parameters.Add(ParameterConstants.Description, description);
 			parameters.Add(ParameterConstants.Expires, expires);
@@ -787,7 +793,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> UpdateShareAsync(string id, string description = null, long? expires = null, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 			parameters.Add(ParameterConstants.Description, description);
 			parameters.Add(ParameterConstants.Expires, expires);
@@ -797,7 +803,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> DeleteShareAsync(string id, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 
 			return await SubsonicResponse.GetResponseAsync(Methods.DeleteShare, SubsonicApiVersions.Version1_6_0, parameters, cancelToken);
@@ -810,7 +816,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<ArtistInfo> GetArtistInfoAsync(string id, int? count = null, bool? includeNotPresent = null, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 			parameters.Add(ParameterConstants.Count, count);
 			parameters.Add(ParameterConstants.IncludeNotPresent, includeNotPresent);
@@ -820,7 +826,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<ArtistInfo2> GetArtistInfo2Async(string id, int? count = null, bool? includeNotPresent = null, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 			parameters.Add(ParameterConstants.Count, count);
 			parameters.Add(ParameterConstants.IncludeNotPresent, includeNotPresent);
@@ -830,16 +836,25 @@ namespace Subsonic.Client
 
 		public virtual async Task<SimilarSongs> GetSimilarSongsAsync(string id, int? count = null, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 			parameters.Add(ParameterConstants.Count, count);
 
 			return await SubsonicResponse.GetResponseAsync<SimilarSongs>(Methods.GetSimilarSongs, SubsonicApiVersions.Version1_11_0, parameters, cancelToken);
 		}
 
+        public virtual async Task<TopSongs> GetTopSongsAsync(string artist, int? count = null, CancellationToken? cancelToken = null)
+        {
+            SubsonicParameters parameters = SubsonicParameters.Create();
+            parameters.Add(ParameterConstants.Artist, artist, true);
+            parameters.Add(ParameterConstants.Count, count);
+
+            return await SubsonicResponse.GetResponseAsync<TopSongs>(Methods.GetTopSongs, SubsonicApiVersions.Version1_13_0, parameters, cancelToken);
+        }
+
 		public virtual async Task<SimilarSongs2> GetSimilarSongs2Async(string id, int? count = null, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 			parameters.Add(ParameterConstants.Count, count);
 
@@ -863,7 +878,7 @@ namespace Subsonic.Client
 
 		public virtual async Task<bool> SavePlayQueueAsync (string id, string current = null, long? position = null, CancellationToken? cancelToken = null)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 			parameters.Add(ParameterConstants.Current, current);
 			parameters.Add(ParameterConstants.Position, position);
@@ -873,25 +888,25 @@ namespace Subsonic.Client
 
 		public virtual Uri BuildDownloadUrl(string id)
 		{
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 
 			return SubsonicServer.BuildRequestUriUser(Methods.Download, SubsonicApiVersions.Version1_0_0, parameters);
 		}
 
-		public virtual Uri BuildStreamUrl(string id, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null)
+		public virtual Uri BuildStreamUrl(string id, StreamParameters? streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null)
 		{
-			var methodApiVersion = SubsonicApiVersions.Version1_2_0;
+			Version methodApiVersion = SubsonicApiVersions.Version1_2_0;
 
-			var parameters = SubsonicParameters.Create();
+			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);
 
-			if (streamParameters != null)
+            if (streamParameters.HasValue)
 			{
-				if (streamParameters.BitRate > 0)
-					parameters.Add(ParameterConstants.MaxBitRate, streamParameters.BitRate);
+				if (streamParameters.Value.BitRate > 0)
+					parameters.Add(ParameterConstants.MaxBitRate, streamParameters.Value.BitRate);
 
-				if (streamParameters.Width > 0 && streamParameters.Height > 0)
+				if (streamParameters.Value.Width > 0 && streamParameters.Value.Height > 0)
 				{
 					parameters.Add(ParameterConstants.Size, streamParameters);
 					methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1_6_0);
@@ -912,7 +927,7 @@ namespace Subsonic.Client
 
 			if (format != null)
 			{
-				var streamFormatName = format.GetXmlEnumAttribute();
+				string streamFormatName = format.GetXmlEnumAttribute();
 
 				if (streamFormatName != null)
 				{

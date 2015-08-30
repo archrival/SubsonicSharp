@@ -94,8 +94,9 @@ namespace Subsonic.Client.Interfaces
         /// <param name="method" cref="Methods">Subsonic API method to call.</param>
         /// <param name="methodApiVersion" cref="Version">Subsonic API version of the method.</param>
         /// <param name="parameters" cref="SubsonicParameters">Parameters used by the method.</param>
+        /// <param name="checkForTokenUsability">Should check for usability of authentication token.</param>
         /// <returns cref="Uri">URL for the specified Subsonic method</returns>
-        Uri BuildRequestUri(Methods method, Version methodApiVersion, SubsonicParameters parameters = null);
+        Uri BuildRequestUri(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, bool checkForTokenUsability = true);
 
         /// <summary>
         /// Builds a URI to be used for the request that explicitly provides the username and password as parameters.

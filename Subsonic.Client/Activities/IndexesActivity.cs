@@ -7,7 +7,7 @@ namespace Subsonic.Client.Activities
     {
         public IndexesActivity(ISubsonicClient<TImageType> subsonicClient, int? musicFolderId = null, long? ifModifiedSince = null)
         {
-            var activityDelegate = new IndexesActivityDelegate<TImageType>(musicFolderId, ifModifiedSince);
+            IndexesActivityDelegate<TImageType> activityDelegate = new IndexesActivityDelegate<TImageType>(musicFolderId, ifModifiedSince);
             activityDelegate.Method = activityDelegate.CreateMethod(subsonicClient);
             ActivityDelegate = activityDelegate;
         }

@@ -13,10 +13,12 @@ namespace Subsonic.Client.Handlers
         readonly List<IObserver<ChatItem>> _observers;
         readonly HashSet<ChatItem> _chatItems;
         readonly Lazy<Task> _worker;
-        private double _lastChatItem;
+
         public int Interval { get; set; }
         public ISubsonicClient<T> Client { get; set; }
         public CancellationToken CancellationToken;
+
+        double _lastChatItem;
 
         public ChatHandler()
         {
@@ -43,7 +45,7 @@ namespace Subsonic.Client.Handlers
             return new Unsubscriber<ChatItem>(_observers, observer);
         }
 
-        private async void SpawnWorker()
+        async void SpawnWorker()
         {
             bool execute = true;
 

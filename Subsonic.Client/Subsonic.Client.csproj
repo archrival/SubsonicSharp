@@ -75,6 +75,7 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\portable-net40+sl5+win8+wp8\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="mscorlib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\IndexesActivity.cs" />
@@ -125,6 +126,11 @@
     <Compile Include="Activities\Search2ActivityDelegate.cs" />
     <Compile Include="Activities\Search2Activity.cs" />
     <Compile Include="Activities\SubsonicActivityDelegate.cs" />
+    <Compile Include="SubsonicAuthentication.cs" />
+    <Compile Include="Interfaces\ISubsonicAuthentication.cs" />
+    <Compile Include="SubsonicToken.cs" />
+    <Compile Include="Extensions\ByteArrayExtensions.cs" />
+    <Compile Include="MD5.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

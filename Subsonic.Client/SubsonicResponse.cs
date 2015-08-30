@@ -12,8 +12,8 @@ namespace Subsonic.Client
 {
     public class SubsonicResponse<T> : ISubsonicResponse<T>
     {
-        private ISubsonicServer SubsonicServer { get; set; }
-        private ISubsonicRequest<T> SubsonicRequest { get; set; }
+        ISubsonicServer SubsonicServer { get; set; }
+        ISubsonicRequest<T> SubsonicRequest { get; set; }
 
         protected SubsonicResponse(ISubsonicServer subsonicServer, ISubsonicRequest<T> subsonicRequest)
         {
@@ -104,7 +104,7 @@ namespace Subsonic.Client
             return await SubsonicRequest.SettingChangeRequestAsync(method, cancelToken);
         }
 
-        private void ValidateApiVersion(Methods method, Version methodApiVersion)
+        void ValidateApiVersion(Methods method, Version methodApiVersion)
         {
             if (SubsonicServer.GetApiVersion() != null && methodApiVersion > SubsonicServer.GetApiVersion())
                 throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicServer.GetApiVersion()));

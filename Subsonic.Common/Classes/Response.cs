@@ -42,6 +42,7 @@ namespace Subsonic.Common.Classes
         [XmlElement("songsByGenre", typeof(Songs))]
         [XmlElement("starred", typeof(Starred))]
         [XmlElement("starred2", typeof(Starred2))]
+        [XmlElement("topSongs", typeof(TopSongs))]
         [XmlElement("user", typeof(User))]
         [XmlElement("users", typeof(Users))]
         [XmlElement("videos", typeof(Videos))]

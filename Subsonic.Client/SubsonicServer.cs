@@ -18,6 +18,7 @@ namespace Subsonic.Client
         string ClientName { get; set; }
         Version ApiVersion { get; set; }
         IWebProxy Proxy { get; set; }
+        ISubsonicAuthentication SubsonicAuthentication { get; set; }
 
         public SubsonicServer(Uri serverUrl, string userName, string password, string clientName)
         {
@@ -25,6 +26,7 @@ namespace Subsonic.Client
             UserName = userName;
             Password = password;
             ClientName = clientName;
+            SubsonicAuthentication = new SubsonicAuthentication(Password);
         }
 
         public SubsonicServer(Uri serverUrl, string userName, string password, string clientName, string proxyServer, int proxyPort) : this(serverUrl, userName, password, clientName)
@@ -105,27 +107,32 @@ namespace Subsonic.Client
             Proxy = new WebProxy(host, port);
         }
 
-        public Uri BuildRequestUri(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
+        bool ShouldUseNewAuthentication()
         {
-            var uriBuilder = new UriBuilder(GetUrl());
+            return GetApiVersion() >= Subsonic.Common.SubsonicApiVersions.Version1_13_0;
+        }
 
-            var pathBuilder = new StringBuilder(uriBuilder.Path);
+        public Uri BuildRequestUri(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, bool checkForTokenUsability = true)
+        {
+            UriBuilder uriBuilder = new UriBuilder(GetUrl());
+
+            StringBuilder pathBuilder = new StringBuilder(uriBuilder.Path);
             pathBuilder.AppendFormat("/rest/{0}.view", method.GetXmlEnumAttribute());
             uriBuilder.Path = Regex.Replace(pathBuilder.ToString(), "/+", "/");
 
-            var queryBuilder = new StringBuilder();
+            StringBuilder queryBuilder = new StringBuilder();
             queryBuilder.AppendFormat("v={0}&c={1}", methodApiVersion, GetClientName());
 
             if (parameters != null && parameters.Parameters.Count > 0)
             {
-                foreach (var parameter in parameters.Parameters)
+                foreach (object parameter in parameters.Parameters)
                 {
                     string key = string.Empty;
                     string value = string.Empty;
 
                     if (parameter is DictionaryEntry)
                     {
-                        var entry = (DictionaryEntry)parameter;
+                        DictionaryEntry entry = (DictionaryEntry)parameter;
 
                         key = entry.Key.ToString();
                         value = entry.Value.ToString();
@@ -133,7 +140,7 @@ namespace Subsonic.Client
 
                     if (parameter is KeyValuePair<string, string>)
                     {
-                        var entry = (KeyValuePair<string, string>)parameter;
+                        KeyValuePair<string, string> entry = (KeyValuePair<string, string>)parameter;
 
                         key = entry.Key;
                         value = entry.Value;
@@ -143,17 +150,32 @@ namespace Subsonic.Client
                 }
             }
 
+            if (checkForTokenUsability && ShouldUseNewAuthentication())
+            {
+                SubsonicToken subsonicToken = SubsonicAuthentication.GetToken();
+                queryBuilder.AppendFormat("&u={0}&t={1}&s={2}", GetUserName(), subsonicToken.Token, subsonicToken.Salt);
+            }
+
             uriBuilder.Query = queryBuilder.ToString();
             return uriBuilder.Uri;
         }
 
         public Uri BuildRequestUriUser(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
         {
-            var uriBuilder = new UriBuilder(BuildRequestUri(method, methodApiVersion, parameters));
+            UriBuilder uriBuilder = new UriBuilder(BuildRequestUri(method, methodApiVersion, parameters, false));
 
-            var queryBuilder = new StringBuilder(uriBuilder.Query.TrimStart('?'));
-            string encodedPassword = string.Format("enc:{0}", GetPassword().ToHex());
-            queryBuilder.AppendFormat("&u={0}&p={1}", GetUserName(), encodedPassword);
+            StringBuilder queryBuilder = new StringBuilder(uriBuilder.Query.TrimStart('?'));
+
+            if (ShouldUseNewAuthentication())
+            {
+                SubsonicToken subsonicToken = SubsonicAuthentication.GetToken();
+                queryBuilder.AppendFormat("&u={0}&t={1}&s={2}", GetUserName(), subsonicToken.Token, subsonicToken.Salt);
+            }
+            else
+            {
+                string encodedPassword = string.Format("enc:{0}", GetPassword().ToHexString());
+                queryBuilder.AppendFormat("&u={0}&p={1}", GetUserName(), encodedPassword);
+            }
 
             uriBuilder.Query = queryBuilder.ToString();
 
@@ -162,17 +184,17 @@ namespace Subsonic.Client
 
         public Uri BuildSettingsRequestUri(SettingMethods method)
         {
-            var uriBuilder = new UriBuilder(GetUrl())
+            UriBuilder uriBuilder = new UriBuilder(GetUrl())
             {
                 UserName = GetUserName(),
                 Password = GetPassword()
             };
 
-            var pathBuilder = new StringBuilder(uriBuilder.Path);
+            StringBuilder pathBuilder = new StringBuilder(uriBuilder.Path);
             pathBuilder.Append("/musicFolderSettings.view");
             uriBuilder.Path = Regex.Replace(pathBuilder.ToString(), "/+", "/");
 
-            var queryBuilder = new StringBuilder();
+            StringBuilder queryBuilder = new StringBuilder();
             queryBuilder.AppendFormat("{0}", method.GetXmlEnumAttribute());
 
             uriBuilder.Query = queryBuilder.ToString();

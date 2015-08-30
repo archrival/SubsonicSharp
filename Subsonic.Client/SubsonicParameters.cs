@@ -15,7 +15,7 @@ namespace Subsonic.Client
 
         public static SubsonicParameters Create(SubsonicParameterType type = SubsonicParameterType.Single)
         {
-            var parameters = new SubsonicParameters {ParameterType = type};
+            SubsonicParameters parameters = new SubsonicParameters {ParameterType = type};
 
             switch (type)
             {
@@ -36,7 +36,7 @@ namespace Subsonic.Client
             {
                 case SubsonicParameterType.List:
                     {
-                        var stringValue = value as string;
+                        string stringValue = value as string;
 
                         if (stringValue != null)
                             Add(key, new List<string> { stringValue });
@@ -46,7 +46,7 @@ namespace Subsonic.Client
                     break;
                 case SubsonicParameterType.Single:
                     {
-                        var parameters = Parameters as Dictionary<string, string>;
+                        Dictionary<string, string> parameters = Parameters as Dictionary<string, string>;
 
                         if (parameters != null)
                             if (value != null)
@@ -60,7 +60,7 @@ namespace Subsonic.Client
 
         public void Add(string key, IEnumerable<string> values, bool required = false)
         {
-            var parameters = Parameters as List<KeyValuePair<string, string>>;
+            List<KeyValuePair<string, string>> parameters = Parameters as List<KeyValuePair<string, string>>;
 
             if (parameters != null)
                 if (values != null)

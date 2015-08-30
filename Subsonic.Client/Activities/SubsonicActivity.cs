@@ -8,8 +8,8 @@ namespace Subsonic.Client.Activities
 {
 	public class SubsonicActivity<T, TImageType> : ISubsonicActivity<T>
 	{
-	    private static readonly Lazy<Dictionary<ISubsonicActivityDelegate<T, TImageType>, Tuple<DateTime, T>>> Cache = new Lazy<Dictionary<ISubsonicActivityDelegate<T, TImageType>, Tuple<DateTime, T>>>(() => new Dictionary<ISubsonicActivityDelegate<T, TImageType>, Tuple<DateTime, T>>());
-	    private TimeSpan Timeout { get; set; }
+	    static readonly Lazy<Dictionary<ISubsonicActivityDelegate<T, TImageType>, Tuple<DateTime, T>>> Cache = new Lazy<Dictionary<ISubsonicActivityDelegate<T, TImageType>, Tuple<DateTime, T>>>(() => new Dictionary<ISubsonicActivityDelegate<T, TImageType>, Tuple<DateTime, T>>());
+	    TimeSpan Timeout { get; set; }
 	    protected ISubsonicActivityDelegate<T, TImageType> ActivityDelegate { get; set; }
 
 	    protected SubsonicActivity()

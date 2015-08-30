@@ -18,11 +18,11 @@ namespace Subsonic.Client.Extensions
 
             Type type = en.GetType();
 
-            var memInfo = type.GetMember(en.ToString());
+            System.Reflection.MemberInfo[] memInfo = type.GetMember(en.ToString());
 
             if (memInfo.Length > 0)
             {
-                var attrs = memInfo[0].GetCustomAttributes(typeof(System.Xml.Serialization.XmlEnumAttribute), false);
+                object[] attrs = memInfo[0].GetCustomAttributes(typeof(System.Xml.Serialization.XmlEnumAttribute), false);
 
                 if (attrs.Length > 0)
                     return ((System.Xml.Serialization.XmlEnumAttribute)attrs[0]).Name;

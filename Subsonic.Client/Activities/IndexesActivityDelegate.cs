@@ -8,8 +8,8 @@ namespace Subsonic.Client.Activities
 {
     public class IndexesActivityDelegate<TImageType> : SubsonicActivityDelegate<Indexes, TImageType>
     {
-        private int? MusicFolderId { get; set; }
-        private long? IfModifiedSince { get; set; }
+        int? MusicFolderId { get; set; }
+        long? IfModifiedSince { get; set; }
 
         public IndexesActivityDelegate(int? musicFolderId = null, long? ifModifiedSince = null)
         {
@@ -24,8 +24,8 @@ namespace Subsonic.Client.Activities
 
         // Overrides for equality
         #region HashCode and Equality Overrides
-        private const int HashSeed = 73; // Should be prime number
-        private const int HashFactor = 17; // Should be prime number
+        const int HashSeed = 73; // Should be prime number
+        const int HashFactor = 17; // Should be prime number
 
         public override int GetHashCode()
         {
@@ -46,7 +46,7 @@ namespace Subsonic.Client.Activities
             return obj != null && Equals(obj as IndexesActivityDelegate<TImageType>);
         }
 
-        private bool Equals(IndexesActivityDelegate<TImageType> item)
+        bool Equals(IndexesActivityDelegate<TImageType> item)
         {
             return item != null && this == item;
         }

@@ -7,7 +7,7 @@ namespace Subsonic.Client.Monitors
 {
     public class ChatMonitor<T> : IObserver<ChatItem>
     {
-        private IDisposable _cancellation;
+        IDisposable _cancellation;
         public ChatHandler<T> ChatHandler { get; set; }
         public bool Disposed { get; set; }
 

@@ -126,6 +126,8 @@
     <Compile Include="Enums\SettingMethods.cs" />
     <Compile Include="Interfaces\IImageFormatFactory.cs" />
     <Compile Include="Classes\PlayQueue.cs" />
+    <Compile Include="Classes\TopSongs.cs" />
+    <Compile Include="Enums\AudioBitrate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

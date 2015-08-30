@@ -11,9 +11,9 @@ namespace Subsonic.Client.Extensions
         /// </summary>
         /// <param name="text">String to convert.</param>
         /// <returns>string</returns>
-        public static string ToHex(this string text)
+        public static string ToHexString(this string text)
         {
-            var hexString = new StringBuilder();
+            StringBuilder hexString = new StringBuilder();
 
             if (!string.IsNullOrWhiteSpace(text))
                 foreach (char character in text)

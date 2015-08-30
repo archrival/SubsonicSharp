@@ -40,6 +40,7 @@ namespace Subsonic.Common.Enums
         [XmlEnum("songsByGenre")] Songs,
         [XmlEnum("starred")] Starred,
         [XmlEnum("starred2")] Starred2,
+        [XmlEnum("topSongs")] TopSongs,
         [XmlEnum("user")] User,
         [XmlEnum("users")] Users,
         [XmlEnum("videos")] Videos

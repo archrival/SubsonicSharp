@@ -272,7 +272,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="cancelToken">The CancellationToken associated with a managed CancellationTokenSource.</param>
         /// <param name="noResponse"></param>
         /// <returns>long</returns>
-        Task<long> StreamAsync(string id, string path, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false);
+        Task<long> StreamAsync(string id, string path, StreamParameters? streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false);
         
         /// <summary>
         /// Downloads a given media file. Similar to stream, but this method returns the original media data without transcoding or downsampling.
@@ -549,9 +549,10 @@ namespace Subsonic.Common.Interfaces
         /// <param name="podcastRole">Whether the user is allowed to administrate Podcasts.</param>
         /// <param name="shareRole">Whether the user is allowed to share files with anyone.</param>
 		/// <param name="musicFolderId">(Since 1.12.0) IDs of the music folders the user is allowed access to. Include the parameter once for each folder.</param>
+        /// <param name="maxBitRate">(Since 1.13.0) The maximum bit rate (in Kbps) for the user. Audio streams of higher bit rates are automatically downsampled to this bit rate. Legal values: 0 (no limit), 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320.</param>
         /// <param name="cancelToken">The CancellationToken associated with a managed CancellationTokenSource.</param>
         /// <returns cref="bool">True on success</returns>
-		Task<bool> UpdateUserAsync(string username, string password = null, string email = null, bool? ldapAuthenticated = null, bool? adminRole = null, bool? settingsRole = null, bool? streamRole = null, bool? jukeboxRole = null, bool? downloadRole = null, bool? uploadRole = null, bool? coverArtRole = null, bool? commentRole = null, bool? podcastRole = null, bool? shareRole = null, string musicFolderId = null, CancellationToken? cancelToken = null);
+        Task<bool> UpdateUserAsync(string username, string password = null, string email = null, bool? ldapAuthenticated = null, bool? adminRole = null, bool? settingsRole = null, bool? streamRole = null, bool? jukeboxRole = null, bool? downloadRole = null, bool? uploadRole = null, bool? coverArtRole = null, bool? commentRole = null, bool? podcastRole = null, bool? shareRole = null, string musicFolderId = null, AudioBitrate? maxBitRate = null, CancellationToken? cancelToken = null);
 
         /// <summary>
         /// Deletes an existing Subsonic user.
@@ -632,6 +633,15 @@ namespace Subsonic.Common.Interfaces
         /// <returns>SimilarSongs2</returns>
         Task<SimilarSongs2> GetSimilarSongs2Async(string id, int? count = null, CancellationToken? cancelToken = null);
 
+        /// <summary>
+        /// Returns top songs for the given artist, using data from last.fm.
+        /// </summary>
+        /// <param name="artist">The artist name.</param>
+        /// <param name="count">Max number of songs to return. [Default = 50]</param>
+        /// <param name="cancelToken">The CancellationToken associated with a managed CancellationTokenSource.</param>
+        /// <returns>TopSongs</returns>
+        Task<TopSongs> GetTopSongsAsync(string artist, int? count = null, CancellationToken? cancelToken = null);
+
 		/// <summary>
 		/// Returns the state of the play queue for this user (as set by savePlayQueueAsync). This includes the tracks in the play queue, the currently playing track, and the position within this track. Typically used to allow a user to move between different clients/apps while retaining the same play queue (for instance when listening to an audio book).
 		/// </summary>
@@ -665,6 +675,6 @@ namespace Subsonic.Common.Interfaces
 
         Uri BuildDownloadUrl(string id);
 
-        Uri BuildStreamUrl(string id, StreamParameters streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null);
+        Uri BuildStreamUrl(string id, StreamParameters? streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null);
     }
 }
