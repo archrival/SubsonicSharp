@@ -8,14 +8,14 @@ namespace Subsonic.Client.Activities
 {
 	public class Search2ActivityDelegate<TImageType> : SubsonicActivityDelegate<SearchResult2, TImageType>
 	{
-		string Query { get; set; }
-		int? ArtistCount { get; set; }
-		int? ArtistOffset { get; set; }
-		int? AlbumCount { get; set; }
-		int? AlbumOffset { get; set; }
-		int? SongCount { get; set; }
-		int? SongOffset { get; set; }
-		string MusicFolderId { get; set; }
+		string Query { get; }
+		int? ArtistCount { get; }
+		int? ArtistOffset { get; }
+		int? AlbumCount { get; }
+		int? AlbumOffset { get; }
+		int? SongCount { get; }
+		int? SongOffset { get; }
+		string MusicFolderId { get; }
 
 		public Search2ActivityDelegate(string query, int? artistCount = null, int? artistOffset = null, int? albumCount = null, int? albumOffset = null, int? songCount = null, int? songOffset = null, string musicFolderId = null)
 		{

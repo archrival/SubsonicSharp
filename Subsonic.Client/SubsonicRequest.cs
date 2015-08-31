@@ -18,8 +18,8 @@ namespace Subsonic.Client
 {
     public class SubsonicRequest<T> : ISubsonicRequest<T>
     {
-        protected ISubsonicServer SubsonicServer { get; private set; }
-        IImageFormatFactory<T> ImageFormatFactory { get; set; }
+        protected ISubsonicServer SubsonicServer { get; }
+        IImageFormatFactory<T> ImageFormatFactory { get; }
 
         protected SubsonicRequest(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory)
         {
@@ -233,7 +233,7 @@ namespace Subsonic.Client
 
         bool UseOldAuthenticationMethod()
         {
-            return SubsonicServer.GetApiVersion() == null || SubsonicServer.GetApiVersion() < Subsonic.Common.SubsonicApiVersions.Version1_13_0;
+            return SubsonicServer.GetApiVersion() == null || SubsonicServer.GetApiVersion() < Common.SubsonicApiVersions.Version1_13_0;
         }
 
         public virtual HttpClientHandler GetClientHandler()

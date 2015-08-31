@@ -8,8 +8,8 @@ namespace Subsonic.Client.Activities
 {
     public class IndexesActivityDelegate<TImageType> : SubsonicActivityDelegate<Indexes, TImageType>
     {
-        int? MusicFolderId { get; set; }
-        long? IfModifiedSince { get; set; }
+        int? MusicFolderId { get; }
+        long? IfModifiedSince { get; }
 
         public IndexesActivityDelegate(int? musicFolderId = null, long? ifModifiedSince = null)
         {

@@ -8,7 +8,7 @@ namespace Subsonic.Client.Activities
 {
     public class MusicDirectoryActivityDelegate<TImageType> : SubsonicActivityDelegate<Directory, TImageType>
     {
-        string Id { get; set; }
+        string Id { get; }
 
         public MusicDirectoryActivityDelegate(string id)
         {

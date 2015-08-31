@@ -18,7 +18,7 @@ namespace Subsonic.Client
         string ClientName { get; set; }
         Version ApiVersion { get; set; }
         IWebProxy Proxy { get; set; }
-        ISubsonicAuthentication SubsonicAuthentication { get; set; }
+        ISubsonicAuthentication SubsonicAuthentication { get; }
 
         public SubsonicServer(Uri serverUrl, string userName, string password, string clientName)
         {
@@ -109,7 +109,7 @@ namespace Subsonic.Client
 
         bool ShouldUseNewAuthentication()
         {
-            return GetApiVersion() >= Subsonic.Common.SubsonicApiVersions.Version1_13_0;
+            return GetApiVersion() >= Common.SubsonicApiVersions.Version1_13_0;
         }
 
         public Uri BuildRequestUri(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, bool checkForTokenUsability = true)

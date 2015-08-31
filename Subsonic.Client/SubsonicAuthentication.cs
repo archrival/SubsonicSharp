@@ -26,9 +26,8 @@ namespace Subsonic.Client
 
         public SubsonicToken GetToken()
         {
-            SubsonicToken subsonicToken = new SubsonicToken();
+            SubsonicToken subsonicToken = new SubsonicToken {Salt = GetUniqueString(SaltComplexity)};
 
-            subsonicToken.Salt = GetUniqueString(SaltComplexity);
             string tokenSource = string.Format("{0}{1}", Password, subsonicToken.Salt);
             subsonicToken.Token = MD5.GetMd5Sum(tokenSource);
 

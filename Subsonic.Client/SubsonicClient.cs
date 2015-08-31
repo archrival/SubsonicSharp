@@ -19,8 +19,8 @@ namespace Subsonic.Client
 	public class SubsonicClient<T> : ISubsonicClient<T>
 	{
 		protected ISubsonicResponse<T> SubsonicResponse { private get; set; }
-		ISubsonicServer SubsonicServer { get; set; }
-		bool EncodePasswords { get; set; }
+		ISubsonicServer SubsonicServer { get; }
+		bool EncodePasswords { get; }
 
 		protected SubsonicClient(ISubsonicServer subsonicServer, bool encodePasswords = true)
 		{
@@ -774,7 +774,7 @@ namespace Subsonic.Client
 
             if (maxBitRate.HasValue)
             {
-                parameters.Add(ParameterConstants.MaxBitRate, maxBitRate.Value.GetXmlEnumAttribute(), true);
+                parameters.Add(ParameterConstants.MaxBitRate, maxBitRate.Value, true);
                 methodApiVersion = methodApiVersion.Max(SubsonicApiVersions.Version1_13_0);
             }
 

@@ -24,31 +24,25 @@ namespace Subsonic.Client
             0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
         };
 
-        uint[] X = new uint[16];
-        byte[] ByteInput;
+        readonly uint[] _x = new uint[16];
+        byte[] _byteInput;
 
         public static string GetMd5Sum(string value)
         {
-            MD5 md5 = new MD5();
-
-            md5.ByteInput = new byte[value.Length];
+            byte[] bytes = new byte[value.Length];
 
             for (int i = 0; i < value.Length; i++)
-                md5.ByteInput[i] = (byte)value[i];
+                bytes[i] = (byte)value[i];
 
-            Digest digest = md5.CalculateMD5Value();
-
-            return digest.ToString();
+            return GetMd5Sum(bytes);
         }
 
         public static string GetMd5Sum(byte[] value)
         {
-            MD5 md5 = new MD5();
-
-            md5.ByteInput = new byte[value.Length];
-
+            MD5 md5 = new MD5 {_byteInput = new byte[value.Length]};
+            
             for (int i = 0; i < value.Length; i++)
-                md5.ByteInput[i] = value[i];
+                md5._byteInput[i] = value[i];
 
             Digest digest = md5.CalculateMD5Value();
 
@@ -57,15 +51,14 @@ namespace Subsonic.Client
 
         Digest CalculateMD5Value()
         {
-            byte[] bMsg;
-            uint N;
+            uint n;
             Digest dg = new Digest();
 
-            bMsg = CreatePaddedBuffer();
+            byte[] bMsg = CreatePaddedBuffer();
 
-            N = (uint)(bMsg.Length * 8) / 32;
+            n = (uint)(bMsg.Length * 8) / 32;
 
-            for (uint i = 0; i < N / 16; i++)
+            for (uint i = 0; i < n / 16; i++)
             {
                 CopyBlock(bMsg, i);
                 PerformTransformation(ref dg.A, ref dg.B, ref dg.C, ref dg.D);
@@ -76,32 +69,32 @@ namespace Subsonic.Client
 
         void TransF(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
         {
-            a = b + RotateLeft((a + ((b & c) | (~(b) & d)) + X[k] + T[i - 1]), s);
+            a = b + RotateLeft((a + ((b & c) | (~(b) & d)) + _x[k] + T[i - 1]), s);
         }
 
         void TransG(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
         {
-            a = b + RotateLeft((a + ((b & d) | (c & ~d)) + X[k] + T[i - 1]), s);
+            a = b + RotateLeft((a + ((b & d) | (c & ~d)) + _x[k] + T[i - 1]), s);
         }
 
         void TransH(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
         {
-            a = b + RotateLeft((a + (b ^ c ^ d) + X[k] + T[i - 1]), s);
+            a = b + RotateLeft((a + (b ^ c ^ d) + _x[k] + T[i - 1]), s);
         }
 
         void TransI(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
         {
-            a = b + RotateLeft((a + (c ^ (b | ~d)) + X[k] + T[i - 1]), s);
+            a = b + RotateLeft((a + (c ^ (b | ~d)) + _x[k] + T[i - 1]), s);
         }
 
         void PerformTransformation(ref uint a, ref uint b, ref uint c, ref uint d)
         {
-            uint AA, BB, CC, DD;
+            uint aa, bb, cc, dd;
 
-            AA = a;   
-            BB = b;
-            CC = c;
-            DD = d;
+            aa = a;   
+            bb = b;
+            cc = c;
+            dd = d;
 
             TransF(ref a, b, c, d, 0, 7, 1);
             TransF(ref d, a, b, c, 1, 12, 2);
@@ -168,33 +161,32 @@ namespace Subsonic.Client
             TransI(ref c, d, a, b, 2, 15, 63);
             TransI(ref b, c, d, a, 9, 21, 64);
 
-            a = a + AA;
-            b = b + BB;
-            c = c + CC;
-            d = d + DD;
+            a = a + aa;
+            b = b + bb;
+            c = c + cc;
+            d = d + dd;
         }
 
         byte[] CreatePaddedBuffer()
         {
             uint pad;
-            byte[] bMsg;
             ulong sizeMsg;
             uint sizeMsgBuff;
-            int temp = (448 - ((ByteInput.Length * 8) % 512));
+            int temp = (448 - ((_byteInput.Length * 8) % 512));
 
             pad = (uint)((temp + 512) % 512);
 
             if (pad == 0)
                 pad = 512;
 
-            sizeMsgBuff = (uint)((ByteInput.Length) + (pad / 8) + 8);
-            sizeMsg = (ulong)ByteInput.Length * 8;
-            bMsg = new byte[sizeMsgBuff];
+            sizeMsgBuff = (uint)((_byteInput.Length) + (pad / 8) + 8);
+            sizeMsg = (ulong)_byteInput.Length * 8;
+            byte[] bMsg = new byte[sizeMsgBuff];
 
-            for (int i = 0; i < ByteInput.Length; i++)
-                bMsg[i] = ByteInput[i];
+            for (int i = 0; i < _byteInput.Length; i++)
+                bMsg[i] = _byteInput[i];
 
-            bMsg[ByteInput.Length] |= 0x80;
+            bMsg[_byteInput.Length] |= 0x80;
 
             for (int i = 8; i > 0; i--)
                 bMsg[sizeMsgBuff - i] = (byte)(sizeMsg >> ((8 - i) * 8) & 0x00000000000000ff);
@@ -208,10 +200,10 @@ namespace Subsonic.Client
 
             for (uint j = 0; j < 61; j += 4)
             {
-                X[j >> 2] = (((uint)bMsg[block + (j + 3)]) << 24) |
+                _x[j >> 2] = (((uint)bMsg[block + (j + 3)]) << 24) |
                 (((uint)bMsg[block + (j + 2)]) << 16) |
                 (((uint)bMsg[block + (j + 1)]) << 8) |
-                (((uint)bMsg[block + (j)]));
+                bMsg[block + (j)];
             }
         }
 

@@ -12,8 +12,8 @@ namespace Subsonic.Client
 {
     public class SubsonicResponse<T> : ISubsonicResponse<T>
     {
-        ISubsonicServer SubsonicServer { get; set; }
-        ISubsonicRequest<T> SubsonicRequest { get; set; }
+        ISubsonicServer SubsonicServer { get; }
+        ISubsonicRequest<T> SubsonicRequest { get; }
 
         protected SubsonicResponse(ISubsonicServer subsonicServer, ISubsonicRequest<T> subsonicRequest)
         {

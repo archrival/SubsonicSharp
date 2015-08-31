@@ -6,9 +6,9 @@ namespace Subsonic.Client.Items
 {
     public class ChatItem
     {
-        public string User { get; set; }
-        public string Message { get; set; }
-        public DateTime TimeStamp { get; set; }
+        public string User { get; }
+        public string Message { get; }
+        public DateTime TimeStamp { get; }
 
         public ChatItem(ChatMessage chatMessage)
         {
