@@ -6,7 +6,7 @@ using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Activities
 {
-    public class IndexesActivityDelegate<TImageType> : SubsonicActivityDelegate<Indexes, TImageType>
+    public class IndexesActivityDelegate<TImageType> : SubsonicActivityDelegate<Indexes, TImageType> where TImageType : class, IDisposable
     {
         int? MusicFolderId { get; }
         long? IfModifiedSince { get; }

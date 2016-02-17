@@ -10,7 +10,7 @@ namespace Subsonic.Client.Interfaces
     /// Defines methods to return a response from a Subsonic server.
     /// </summary>
     /// <typeparam name="T">Specifies the platform specific image format to be utilized.</typeparam>
-    public interface ISubsonicResponse<T>
+    public interface ISubsonicResponse<T> where T : class, IDisposable
     {        
         /// <summary>
         /// Get a boolean response from the Subsonic server for the specified Subsonic method.

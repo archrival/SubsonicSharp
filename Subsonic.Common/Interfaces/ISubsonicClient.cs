@@ -11,7 +11,7 @@ namespace Subsonic.Common.Interfaces
     /// Defines methods available on a Subsonic server.
     /// </summary>
     /// <typeparam name="T">Specifies the platform specific image format to be utilized.</typeparam>
-    public interface ISubsonicClient<T>
+    public interface ISubsonicClient<T> where T : class, IDisposable
     {
         /// <summary>
         /// Used to test connectivity with the server.

@@ -14,7 +14,7 @@ using Subsonic.Client.Interfaces;
 
 namespace Subsonic.Client.Windows.Tests
 {
-    public class Test : IDisposable
+    public class Tests : IDisposable
     {
         public static readonly Uri SubsonicServer = new Uri("http://192.168.1.2/subsonic/");
         public static readonly Uri MadsonicServer = new Uri("http://192.168.1.2/madsonic/");
@@ -48,7 +48,7 @@ namespace Subsonic.Client.Windows.Tests
         public IImageFormatFactory<Image> ImageFormatFactory;
         public Random Random;
 
-        public Test()
+        public Tests()
         {
             AdminSubsonicServer = new SubsonicServer(SubsonicServer, AdminUser, Password, ClientName);
             DownloadSubsonicServer = new SubsonicServer(SubsonicServer, DownloadUser, Password, ClientName);
@@ -82,8 +82,8 @@ namespace Subsonic.Client.Windows.Tests
             var result = await AdminSubsonicClient.PingAsync();
 
             Assert.True(result);
-            Assert.NotNull(AdminSubsonicServer.GetApiVersion());
-            Assert.True(AdminSubsonicServer.GetApiVersion() >= SubsonicApiVersions.Version1_0_0);
+            Assert.NotNull(AdminSubsonicServer.ApiVersion);
+            Assert.True(AdminSubsonicServer.ApiVersion >= SubsonicApiVersions.Version1_0_0);
         }
 
         [Fact]
@@ -92,8 +92,8 @@ namespace Subsonic.Client.Windows.Tests
             var result = await DownloadSubsonicClient.PingAsync();
 
             Assert.True(result);
-            Assert.NotNull(DownloadSubsonicServer.GetApiVersion());
-            Assert.True(DownloadSubsonicServer.GetApiVersion() >= SubsonicApiVersions.Version1_0_0);
+            Assert.NotNull(DownloadSubsonicServer.ApiVersion);
+            Assert.True(DownloadSubsonicServer.ApiVersion >= SubsonicApiVersions.Version1_0_0);
         }
 
         [Fact]
@@ -102,8 +102,8 @@ namespace Subsonic.Client.Windows.Tests
             var result = await NoPlaySubsonicClient.PingAsync();
 
             Assert.True(result);
-            Assert.NotNull(NoPlaySubsonicServer.GetApiVersion());
-            Assert.True(NoPlaySubsonicServer.GetApiVersion() >= SubsonicApiVersions.Version1_0_0);
+            Assert.NotNull(NoPlaySubsonicServer.ApiVersion);
+            Assert.True(NoPlaySubsonicServer.ApiVersion >= SubsonicApiVersions.Version1_0_0);
         }
 
         [Fact]
@@ -112,16 +112,16 @@ namespace Subsonic.Client.Windows.Tests
             var result = await PlaySubsonicClient.PingAsync();
 
             Assert.True(result);
-            Assert.NotNull(PlaySubsonicServer.GetApiVersion());
-            Assert.True(PlaySubsonicServer.GetApiVersion() >= SubsonicApiVersions.Version1_0_0);
+            Assert.NotNull(PlaySubsonicServer.ApiVersion);
+            Assert.True(PlaySubsonicServer.ApiVersion >= SubsonicApiVersions.Version1_0_0);
         }
 
         [Fact]
         public async void PingTestOnNonexistentServer()
         {
-            Assert.Null(NonexistentSubsonicServer.GetApiVersion());
+            Assert.Null(NonexistentSubsonicServer.ApiVersion);
             await Assert.ThrowsAsync<SubsonicApiException>(async () => await NonexistentSubsonicClient.PingAsync());
-            Assert.Null(NonexistentSubsonicServer.GetApiVersion());
+            Assert.Null(NonexistentSubsonicServer.ApiVersion);
         }
 
         [Fact]
@@ -310,6 +310,7 @@ namespace Subsonic.Client.Windows.Tests
         {
             var indexes = await AdminSubsonicClient.GetIndexesAsync();
 
+            Assert.NotNull(indexes);
             Assert.True(indexes.Items.Any());
         }
 
@@ -433,12 +434,14 @@ namespace Subsonic.Client.Windows.Tests
         {
             var musicFolders = await AdminSubsonicClient.GetMusicFoldersAsync();
 
+            Assert.NotNull(musicFolders);
             Assert.True(musicFolders.Items.Any());
 
             var randomMusicFolderNumber = Random.Next(0, musicFolders.Items.Count - 1);
             var randomMusicFolder = musicFolders.Items.ElementAt(randomMusicFolderNumber);
             var indexes = await AdminSubsonicClient.GetIndexesAsync(randomMusicFolder.Id);
 
+            Assert.NotNull(indexes);
             Assert.True(indexes.Items.Any());
 
             var randomIndexNumber = Random.Next(0, indexes.Items.Count - 1);
@@ -559,12 +562,11 @@ namespace Subsonic.Client.Windows.Tests
             var genres = await AdminSubsonicClient.GetGenresAsync();
             var randomNumberForGenre = Random.Next(0, genres.Items.Count - 1);
             var randomGenre = genres.Items.ElementAt(randomNumberForGenre);
-            var previousApiVersion = AdminSubsonicServer.GetApiVersion();
-            AdminSubsonicServer.SetApiVersion(SubsonicApiVersions.Version1_10_0);
-
+            var previousApiVersion = AdminSubsonicServer.ApiVersion;
+            AdminSubsonicServer.ApiVersion = SubsonicApiVersions.Version1_10_0;
             await Assert.ThrowsAsync<SubsonicInvalidApiException>(async () => await AdminSubsonicClient.GetAlbumListAsync(AlbumListType.ByGenre, genre: randomGenre.Name));
 
-            AdminSubsonicServer.SetApiVersion(previousApiVersion);
+            AdminSubsonicServer.ApiVersion = previousApiVersion;
         }
 
         [Fact]

@@ -1,9 +1,10 @@
 ﻿using Subsonic.Common.Classes;
 using Subsonic.Common.Interfaces;
+using System;
 
 namespace Subsonic.Client.Activities
 {
-    public class IndexesActivity<TImageType> : SubsonicActivity<Indexes, TImageType>
+    public class IndexesActivity<TImageType> : SubsonicActivity<Indexes, TImageType> where TImageType : class, IDisposable
     {
         public IndexesActivity(ISubsonicClient<TImageType> subsonicClient, int? musicFolderId = null, long? ifModifiedSince = null)
         {

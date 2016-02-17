@@ -6,7 +6,7 @@ using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Activities
 {
-	public class Search2ActivityDelegate<TImageType> : SubsonicActivityDelegate<SearchResult2, TImageType>
+	public class Search2ActivityDelegate<TImageType> : SubsonicActivityDelegate<SearchResult2, TImageType> where TImageType : class, IDisposable
 	{
 		string Query { get; }
 		int? ArtistCount { get; }

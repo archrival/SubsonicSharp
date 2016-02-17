@@ -16,7 +16,7 @@ using System.IO;
 
 namespace Subsonic.Client
 {
-    public class SubsonicRequest<T> : ISubsonicRequest<T>
+    public class SubsonicRequest<T> : ISubsonicRequest<T> where T : class, IDisposable
     {
         protected ISubsonicServer SubsonicServer { get; }
         IImageFormatFactory<T> ImageFormatFactory { get; }
@@ -233,12 +233,12 @@ namespace Subsonic.Client
 
         bool UseOldAuthenticationMethod()
         {
-            return SubsonicServer.GetApiVersion() == null || SubsonicServer.GetApiVersion() < Common.SubsonicApiVersions.Version1_13_0;
+            return SubsonicServer.ApiVersion == null || SubsonicServer.ApiVersion < Common.SubsonicApiVersions.Version1_13_0;
         }
 
         public virtual HttpClientHandler GetClientHandler()
         {
-            NetworkCredential networkCredential = UseOldAuthenticationMethod() ? new NetworkCredential(SubsonicServer.GetUserName(), SubsonicServer.GetPassword()) : null;
+            NetworkCredential networkCredential = UseOldAuthenticationMethod() ? new NetworkCredential(SubsonicServer.UserName, SubsonicServer.Password) : null;
             bool preAuthenticate = UseOldAuthenticationMethod();
 
             return new HttpClientHandler
@@ -247,8 +247,8 @@ namespace Subsonic.Client
                 PreAuthenticate = preAuthenticate,
                 UseCookies = false,
                 AllowAutoRedirect = true,
-                Proxy = SubsonicServer.GetProxy(),
-                UseProxy = SubsonicServer.GetProxy() != null
+                Proxy = SubsonicServer.Proxy,
+                UseProxy = SubsonicServer.Proxy != null
             };
         }
 
@@ -259,14 +259,14 @@ namespace Subsonic.Client
             if (addAuthentication && UseOldAuthenticationMethod())
                 httpClient.DefaultRequestHeaders.Add(HttpHeaderField.Authorization, GetAuthorizationHeader());
 
-            httpClient.DefaultRequestHeaders.Add(HttpHeaderField.UserAgent, SubsonicServer.GetClientName());
+            httpClient.DefaultRequestHeaders.Add(HttpHeaderField.UserAgent, SubsonicServer.ClientName);
 
             return httpClient;
         }
 
         string GetAuthorizationHeader()
         {
-            string authInfo = string.Format(CultureInfo.InvariantCulture, "{0}:{1}", SubsonicServer.GetUserName(), SubsonicServer.GetPassword());
+            string authInfo = string.Format(CultureInfo.InvariantCulture, "{0}:{1}", SubsonicServer.UserName, SubsonicServer.Password);
             authInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(authInfo));
             return string.Format(CultureInfo.InvariantCulture, "Basic {0}", authInfo);
         }
@@ -282,8 +282,8 @@ namespace Subsonic.Client
                 Version serverVersion = Version.Parse(result.Version);
 
                 // Store the subsonic server version if we don't already have it
-                if (SubsonicServer.GetApiVersion() == null || serverVersion != SubsonicServer.GetApiVersion())
-                    SubsonicServer.SetApiVersion(serverVersion);
+                if (SubsonicServer.ApiVersion == null || serverVersion != SubsonicServer.ApiVersion)
+                    SubsonicServer.ApiVersion = serverVersion;
             }
             else
             {

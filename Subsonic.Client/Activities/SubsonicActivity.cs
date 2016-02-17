@@ -6,7 +6,7 @@ using Subsonic.Client.Interfaces;
 
 namespace Subsonic.Client.Activities
 {
-	public class SubsonicActivity<T, TImageType> : ISubsonicActivity<T>
+	public class SubsonicActivity<T, TImageType> : ISubsonicActivity<T> where TImageType : class, IDisposable
 	{
 	    static readonly Lazy<Dictionary<ISubsonicActivityDelegate<T, TImageType>, Tuple<DateTime, T>>> Cache = new Lazy<Dictionary<ISubsonicActivityDelegate<T, TImageType>, Tuple<DateTime, T>>>(() => new Dictionary<ISubsonicActivityDelegate<T, TImageType>, Tuple<DateTime, T>>());
 	    TimeSpan Timeout { get; set; }

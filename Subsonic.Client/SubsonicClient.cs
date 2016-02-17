@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Subsonic.Client
 {
-	public class SubsonicClient<T> : ISubsonicClient<T>
+	public class SubsonicClient<T> : ISubsonicClient<T> where T : class, IDisposable
 	{
 		protected ISubsonicResponse<T> SubsonicResponse { private get; set; }
 		ISubsonicServer SubsonicServer { get; }

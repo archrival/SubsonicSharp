@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Subsonic.Client
 {
-    public class SubsonicResponse<T> : ISubsonicResponse<T>
+    public class SubsonicResponse<T> : ISubsonicResponse<T> where T : class, IDisposable
     {
         ISubsonicServer SubsonicServer { get; }
         ISubsonicRequest<T> SubsonicRequest { get; }
@@ -106,8 +106,8 @@ namespace Subsonic.Client
 
         void ValidateApiVersion(Methods method, Version methodApiVersion)
         {
-            if (SubsonicServer.GetApiVersion() != null && methodApiVersion > SubsonicServer.GetApiVersion())
-                throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicServer.GetApiVersion()));
+            if (SubsonicServer.ApiVersion != null && methodApiVersion > SubsonicServer.ApiVersion)
+                throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicServer.ApiVersion));
         }
     }
 }

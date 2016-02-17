@@ -1,23 +1,14 @@
 ﻿using Subsonic.Common.Interfaces;
 using System.Drawing;
 using System.IO;
+using System;
 
 namespace Subsonic.Client.Windows
 {
     public class ImageFormatWindows : IImageFormat<Image>
     {
-        private Image Image { get; set; }
         private Stream Stream { get; set; }
-
-        public Image GetImage()
-        {
-            return Image;
-        }
-
-        public void SetImage(Image image)
-        {
-            Image = image;
-        }
+        public Image Image { get; set; }
 
         public void SetImageFromStream(Stream stream)
         {

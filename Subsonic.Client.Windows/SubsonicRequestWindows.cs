@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Subsonic.Client.Windows
 {
-    public class SubsonicRequestWindows<T> : SubsonicRequest<T>
+    public class SubsonicRequestWindows<T> : SubsonicRequest<T> where T : class, IDisposable
     {
         public SubsonicRequestWindows(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, imageFormatFactory) { }
 

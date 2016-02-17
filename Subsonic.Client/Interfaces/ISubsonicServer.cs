@@ -10,10 +10,10 @@ namespace Subsonic.Client.Interfaces
     public interface ISubsonicServer
     {
         /// <summary>
-        /// Returns the base URL to use for communication with this server.
+        /// Gets or sets the base URL to use for communication with this server.
         /// </summary>
         /// <returns cref="Uri">The base URL of the Subsonic server.</returns>
-        Uri GetUrl();
+        Uri Url { get; set; }
 
         /// <summary>
         /// Sets the base URL to use for communication with this server.
@@ -22,67 +22,37 @@ namespace Subsonic.Client.Interfaces
         void SetUrl(string url);
 
         /// <summary>
-        /// Sets the base URL to use for communication with this server.
-        /// </summary>
-        /// <param name="url" cref="Uri">The client name.</param>
-        void SetUrl(Uri url);
-
-        /// <summary>
-        /// Returns the user name to use for communication with this server.
+        /// Gets or sets the user name to use for communication with this server.
         /// </summary>
         /// <returns cref="string">The user name.</returns>
-        string GetUserName();
+        string UserName { get; set; }
 
         /// <summary>
-        /// Sets the user name to use for communication with this server.
-        /// </summary>
-        /// <param name="username" cref="string">The user name.</param>
-        void SetUserName(string username);
-
-        /// <summary>
-        /// Returns the password to use for communication with this server.
+        /// Gets or sets the password to use for communication with this server.
         /// </summary>
         /// <returns cref="string">The password.</returns>
-        string GetPassword();
+        string Password { get; set; }
 
         /// <summary>
-        /// Sets the password to use for communication with this server.
-        /// </summary>
-        /// <param name="password" cref="string">The password.</param>
-        void SetPassword(string password);
-
-        /// <summary>
-        /// Returns the client name to use for communication with this server.
+        /// Gets or sets the client name to use for communication with this server.
         /// </summary>
         /// <returns cref="string">The client name.</returns>
-        string GetClientName();
+        string ClientName { get; set; }
 
         /// <summary>
-        /// Sets the client name to use for communication with this server.
-        /// </summary>
-        /// <param name="clientName" cref="string">The client name.</param>
-        void SetClientName(string clientName);
-
-        /// <summary>
-        /// Returns the version of the Subsonic API for this server.
+        /// Gets or sets the version of the Subsonic API for this server.
         /// </summary>
         /// <returns cref="Version">The Subsonic server API version.</returns>
-        Version GetApiVersion();
+        Version ApiVersion { get; set; }
 
         /// <summary>
-        /// Sets the version of the Subsonic API for this server.
-        /// </summary>
-        /// <param name="apiVersion" cref="Version">The Subsonic server API version.</param>
-        void SetApiVersion(Version apiVersion);
-
-        /// <summary>
-        /// Returns the IWebProxy for the instance.
+        /// Gets or sets the IWebProxy for the instance.
         /// </summary>
         /// <returns cref="IWebProxy">IWebProxy specified for this server.</returns>
-        IWebProxy GetProxy();
+        IWebProxy Proxy { get; set; }
 
         /// <summary>
-        /// Sets the IWebProxy for the instance.
+        /// Sets the IWebProxy for the instance using the specified host and port.
         /// </summary>
         /// <param name="host" cref="string">The proxy hostname.</param>
         /// <param name="port" cref="int">The proxy port.</param>

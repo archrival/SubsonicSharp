@@ -1,9 +1,10 @@
 ﻿using Subsonic.Common.Classes;
 using Subsonic.Common.Interfaces;
+using System;
 
 namespace Subsonic.Client.Activities
 {
-	public class MusicFoldersActivity<T> : SubsonicActivity<MusicFolders, T>
+	public class MusicFoldersActivity<T> : SubsonicActivity<MusicFolders, T> where T : class, IDisposable
 	{
 		public MusicFoldersActivity(ISubsonicClient<T> subsonicClient)
 		{

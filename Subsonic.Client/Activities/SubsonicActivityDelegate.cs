@@ -5,7 +5,7 @@ using Subsonic.Client.Interfaces;
 
 namespace Subsonic.Client.Activities
 {
-	public class SubsonicActivityDelegate<T, TImageType> : ISubsonicActivityDelegate<T, TImageType>
+	public class SubsonicActivityDelegate<T, TImageType> : ISubsonicActivityDelegate<T, TImageType> where TImageType : class, IDisposable
 	{
 		public Func<CancellationToken?, Task<T>> Method { get; set; }
 

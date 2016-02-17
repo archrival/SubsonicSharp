@@ -5,7 +5,7 @@ using Subsonic.Client.Items;
 
 namespace Subsonic.Client.Monitors
 {
-    public class ChatMonitor<T> : IObserver<ChatItem>
+    public class ChatMonitor<T> : IObserver<ChatItem> where T : class, IDisposable
     {
         IDisposable _cancellation;
         public ChatHandler<T> ChatHandler { get; set; }

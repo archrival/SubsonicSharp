@@ -12,7 +12,7 @@ namespace Subsonic.Client.Interfaces
     /// Defines methods to make a request to a Subsonic server.
     /// </summary>
     /// <typeparam name="T">Specifies the platform specific image format to be utilized.</typeparam>
-    public interface ISubsonicRequest<T>
+    public interface ISubsonicRequest<T> where T : class, IDisposable
     {
         /// <summary>
         /// Get a Response for the specified Subsonic method.

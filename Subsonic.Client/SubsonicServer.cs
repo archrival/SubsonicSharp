@@ -12,12 +12,12 @@ namespace Subsonic.Client
 {
     public class SubsonicServer : ISubsonicServer
     {
-        Uri Url { get; set; }
-        string UserName { get; set; }
-        string Password { get; set; }
-        string ClientName { get; set; }
-        Version ApiVersion { get; set; }
-        IWebProxy Proxy { get; set; }
+        public Uri Url { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public string ClientName { get; set; }
+        public Version ApiVersion { get; set; }
+        public IWebProxy Proxy { get; set; }
         ISubsonicAuthentication SubsonicAuthentication { get; }
 
         public SubsonicServer(Uri serverUrl, string userName, string password, string clientName)
@@ -42,64 +42,9 @@ namespace Subsonic.Client
             };
         }
 
-        public Uri GetUrl()
-        {
-            return Url;
-        }
-
         public void SetUrl(string url)
         {
             Url = new Uri(url);
-        }
-
-        public void SetUrl(Uri url)
-        {
-            Url = url;
-        }
-
-        public string GetUserName()
-        {
-            return UserName;
-        }
-
-        public void SetUserName(string username)
-        {
-            UserName = username;
-        }
-
-        public string GetPassword()
-        {
-            return Password;
-        }
-
-        public void SetPassword(string password)
-        {
-            Password = password;
-        }
-
-        public string GetClientName()
-        {
-            return ClientName;
-        }
-
-        public void SetClientName(string clientName)
-        {
-            ClientName = clientName;
-        }
-
-        public Version GetApiVersion()
-        {
-            return ApiVersion;
-        }
-
-        public void SetApiVersion(Version apiVersion)
-        {
-            ApiVersion = apiVersion;
-        }
-
-        public IWebProxy GetProxy()
-        {
-            return Proxy;
         }
 
         public void SetProxy(string host, int port)
@@ -109,19 +54,19 @@ namespace Subsonic.Client
 
         bool ShouldUseNewAuthentication()
         {
-            return GetApiVersion() >= Common.SubsonicApiVersions.Version1_13_0;
+            return ApiVersion >= Common.SubsonicApiVersions.Version1_13_0;
         }
 
         public Uri BuildRequestUri(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, bool checkForTokenUsability = true)
         {
-            UriBuilder uriBuilder = new UriBuilder(GetUrl());
+            UriBuilder uriBuilder = new UriBuilder(Url);
 
             StringBuilder pathBuilder = new StringBuilder(uriBuilder.Path);
             pathBuilder.AppendFormat("/rest/{0}.view", method.GetXmlEnumAttribute());
             uriBuilder.Path = Regex.Replace(pathBuilder.ToString(), "/+", "/");
 
             StringBuilder queryBuilder = new StringBuilder();
-            queryBuilder.AppendFormat("v={0}&c={1}", methodApiVersion, GetClientName());
+            queryBuilder.AppendFormat("v={0}&c={1}", methodApiVersion, ClientName);
 
             if (parameters != null && parameters.Parameters.Count > 0)
             {
@@ -153,7 +98,7 @@ namespace Subsonic.Client
             if (checkForTokenUsability && ShouldUseNewAuthentication())
             {
                 SubsonicToken subsonicToken = SubsonicAuthentication.GetToken();
-                queryBuilder.AppendFormat("&u={0}&t={1}&s={2}", GetUserName(), subsonicToken.Token, subsonicToken.Salt);
+                queryBuilder.AppendFormat("&u={0}&t={1}&s={2}", UserName, subsonicToken.Token, subsonicToken.Salt);
             }
 
             uriBuilder.Query = queryBuilder.ToString();
@@ -169,12 +114,12 @@ namespace Subsonic.Client
             if (ShouldUseNewAuthentication())
             {
                 SubsonicToken subsonicToken = SubsonicAuthentication.GetToken();
-                queryBuilder.AppendFormat("&u={0}&t={1}&s={2}", GetUserName(), subsonicToken.Token, subsonicToken.Salt);
+                queryBuilder.AppendFormat("&u={0}&t={1}&s={2}", UserName, subsonicToken.Token, subsonicToken.Salt);
             }
             else
             {
-                string encodedPassword = string.Format("enc:{0}", GetPassword().ToHexString());
-                queryBuilder.AppendFormat("&u={0}&p={1}", GetUserName(), encodedPassword);
+                string encodedPassword = string.Format("enc:{0}", Password.ToHexString());
+                queryBuilder.AppendFormat("&u={0}&p={1}", UserName, encodedPassword);
             }
 
             uriBuilder.Query = queryBuilder.ToString();
@@ -184,10 +129,10 @@ namespace Subsonic.Client
 
         public Uri BuildSettingsRequestUri(SettingMethods method)
         {
-            UriBuilder uriBuilder = new UriBuilder(GetUrl())
+            UriBuilder uriBuilder = new UriBuilder(Url)
             {
-                UserName = GetUserName(),
-                Password = GetPassword()
+                UserName = UserName,
+                Password = Password
             };
 
             StringBuilder pathBuilder = new StringBuilder(uriBuilder.Path);

@@ -8,7 +8,7 @@ using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Handlers
 {
-    public class ChatHandler<T> : IObservable<ChatItem>, IDisposable
+    public class ChatHandler<T> : IObservable<ChatItem>, IDisposable where T : class, IDisposable
     {
         readonly List<IObserver<ChatItem>> _observers;
         readonly HashSet<ChatItem> _chatItems;

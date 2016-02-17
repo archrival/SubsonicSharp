@@ -6,7 +6,7 @@ using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Activities
 {
-    public class MusicDirectoryActivityDelegate<TImageType> : SubsonicActivityDelegate<Directory, TImageType>
+    public class MusicDirectoryActivityDelegate<TImageType> : SubsonicActivityDelegate<Directory, TImageType> where TImageType : class, IDisposable
     {
         string Id { get; }
 

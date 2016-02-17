@@ -7,10 +7,9 @@ namespace Subsonic.Common.Interfaces
     /// Defines methods to store and retrieve platform specific image data.
     /// </summary>
     /// <typeparam name="T">Specifies the platform specific image format to be utilized.</typeparam>
-    public interface IImageFormat<T> : IDisposable
+    public interface IImageFormat<T> : IDisposable where T : class, IDisposable
     {
-        T GetImage();
-        void SetImage(T image);
+        T Image { get; set; }
         void SetImageFromStream(Stream stream);
     }
 }
