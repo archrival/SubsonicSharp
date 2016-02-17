@@ -8,6 +8,7 @@ namespace Subsonic.Common.Classes
     public class Playlist
     {
         [XmlElement("allowedUser")] public List<string> AllowedUsers;
+        [XmlAttribute("changed")] public DateTime Changed;
         [XmlAttribute("comment")] public string Comment;
         [XmlAttribute("coverArt")] public string CoverArt;
         [XmlAttribute("created")] public DateTime Created;

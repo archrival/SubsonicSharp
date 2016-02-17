@@ -231,7 +231,6 @@ namespace Subsonic.Client.Windows.Tests
         public async void AddChatMessageAsPlayUserOnSubsonic()
         {
             var chatMessage = DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture);
-            
             var result = await PlaySubsonicClient.AddChatMessageAsync(chatMessage);
 
             Assert.True(result);
@@ -245,7 +244,6 @@ namespace Subsonic.Client.Windows.Tests
         public async void AddChatMessageAsNoPlayUserOnSubsonic()
         {
             var chatMessage = DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture);
-            
             var result = await NoPlaySubsonicClient.AddChatMessageAsync(chatMessage);
 
             Assert.True(result);
@@ -657,6 +655,15 @@ namespace Subsonic.Client.Windows.Tests
             var playQueue = await AdminSubsonicClient.GetPlayQueueAsync();
 
             Assert.NotNull(playQueue.Username);
+        }
+
+        [Fact]
+        public async void GetRandomAlbumInfoAsAdminUserOnSubsonic()
+        {
+            var randomSongs = await AdminSubsonicClient.GetRandomSongsAsync(1);
+            var albumInfo = await AdminSubsonicClient.GetAlbumInfoAsync(randomSongs.Songs.First().Id);
+
+            Assert.NotNull(albumInfo);
         }
     }
 }

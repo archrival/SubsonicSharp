@@ -834,7 +834,23 @@ namespace Subsonic.Client
 			return await SubsonicResponse.GetResponseAsync<ArtistInfo2>(Methods.GetArtistInfo2, SubsonicApiVersions.Version1_11_0, parameters, cancelToken);
 		}
 
-		public virtual async Task<SimilarSongs> GetSimilarSongsAsync(string id, int? count = null, CancellationToken? cancelToken = null)
+        public virtual async Task<AlbumInfo> GetAlbumInfoAsync(string id, CancellationToken? cancelToken = null)
+        {
+            SubsonicParameters parameters = SubsonicParameters.Create();
+            parameters.Add(ParameterConstants.Id, id, true);
+
+            return await SubsonicResponse.GetResponseAsync<AlbumInfo>(Methods.GetAlbumInfo, SubsonicApiVersions.Version1_14_0, parameters, cancelToken);
+        }
+
+        public virtual async Task<AlbumInfo> GetAlbumInfo2Async(string id, CancellationToken? cancelToken = null)
+        {
+            SubsonicParameters parameters = SubsonicParameters.Create();
+            parameters.Add(ParameterConstants.Id, id, true);
+
+            return await SubsonicResponse.GetResponseAsync<AlbumInfo>(Methods.GetAlbumInfo2, SubsonicApiVersions.Version1_14_0, parameters, cancelToken);
+        }
+
+        public virtual async Task<SimilarSongs> GetSimilarSongsAsync(string id, int? count = null, CancellationToken? cancelToken = null)
 		{
 			SubsonicParameters parameters = SubsonicParameters.Create();
 			parameters.Add(ParameterConstants.Id, id, true);

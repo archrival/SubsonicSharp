@@ -25,8 +25,11 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("id")] public string Id;
         [XmlAttribute("isDir")] public bool IsDir;
         [XmlAttribute("isVideo")] public bool IsVideo;
+        [XmlAttribute("originalHeight")] public int OriginalHeight;
+        [XmlAttribute("originalWidth")] public int OriginalWidth;
         [XmlAttribute("parent")] public string Parent;
         [XmlAttribute("path")] public string Path;
+        [XmlAttribute("playCount")] public long PlayCount;
         [XmlAttribute("size")] public long Size;
         [XmlAttribute("starred")] public DateTime Starred;
         [XmlAttribute("suffix")] public string Suffix;

@@ -14,6 +14,7 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("genre")] public string Genre;
         [XmlAttribute("id")] public string Id;
         [XmlAttribute("name")] public string Name;
+        [XmlAttribute("playCount")] public long PlayCount;
         [XmlAttribute("songCount")] public int SongCount;
         [XmlAttribute("starred")] public DateTime Starred;
         [XmlAttribute("year")] public int Year;

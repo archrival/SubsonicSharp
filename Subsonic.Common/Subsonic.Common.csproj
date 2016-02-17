@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\AlbumID3.cs" />
+    <Compile Include="Classes\AlbumInfo.cs" />
     <Compile Include="Classes\AlbumList.cs" />
     <Compile Include="Classes\AlbumList2.cs" />
     <Compile Include="Classes\Error.cs" />
