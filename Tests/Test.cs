@@ -49,7 +49,7 @@ namespace Subsonic.Client.Windows.Tests
 		public IImageFormatFactory<Image> ImageFormatFactory;
 		public Random Random;
 
-		[TestFixtureSetUp]
+		[OneTimeSetUp]
 		public void Setup()
 		{
 			AdminSubsonicServer = new SubsonicServer(SubsonicServer, AdminUser, Password, ClientName);
@@ -68,7 +68,7 @@ namespace Subsonic.Client.Windows.Tests
 			Random = new Random(DateTime.UtcNow.Millisecond * DateTime.UtcNow.Second * DateTime.UtcNow.Minute);
 		}
 
-		[TestFixtureTearDown]
+		[OneTimeTearDown]
 		public void TearDown()
 		{
 			AdminSubsonicClient = null;
@@ -510,8 +510,8 @@ namespace Subsonic.Client.Windows.Tests
 					musicDirectory = await AdminSubsonicClient.GetMusicDirectoryAsync(randomArtist.Id);
 				});
 
-			Assert.IsNotNullOrEmpty(musicDirectory.Id);
-			Assert.IsNotNullOrEmpty(musicDirectory.Name);
+			Assert.True(!string.IsNullOrWhiteSpace(musicDirectory.Id));
+			Assert.True(!string.IsNullOrWhiteSpace(musicDirectory.Name));
 			Assert.IsTrue(musicDirectory.Children.Any());
 		}
 
@@ -568,8 +568,8 @@ namespace Subsonic.Client.Windows.Tests
 					artist = await AdminSubsonicClient.GetArtistAsync(randomArtist.Id);
 				});
 
-			Assert.IsNotNullOrEmpty(artist.Id);
-			Assert.IsNotNullOrEmpty(artist.Name);
+			Assert.True(!string.IsNullOrWhiteSpace(artist.Id));
+			Assert.True(!string.IsNullOrWhiteSpace(artist.Name));
 		}
 
 		[Test]
@@ -599,8 +599,8 @@ namespace Subsonic.Client.Windows.Tests
 					artist = await AdminSubsonicClient.GetArtistAsync(randomArtist.Id);
 				});
 
-			Assert.IsNotNullOrEmpty(artist.Id);
-			Assert.IsNotNullOrEmpty(artist.Name);
+			Assert.True(!string.IsNullOrWhiteSpace(artist.Id));
+			Assert.True(!string.IsNullOrWhiteSpace(artist.Name));
 
 			ArtistInfo2 artistInfo2 = null;
 
