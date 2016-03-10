@@ -1,7 +1,6 @@
 ﻿using Subsonic.Common.Interfaces;
 using System.Drawing;
 using System.IO;
-using System;
 
 namespace Subsonic.Client.Windows
 {

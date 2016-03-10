@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 
 namespace Subsonic.Client.Extensions
 {
@@ -18,14 +20,14 @@ namespace Subsonic.Client.Extensions
 
             Type type = en.GetType();
 
-            System.Reflection.MemberInfo[] memInfo = type.GetMember(en.ToString());
+            var memInfo = type.GetTypeInfo().DeclaredMembers.Where(m => m.Name == en.ToString());
 
-            if (memInfo.Length > 0)
+            if (memInfo.Any())
             {
-                object[] attrs = memInfo[0].GetCustomAttributes(typeof(System.Xml.Serialization.XmlEnumAttribute), false);
+                var attrs = memInfo.First().CustomAttributes.Where(ca => ca.AttributeType == typeof(System.Xml.Serialization.XmlEnumAttribute));
 
-                if (attrs.Length > 0)
-                    return ((System.Xml.Serialization.XmlEnumAttribute)attrs[0]).Name;
+                if (attrs.Any())
+                    return attrs.First().ConstructorArguments.First().Value as string;
             }
 
             return en.ToString();

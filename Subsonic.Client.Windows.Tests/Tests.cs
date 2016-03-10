@@ -16,16 +16,16 @@ namespace Subsonic.Client.Windows.Tests
 {
     public class Tests : IDisposable
     {
-        public static readonly Uri SubsonicServer = new Uri("http://192.168.1.2/subsonic/");
-        public static readonly Uri MadsonicServer = new Uri("http://192.168.1.2/madsonic/");
+        public static readonly Uri SubsonicServer = new Uri("http://192.168.1.3:8080/subsonic/");
+        public static readonly Uri MadsonicServer = new Uri("http://192.168.1.3:8080/madsonic/");
         public static readonly Uri NonexistentServer = new Uri("http://localhost/ultrasonic/");
         public const string ProxyServer = "localhost";
         public const int ProxyPort = 8888;
-        public const string AdminUser = "test_admin";
+        public const string AdminUser = "admin";
         public const string DownloadUser = "test_download";
         public const string NoPlayUser = "test_noplay";
         public const string PlayUser = "test_play";
-        public const string Password = "password";
+        public const string Password = "Ch1t0wn!2016";
         public const string UserToCreate = "test_createduser";
         public const string UserToCreateEmail = "test_createduser@localhost";
         public const string ClientName = "Subsonic.Client.Windows.Tests";

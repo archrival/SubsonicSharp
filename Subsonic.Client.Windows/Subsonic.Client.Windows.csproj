@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Subsonic.Client.Windows</RootNamespace>
     <AssemblyName>Subsonic.Client.Windows</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>01821e2b</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -73,18 +74,22 @@
   </Target>
   -->
   <ItemGroup>
-    <ProjectReference Include="..\Subsonic.Common\Subsonic.Common.csproj">
-      <Project>{A533A041-6D2D-46B3-A3E7-4CC7E64A16F3}</Project>
-      <Name>Subsonic.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Subsonic.Client\Subsonic.Client.csproj">
-      <Project>{CBB112D5-2507-4453-83BE-51232FB95CA6}</Project>
-      <Name>Subsonic.Client</Name>
-    </ProjectReference>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
+    <ProjectReference Include="..\Subsonic.Client\Subsonic.Client.csproj">
+      <Project>{cbb112d5-2507-4453-83be-51232fb95ca6}</Project>
+      <Name>Subsonic.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Subsonic.Common\Subsonic.Common.csproj">
+      <Project>{a533a041-6d2d-46b3-a3e7-4cc7e64a16f3}</Project>
+      <Name>Subsonic.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
