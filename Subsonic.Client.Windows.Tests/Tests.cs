@@ -25,7 +25,7 @@ namespace Subsonic.Client.Windows.Tests
         public const string DownloadUser = "test_download";
         public const string NoPlayUser = "test_noplay";
         public const string PlayUser = "test_play";
-        public const string Password = "Ch1t0wn!2016";
+        public const string Password = "password";
         public const string UserToCreate = "test_createduser";
         public const string UserToCreateEmail = "test_createduser@localhost";
         public const string ClientName = "Subsonic.Client.Windows.Tests";
