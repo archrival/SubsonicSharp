@@ -57,13 +57,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileLogger.cs" />
-    <Compile Include="SubsonicClientWindows.cs" />
+    <Compile Include="SubsonicClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StreamProxy.cs" />
-    <Compile Include="SubsonicRequestWindows.cs" />
-    <Compile Include="SubsonicResponseWindows.cs" />
-    <Compile Include="ImageFormatWindows.cs" />
-    <Compile Include="ImageFormatFactoryWindows.cs" />
+    <Compile Include="SubsonicRequest.cs" />
+    <Compile Include="SubsonicResponse.cs" />
+    <Compile Include="ImageFormat.cs" />
+    <Compile Include="ImageFormatFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

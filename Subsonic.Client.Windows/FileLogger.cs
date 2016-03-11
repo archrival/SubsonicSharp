@@ -27,7 +27,7 @@ namespace Subsonic.Client.Windows
 
         private static string FormatLogEntry(string entry)
         {
-            return string.Format("{0} {1}", DateTime.UtcNow.ToString("yyyy/MM/dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture), entry);
+            return $"{DateTime.UtcNow.ToString("yyyy/MM/dd HH:mm:ss.fffffff", CultureInfo.InvariantCulture)} {entry}";
         }
 
         public void Close()

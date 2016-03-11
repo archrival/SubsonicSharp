@@ -1,0 +1,14 @@
+﻿using System.Drawing;
+using Subsonic.Client.Interfaces;
+using Subsonic.Common.Interfaces;
+
+namespace Subsonic.Client.Windows
+{
+    public class SubsonicClient : SubsonicClient<Image>
+    {
+        public SubsonicClient(ISubsonicServer subsonicServer, IImageFormatFactory<Image> imageFormatFactory) : base(subsonicServer)
+        {
+            SubsonicResponse = new SubsonicResponse<Image>(subsonicServer, imageFormatFactory);
+        }
+    }
+}

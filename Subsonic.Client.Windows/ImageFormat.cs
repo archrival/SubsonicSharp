@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Subsonic.Client.Windows
 {
-    public class ImageFormatWindows : IImageFormat<Image>
+    public class ImageFormat : IImageFormat<Image>
     {
         private Stream Stream { get; set; }
         public Image Image { get; set; }
@@ -17,7 +17,8 @@ namespace Subsonic.Client.Windows
 
         public void Dispose()
         {
-            if (Image != null) Image.Dispose();
+            Image?.Dispose();
+
             if (Stream == null) return;
 
             Stream.Close();

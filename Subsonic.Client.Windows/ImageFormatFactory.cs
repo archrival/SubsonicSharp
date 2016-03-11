@@ -3,11 +3,11 @@ using System.Drawing;
 
 namespace Subsonic.Client.Windows
 {
-    public class ImageFormatFactoryWindows : IImageFormatFactory<Image>
+    public class ImageFormatFactory : IImageFormatFactory<Image>
     {
         public IImageFormat<Image> Create()
         {
-            return new ImageFormatWindows();
+            return new ImageFormat();
         }
     }
 }

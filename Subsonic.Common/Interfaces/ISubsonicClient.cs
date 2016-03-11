@@ -509,53 +509,53 @@ namespace Subsonic.Common.Interfaces
 		/// <returns>Users</returns>
 		Task<Users> GetUsersAsync(CancellationToken? cancelToken = null);
 
-        /// <summary>
-        /// Creates a new Subsonic user.
-        /// </summary>
-        /// <param name="username">The name of the new user.</param>
-        /// <param name="password">The password for the new user.</param>
-        /// <param name="email">The email address of the new user.</param>
-        /// <param name="ldapAuthenticated">Whether the user is authenicated in LDAP. [Default = false]</param>
-        /// <param name="adminRole">Whether the user is administrator. [Default = false]</param>
-        /// <param name="settingsRole">Whether the user is allowed to change settings and password. [Default = true]</param>
-        /// <param name="streamRole">Whether the user is allowed to play files. [Default = true]</param>
-        /// <param name="jukeboxRole">Whether the user is allowed to play files in jukebox mode. [Default = false]</param>
-        /// <param name="downloadRole">Whether the user is allowed to download files. [Default = false]</param>
-        /// <param name="uploadRole">Whether the user is allowed to upload files. [Default = false]</param>
-        /// <param name="playlistRole">Whether the user is allowed to create and delete playlists. [Default = false]</param>
-        /// <param name="coverArtRole">Whether the user is allowed to change cover art and tags. [Default = false]</param>
-        /// <param name="commentRole">Whether the user is allowed to create and edit comments and ratings. [Default = false]</param>
-        /// <param name="podcastRole">Whether the user is allowed to administrate Podcasts. [Default = false]</param>
-        /// <param name="shareRole">(Since 1.8.0) Whether the user is allowed to share files with anyone.</param>
-        /// <param name="musicFolderId">(Since 1.12.0) IDs of the music folders the user is allowed access to. Include the parameter once for each folder.</param>
-        /// <param name="videoConversionRole">(Since 1.14.0) Whether the user is allowed to start video conversions. [Default = false]</param>
-        /// <param name="cancelToken">The CancellationToken associated with a managed CancellationTokenSource.</param>
-        /// <returns cref="bool">True on success</returns>
-        Task<bool> CreateUserAsync(string username, string password, string email, bool? ldapAuthenticated = null, bool? adminRole = null, bool? settingsRole = null, bool? streamRole = null, bool? jukeboxRole = null, bool? downloadRole = null, bool? uploadRole = null, bool? playlistRole = null, bool? coverArtRole = null, bool? commentRole = null, bool? podcastRole = null, bool? shareRole = null, string musicFolderId = null, bool? videoConversionRole = null, CancellationToken? cancelToken = null);
+		/// <summary>
+		/// Creates a new Subsonic user.
+		/// </summary>
+		/// <param name="username">The name of the new user.</param>
+		/// <param name="password">The password for the new user.</param>
+		/// <param name="email">The email address of the new user.</param>
+		/// <param name="ldapAuthenticated">Whether the user is authenicated in LDAP. [Default = false]</param>
+		/// <param name="adminRole">Whether the user is administrator. [Default = false]</param>
+		/// <param name="settingsRole">Whether the user is allowed to change settings and password. [Default = true]</param>
+		/// <param name="streamRole">Whether the user is allowed to play files. [Default = true]</param>
+		/// <param name="jukeboxRole">Whether the user is allowed to play files in jukebox mode. [Default = false]</param>
+		/// <param name="downloadRole">Whether the user is allowed to download files. [Default = false]</param>
+		/// <param name="uploadRole">Whether the user is allowed to upload files. [Default = false]</param>
+		/// <param name="playlistRole">Whether the user is allowed to create and delete playlists. [Default = false]</param>
+		/// <param name="coverArtRole">Whether the user is allowed to change cover art and tags. [Default = false]</param>
+		/// <param name="commentRole">Whether the user is allowed to create and edit comments and ratings. [Default = false]</param>
+		/// <param name="podcastRole">Whether the user is allowed to administrate Podcasts. [Default = false]</param>
+		/// <param name="shareRole">(Since 1.8.0) Whether the user is allowed to share files with anyone.</param>
+		/// <param name="musicFolderId">(Since 1.12.0) IDs of the music folders the user is allowed access to. Include the parameter once for each folder.</param>
+		/// <param name="videoConversionRole">(Since 1.14.0) Whether the user is allowed to start video conversions. [Default = false]</param>
+		/// <param name="cancelToken">The CancellationToken associated with a managed CancellationTokenSource.</param>
+		/// <returns cref="bool">True on success</returns>
+		Task<bool> CreateUserAsync(string username, string password, string email, bool? ldapAuthenticated = null, bool? adminRole = null, bool? settingsRole = null, bool? streamRole = null, bool? jukeboxRole = null, bool? downloadRole = null, bool? uploadRole = null, bool? playlistRole = null, bool? coverArtRole = null, bool? commentRole = null, bool? podcastRole = null, bool? shareRole = null, string musicFolderId = null, bool? videoConversionRole = null, CancellationToken? cancelToken = null);
 
-        /// <summary>
-        /// Modifies an existing Subsonic user.
-        /// </summary>
-        /// <param name="username">The name of the user.</param>
-        /// <param name="password">The password of the user, either in clear text or hex-encoded.</param>
-        /// <param name="email">The email address of the user.</param>
-        /// <param name="ldapAuthenticated">Whether the user is authenicated in LDAP.</param>
-        /// <param name="adminRole">Whether the user is administrator.</param>
-        /// <param name="settingsRole">Whether the user is allowed to change personal settings and password.</param>
-        /// <param name="streamRole">Whether the user is allowed to play files.</param>
-        /// <param name="jukeboxRole">Whether the user is allowed to play files in jukebox mode.</param>
-        /// <param name="downloadRole">Whether the user is allowed to download files.</param>
-        /// <param name="uploadRole">Whether the user is allowed to upload files.</param>
-        /// <param name="coverArtRole">Whether the user is allowed to change cover art and tags.</param>
-        /// <param name="commentRole">Whether the user is allowed to create and edit comments and ratings.</param>
-        /// <param name="podcastRole">Whether the user is allowed to administrate Podcasts.</param>
-        /// <param name="shareRole">Whether the user is allowed to share files with anyone.</param>
-        /// <param name="musicFolderId">(Since 1.12.0) IDs of the music folders the user is allowed access to. Include the parameter once for each folder.</param>
-        /// <param name="maxBitRate">(Since 1.13.0) The maximum bit rate (in Kbps) for the user. Audio streams of higher bit rates are automatically downsampled to this bit rate. Legal values: 0 (no limit), 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320.</param>
+		/// <summary>
+		/// Modifies an existing Subsonic user.
+		/// </summary>
+		/// <param name="username">The name of the user.</param>
+		/// <param name="password">The password of the user, either in clear text or hex-encoded.</param>
+		/// <param name="email">The email address of the user.</param>
+		/// <param name="ldapAuthenticated">Whether the user is authenicated in LDAP.</param>
+		/// <param name="adminRole">Whether the user is administrator.</param>
+		/// <param name="settingsRole">Whether the user is allowed to change personal settings and password.</param>
+		/// <param name="streamRole">Whether the user is allowed to play files.</param>
+		/// <param name="jukeboxRole">Whether the user is allowed to play files in jukebox mode.</param>
+		/// <param name="downloadRole">Whether the user is allowed to download files.</param>
+		/// <param name="uploadRole">Whether the user is allowed to upload files.</param>
+		/// <param name="coverArtRole">Whether the user is allowed to change cover art and tags.</param>
+		/// <param name="commentRole">Whether the user is allowed to create and edit comments and ratings.</param>
+		/// <param name="podcastRole">Whether the user is allowed to administrate Podcasts.</param>
+		/// <param name="shareRole">Whether the user is allowed to share files with anyone.</param>
+		/// <param name="musicFolderId">(Since 1.12.0) IDs of the music folders the user is allowed access to. Include the parameter once for each folder.</param>
+		/// <param name="maxBitRate">(Since 1.13.0) The maximum bit rate (in Kbps) for the user. Audio streams of higher bit rates are automatically downsampled to this bit rate. Legal values: 0 (no limit), 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320.</param>
 		/// <param name="videoConversionRole">(Since 1.14.0) Whether the user is allowed to start video conversions.</param>
-        /// <param name="cancelToken">The CancellationToken associated with a managed CancellationTokenSource.</param>
-        /// <returns cref="bool">True on success</returns>
-        Task<bool> UpdateUserAsync(string username, string password = null, string email = null, bool? ldapAuthenticated = null, bool? adminRole = null, bool? settingsRole = null, bool? streamRole = null, bool? jukeboxRole = null, bool? downloadRole = null, bool? uploadRole = null, bool? coverArtRole = null, bool? commentRole = null, bool? podcastRole = null, bool? shareRole = null, string musicFolderId = null, AudioBitrate? maxBitRate = null, bool? videoConversionRole = null, CancellationToken? cancelToken = null);
+		/// <param name="cancelToken">The CancellationToken associated with a managed CancellationTokenSource.</param>
+		/// <returns cref="bool">True on success</returns>
+		Task<bool> UpdateUserAsync(string username, string password = null, string email = null, bool? ldapAuthenticated = null, bool? adminRole = null, bool? settingsRole = null, bool? streamRole = null, bool? jukeboxRole = null, bool? downloadRole = null, bool? uploadRole = null, bool? coverArtRole = null, bool? commentRole = null, bool? podcastRole = null, bool? shareRole = null, string musicFolderId = null, AudioBitrate? maxBitRate = null, bool? videoConversionRole = null, CancellationToken? cancelToken = null);
 
 		/// <summary>
 		/// Deletes an existing Subsonic user.

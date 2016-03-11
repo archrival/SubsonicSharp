@@ -56,13 +56,13 @@ namespace Subsonic.Client.Windows.Tests
             PlaySubsonicServer = new SubsonicServer(SubsonicServer, PlayUser, Password, ClientName);
             NonexistentSubsonicServer = new SubsonicServer(NonexistentServer, AdminUser, Password, ClientName);
 
-            ImageFormatFactory = new ImageFormatFactoryWindows();
+            ImageFormatFactory = new ImageFormatFactory();
 
-            AdminSubsonicClient = new SubsonicClientWindows(AdminSubsonicServer, ImageFormatFactory);
-            DownloadSubsonicClient = new SubsonicClientWindows(DownloadSubsonicServer, ImageFormatFactory);
-            NoPlaySubsonicClient = new SubsonicClientWindows(NoPlaySubsonicServer, ImageFormatFactory);
-            PlaySubsonicClient = new SubsonicClientWindows(PlaySubsonicServer, ImageFormatFactory);
-            NonexistentSubsonicClient = new SubsonicClientWindows(NonexistentSubsonicServer, ImageFormatFactory);
+            AdminSubsonicClient = new SubsonicClient(AdminSubsonicServer, ImageFormatFactory);
+            DownloadSubsonicClient = new SubsonicClient(DownloadSubsonicServer, ImageFormatFactory);
+            NoPlaySubsonicClient = new SubsonicClient(NoPlaySubsonicServer, ImageFormatFactory);
+            PlaySubsonicClient = new SubsonicClient(PlaySubsonicServer, ImageFormatFactory);
+            NonexistentSubsonicClient = new SubsonicClient(NonexistentSubsonicServer, ImageFormatFactory);
             Random = new Random(DateTime.UtcNow.Millisecond * DateTime.UtcNow.Second * DateTime.UtcNow.Minute);
         }
 

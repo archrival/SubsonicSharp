@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Subsonic.Client.Windows
 {
-    public class SubsonicRequestWindows<T> : SubsonicRequest<T> where T : class, IDisposable
+    public class SubsonicRequest<T> : Client.SubsonicRequest<T> where T : class, IDisposable
     {
-        public SubsonicRequestWindows(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, imageFormatFactory) { }
+        public SubsonicRequest(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, imageFormatFactory) { }
 
         public override async Task<long> RequestAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
@@ -22,8 +22,7 @@ namespace Subsonic.Client.Windows
             var clientHandler = GetClientHandler();
             var client = GetClient(clientHandler);
 
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
+            cancelToken?.ThrowIfCancellationRequested();
 
             long bytesTransferred = 0;
             var download = true;
@@ -83,13 +82,11 @@ namespace Subsonic.Client.Windows
 
                     if (download)
                     {
-                        if (cancelToken.HasValue)
-                            cancelToken.Value.ThrowIfCancellationRequested();
+                        cancelToken?.ThrowIfCancellationRequested();
 
                         using (var fileStream = File.Open(path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
                         {
-                            if (cancelToken.HasValue)
-                                cancelToken.Value.ThrowIfCancellationRequested();
+                            cancelToken?.ThrowIfCancellationRequested();
 
                             await response.Content.CopyToAsync(fileStream);
                             bytesTransferred = fileStream.Length;
@@ -105,8 +102,7 @@ namespace Subsonic.Client.Windows
                 throw new SubsonicApiException(ex.Message, ex);
             }
 
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
+            cancelToken?.ThrowIfCancellationRequested();
 
             return bytesTransferred;
         }
