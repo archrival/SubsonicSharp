@@ -19,7 +19,7 @@ namespace Subsonic.Client
     public class SubsonicRequest<T> : ISubsonicRequest<T> where T : class, IDisposable
     {
         protected ISubsonicServer SubsonicServer { get; }
-        IImageFormatFactory<T> ImageFormatFactory { get; }
+        private IImageFormatFactory<T> ImageFormatFactory { get; }
 
         protected SubsonicRequest(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory)
         {
@@ -34,8 +34,7 @@ namespace Subsonic.Client
             HttpClientHandler clientHandler = GetClientHandler();
             HttpClient client = GetClient(clientHandler);
 
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
+            cancelToken?.ThrowIfCancellationRequested();
 
             try
             {
@@ -56,8 +55,7 @@ namespace Subsonic.Client
                 throw new SubsonicApiException(ex.Message, ex);
             }
 
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
+            cancelToken?.ThrowIfCancellationRequested();
 
             return result;
         }
@@ -73,8 +71,7 @@ namespace Subsonic.Client
             HttpClientHandler clientHandler = GetClientHandler();
             HttpClient client = GetClient(clientHandler);
 
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
+            cancelToken?.ThrowIfCancellationRequested();
 
             try
             {
@@ -86,8 +83,7 @@ namespace Subsonic.Client
                 throw new SubsonicApiException(ex.Message, ex);
             }
 
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
+            cancelToken?.ThrowIfCancellationRequested();
         }
 
         public virtual async Task<string> StringRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
@@ -96,8 +92,7 @@ namespace Subsonic.Client
             HttpClientHandler clientHandler = GetClientHandler();
             HttpClient client = GetClient(clientHandler);
 
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
+            cancelToken?.ThrowIfCancellationRequested();
 
             try
             {
@@ -130,45 +125,49 @@ namespace Subsonic.Client
             HttpClientHandler clientHandler = GetClientHandler();
             HttpClient client = GetClient(clientHandler);
 
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
+            cancelToken?.ThrowIfCancellationRequested();
 
-            MemoryStream content = new MemoryStream();
+            IImageFormat<T> image;
 
-            try
+            using (var content = new MemoryStream())
             {
-                using (HttpResponseMessage response = cancelToken.HasValue ? await client.GetAsync(requestUri, cancelToken.Value) : await client.GetAsync(requestUri))
+                try
                 {
-                    if (response.Content.Headers.ContentType != null && response.Content.Headers.ContentType.MediaType.Contains(HttpContentTypes.TextXml))
+                    using (var response = cancelToken.HasValue ? await client.GetAsync(requestUri, cancelToken.Value) : await client.GetAsync(requestUri))
                     {
-                        string stringResponse = await response.Content.ReadAsStringAsync();
+                        if (response.Content.Headers.ContentType != null && response.Content.Headers.ContentType.MediaType.Contains(HttpContentTypes.TextXml))
+                        {
+                            string stringResponse = await response.Content.ReadAsStringAsync();
 
-                        if (stringResponse == null) throw new SubsonicErrorException("HTTP response contains no content");
+                            if (stringResponse == null)
+                                throw new SubsonicErrorException("HTTP response contains no content");
 
-                        Response result = await DeserializeResponseAsync(stringResponse);
+                            Response result = await DeserializeResponseAsync(stringResponse);
 
-                        if (result.ItemElementName == ItemChoiceType.Error)
-                            throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
+                            if (result.ItemElementName == ItemChoiceType.Error)
+                                throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
 
-                        throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
+                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof (ItemChoiceType), result.ItemElementName)));
+                        }
+
+                        await response.Content.CopyToAsync(content);
                     }
-
-                    await response.Content.CopyToAsync(content);
                 }
+                catch (Exception ex)
+                {
+                    throw new SubsonicApiException(ex.Message, ex);
+                }
+
+                cancelToken?.ThrowIfCancellationRequested();
+
+                content.Position = 0;
+
+                image = ImageFormatFactory.Create();
+
+                await image.SetImageFromStreamAsync(content);
             }
-            catch (Exception ex)
-            {
-                throw new SubsonicApiException(ex.Message, ex);
-            }
 
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
-
-            content.Position = 0;
-
-            IImageFormat<T> image = ImageFormatFactory.Create();
-
-            image.SetImageFromStream(content);
+            cancelToken?.ThrowIfCancellationRequested();
 
             return image;
         }
@@ -181,8 +180,7 @@ namespace Subsonic.Client
 
             long length = -1;
 
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
+            cancelToken?.ThrowIfCancellationRequested();
 
             try
             {
@@ -201,8 +199,7 @@ namespace Subsonic.Client
                 throw new SubsonicApiException(ex.Message, ex);
             }
 
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
+            cancelToken?.ThrowIfCancellationRequested();
 
             return length;
         }
@@ -213,8 +210,7 @@ namespace Subsonic.Client
             HttpClientHandler clientHandler = GetClientHandler();
             HttpClient client = GetClient(clientHandler);
 
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
+            cancelToken?.ThrowIfCancellationRequested();
 
             bool success;
 
@@ -228,10 +224,12 @@ namespace Subsonic.Client
                 throw new SubsonicApiException(ex.Message, ex);
             }
 
+            cancelToken?.ThrowIfCancellationRequested();
+
             return success;
         }
 
-        bool UseOldAuthenticationMethod()
+        private bool UseOldAuthenticationMethod()
         {
             return SubsonicServer.ApiVersion == null || SubsonicServer.ApiVersion < Common.SubsonicApiVersions.Version1_13_0;
         }
@@ -239,12 +237,10 @@ namespace Subsonic.Client
         public virtual HttpClientHandler GetClientHandler()
         {
             NetworkCredential networkCredential = UseOldAuthenticationMethod() ? new NetworkCredential(SubsonicServer.UserName, SubsonicServer.Password) : null;
-            bool preAuthenticate = UseOldAuthenticationMethod();
 
             return new HttpClientHandler
             {
                 Credentials = networkCredential,
-                PreAuthenticate = preAuthenticate,
                 UseCookies = false,
                 AllowAutoRedirect = true,
                 Proxy = SubsonicServer.Proxy,
@@ -264,7 +260,7 @@ namespace Subsonic.Client
             return httpClient;
         }
 
-        string GetAuthorizationHeader()
+        private string GetAuthorizationHeader()
         {
             string authInfo = string.Format(CultureInfo.InvariantCulture, "{0}:{1}", SubsonicServer.UserName, SubsonicServer.Password);
             authInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(authInfo));

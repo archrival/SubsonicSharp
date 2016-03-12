@@ -1,11 +1,11 @@
-﻿using Windows.Graphics.Imaging;
+﻿using Windows.UI.Xaml.Media.Imaging;
 using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.UniversalWindows
 {
-    public class ImageFormatFactory : IImageFormatFactory<SoftwareBitmap>
+    public class ImageFormatFactory : IImageFormatFactory<SoftwareBitmapSource>
     {
-        public IImageFormat<SoftwareBitmap> Create()
+        public IImageFormat<SoftwareBitmapSource> Create()
         {
             return new ImageFormat();
         }

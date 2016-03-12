@@ -8,11 +8,11 @@ namespace Subsonic.Client.Activities
 {
 	public class SubsonicActivity<T, TImageType> : ISubsonicActivity<T> where TImageType : class, IDisposable
 	{
-	    static readonly Lazy<Dictionary<ISubsonicActivityDelegate<T, TImageType>, Tuple<DateTime, T>>> Cache = new Lazy<Dictionary<ISubsonicActivityDelegate<T, TImageType>, Tuple<DateTime, T>>>(() => new Dictionary<ISubsonicActivityDelegate<T, TImageType>, Tuple<DateTime, T>>());
-	    TimeSpan Timeout { get; set; }
-	    protected ISubsonicActivityDelegate<T, TImageType> ActivityDelegate { get; set; }
+		private static readonly Lazy<Dictionary<ISubsonicActivityDelegate<T, TImageType>, Tuple<DateTime, T>>> Cache = new Lazy<Dictionary<ISubsonicActivityDelegate<T, TImageType>, Tuple<DateTime, T>>>(() => new Dictionary<ISubsonicActivityDelegate<T, TImageType>, Tuple<DateTime, T>>());
+		private TimeSpan Timeout { get; set; }
+		protected ISubsonicActivityDelegate<T, TImageType> ActivityDelegate { get; set; }
 
-	    protected SubsonicActivity()
+		protected SubsonicActivity()
 		{
 			Timeout = new TimeSpan(0, 30, 0);
 		}
@@ -38,12 +38,12 @@ namespace Subsonic.Client.Activities
 				result = cache.Item2;
 			}
 
-			if ((DateTime.Now - timeStamp) > Timeout)
-			{
-				result = await ActivityDelegate.GetResult(cancelToken);
+			if ((DateTime.Now - timeStamp) <= Timeout)
+				return result;
 
-			    Cache.Value[ActivityDelegate] = new Tuple<DateTime, T>(DateTime.Now, result);
-			}
+			result = await ActivityDelegate.GetResult(cancelToken);
+
+			Cache.Value[ActivityDelegate] = new Tuple<DateTime, T>(DateTime.Now, result);
 
 			return result;
 		}

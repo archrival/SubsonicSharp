@@ -1,14 +1,15 @@
 ﻿using Subsonic.Client.Interfaces;
 using Subsonic.Common.Interfaces;
 using Windows.Graphics.Imaging;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Subsonic.Client.UniversalWindows
 {
-    public class SubsonicClient : SubsonicClient<SoftwareBitmap>
+    public class SubsonicClient : SubsonicClient<SoftwareBitmapSource>
     {
-        public SubsonicClient(ISubsonicServer subsonicServer, IImageFormatFactory<SoftwareBitmap> imageFormatFactory) : base(subsonicServer)
+        public SubsonicClient(ISubsonicServer subsonicServer, IImageFormatFactory<SoftwareBitmapSource> imageFormatFactory) : base(subsonicServer)
         {
-            SubsonicResponse = new SubsonicResponse<SoftwareBitmap>(subsonicServer, imageFormatFactory);
+            SubsonicResponse = new SubsonicResponse<SoftwareBitmapSource>(subsonicServer, imageFormatFactory);
         }
     }
 }

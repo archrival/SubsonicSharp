@@ -4,7 +4,7 @@ namespace Subsonic.Client
 {
     public class MD5
     {
-        readonly static uint[] T =
+        private static readonly uint[] T =
         {   
             0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
             0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
@@ -24,8 +24,8 @@ namespace Subsonic.Client
             0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
         };
 
-        readonly uint[] _x = new uint[16];
-        byte[] _byteInput;
+        private readonly uint[] _x = new uint[16];
+        private byte[] _byteInput;
 
         public static string GetMd5Sum(string value)
         {
@@ -44,12 +44,12 @@ namespace Subsonic.Client
             for (int i = 0; i < value.Length; i++)
                 md5._byteInput[i] = value[i];
 
-            Digest digest = md5.CalculateMD5Value();
+            Digest digest = md5.CalculateMd5Value();
 
             return digest.ToString();
         }
 
-        Digest CalculateMD5Value()
+        private Digest CalculateMd5Value()
         {
             uint n;
             Digest dg = new Digest();
@@ -67,27 +67,27 @@ namespace Subsonic.Client
             return dg;
         }
 
-        void TransF(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
+        private void TransF(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
         {
             a = b + RotateLeft((a + ((b & c) | (~(b) & d)) + _x[k] + T[i - 1]), s);
         }
 
-        void TransG(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
+        private void TransG(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
         {
             a = b + RotateLeft((a + ((b & d) | (c & ~d)) + _x[k] + T[i - 1]), s);
         }
 
-        void TransH(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
+        private void TransH(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
         {
             a = b + RotateLeft((a + (b ^ c ^ d) + _x[k] + T[i - 1]), s);
         }
 
-        void TransI(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
+        private void TransI(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
         {
             a = b + RotateLeft((a + (c ^ (b | ~d)) + _x[k] + T[i - 1]), s);
         }
 
-        void PerformTransformation(ref uint a, ref uint b, ref uint c, ref uint d)
+        private void PerformTransformation(ref uint a, ref uint b, ref uint c, ref uint d)
         {
             uint aa, bb, cc, dd;
 
@@ -167,7 +167,7 @@ namespace Subsonic.Client
             d = d + dd;
         }
 
-        byte[] CreatePaddedBuffer()
+        private byte[] CreatePaddedBuffer()
         {
             uint pad;
             ulong sizeMsg;
@@ -194,7 +194,7 @@ namespace Subsonic.Client
             return bMsg;
         }
 
-        void CopyBlock(byte[] bMsg, uint block)
+        private void CopyBlock(byte[] bMsg, uint block)
         {
             block = block << 6;
 
@@ -207,13 +207,13 @@ namespace Subsonic.Client
             }
         }
 
-        static uint RotateLeft(uint uiNumber, ushort shift)
+        private static uint RotateLeft(uint uiNumber, ushort shift)
         {
             return ((uiNumber >> 32 - shift) | (uiNumber << shift));
         }
     }
 
-    class Digest
+    internal class Digest
     {
         public uint A;
         public uint B;
@@ -240,7 +240,7 @@ namespace Subsonic.Client
             return sb.ToString();
         }
 
-        static uint ReverseByte(uint uiNumber)
+        private static uint ReverseByte(uint uiNumber)
         {
             return (((uiNumber & 0x000000ff) << 24) |
             (uiNumber >> 24) |

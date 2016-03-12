@@ -1,26 +1,28 @@
 ﻿using System;
 using Subsonic.Common.Interfaces;
 using System.IO;
+using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Subsonic.Client.UniversalWindows
 {
-    public class ImageFormat : IImageFormat<SoftwareBitmap>
+    public class ImageFormat : IImageFormat<SoftwareBitmapSource>
     {
-        private Stream Stream { get; set; }
-        public SoftwareBitmap Image { get; set; }
+        public SoftwareBitmapSource Image { get; set; }
 
-        public async void SetImageFromStream(Stream stream)
+        public async Task SetImageFromStreamAsync(Stream stream)
         {
             var decoder = await BitmapDecoder.CreateAsync(stream.AsRandomAccessStream()).AsTask();
-            Image = await decoder.GetSoftwareBitmapAsync();
-            Stream = stream;
+            var bitmap = await decoder.GetSoftwareBitmapAsync(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
+            SoftwareBitmapSource image = new SoftwareBitmapSource();
+            await image.SetBitmapAsync(bitmap);
+            Image = image;
         }
 
         public void Dispose()
         {
             Image?.Dispose();
-            Stream?.Dispose();
         }
     }
 }

@@ -7,13 +7,14 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using Subsonic.Client.Extensions;
 
 namespace Subsonic.Client
 {
     public class SubsonicResponse<T> : ISubsonicResponse<T> where T : class, IDisposable
     {
-        ISubsonicServer SubsonicServer { get; }
-        ISubsonicRequest<T> SubsonicRequest { get; }
+        private ISubsonicServer SubsonicServer { get; }
+        private ISubsonicRequest<T> SubsonicRequest { get; }
 
         protected SubsonicResponse(ISubsonicServer subsonicServer, ISubsonicRequest<T> subsonicRequest)
         {
@@ -36,7 +37,7 @@ namespace Subsonic.Client
                     break;
                 case ResponseStatus.Failed:
                     if (response.ItemElementName == ItemChoiceType.Error)
-                        throw new SubsonicErrorException(string.Format(CultureInfo.CurrentCulture, "Error occurred in {0}", Enum.GetName(typeof (Methods), method)), response.Item as Error);
+                        throw new SubsonicErrorException(string.Format(CultureInfo.CurrentCulture, "Error occurred in {0}", method.GetXmlEnumAttribute(), response.Item as Error));
 
                     break;
             }
@@ -73,9 +74,9 @@ namespace Subsonic.Client
                     break;
                 case ResponseStatus.Failed:
                     if (response.ItemElementName == ItemChoiceType.Error)
-                        throw new SubsonicErrorException(string.Format(CultureInfo.CurrentCulture, "Error occurred in {0}", Enum.GetName(typeof(Methods), method)), response.Item as Error);
+                        throw new SubsonicErrorException(string.Format(CultureInfo.CurrentCulture, "Error occurred in {0}", method.GetXmlEnumAttribute()), response.Item as Error);
 
-                    throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unknown error occurred in {0}", Enum.GetName(typeof(Methods), method)));
+                    throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unknown error occurred in {0}", method.GetXmlEnumAttribute()));
             }
 
             return result;
@@ -104,10 +105,10 @@ namespace Subsonic.Client
             return await SubsonicRequest.SettingChangeRequestAsync(method, cancelToken);
         }
 
-        void ValidateApiVersion(Methods method, Version methodApiVersion)
+        private void ValidateApiVersion(Methods method, Version methodApiVersion)
         {
             if (SubsonicServer.ApiVersion != null && methodApiVersion > SubsonicServer.ApiVersion)
-                throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", Enum.GetName(typeof(Methods), method), methodApiVersion, SubsonicServer.ApiVersion));
+                throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", method.GetXmlEnumAttribute(), methodApiVersion, SubsonicServer.ApiVersion));
         }
     }
 }

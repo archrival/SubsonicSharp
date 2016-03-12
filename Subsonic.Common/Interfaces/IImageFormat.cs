@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Subsonic.Common.Interfaces
 {
@@ -10,6 +11,6 @@ namespace Subsonic.Common.Interfaces
     public interface IImageFormat<T> : IDisposable where T : class, IDisposable
     {
         T Image { get; set; }
-        void SetImageFromStream(Stream stream);
+        Task SetImageFromStreamAsync(Stream stream);
     }
 }

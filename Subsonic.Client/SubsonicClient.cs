@@ -19,8 +19,8 @@ namespace Subsonic.Client
 	public class SubsonicClient<T> : ISubsonicClient<T> where T : class, IDisposable
 	{
 		protected ISubsonicResponse<T> SubsonicResponse { private get; set; }
-		ISubsonicServer SubsonicServer { get; }
-		bool EncodePasswords { get; }
+	    private ISubsonicServer SubsonicServer { get; }
+	    private bool EncodePasswords { get; }
 
 		protected SubsonicClient(ISubsonicServer subsonicServer, bool encodePasswords = true)
 		{

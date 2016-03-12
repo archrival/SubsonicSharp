@@ -16,7 +16,7 @@ namespace Subsonic.Client.Extensions
         /// <returns>A string representing the friendly name</returns>
         public static string GetXmlEnumAttribute(this Enum en)
         {
-            if (en == null) throw new ArgumentNullException("en");
+            if (en == null) throw new ArgumentNullException(nameof(en));
 
             Type type = en.GetType();
 

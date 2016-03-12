@@ -1,28 +1,22 @@
 ﻿using Subsonic.Common.Interfaces;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Subsonic.Client.Windows
 {
     public class ImageFormat : IImageFormat<Image>
     {
-        private Stream Stream { get; set; }
         public Image Image { get; set; }
 
-        public void SetImageFromStream(Stream stream)
+        public async Task SetImageFromStreamAsync(Stream stream)
         {
-            Image = Image.FromStream(stream);
-            Stream = stream;
+            await Task.Run(() => Image = Image.FromStream(stream));
         }
 
         public void Dispose()
         {
             Image?.Dispose();
-
-            if (Stream == null) return;
-
-            Stream.Close();
-            Stream.Dispose();
         }
     }
 }

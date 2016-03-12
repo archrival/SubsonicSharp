@@ -7,7 +7,7 @@ namespace Subsonic.Client.Monitors
 {
     public class ChatMonitor<T> : IObserver<ChatItem> where T : class, IDisposable
     {
-        IDisposable _cancellation;
+        private IDisposable _cancellation;
         public ChatHandler<T> ChatHandler { get; set; }
         public bool Disposed { get; set; }
 
@@ -53,7 +53,7 @@ namespace Subsonic.Client.Monitors
         protected virtual void OnPropertyChanged(ChatItem chatItem)
         {
             Action<ChatMonitor<T>, ChatEventArgs> handler = PropertyChanged;
-            if (handler != null) handler(this, new ChatEventArgs(chatItem));
+            handler?.Invoke(this, new ChatEventArgs(chatItem));
         }
     }
 }

@@ -13,18 +13,21 @@ namespace Subsonic.Client.Extensions
         /// <returns>string</returns>
         public static string ToHexString(this string text)
         {
+            if (string.IsNullOrEmpty(text))
+                return text;
+
             StringBuilder hexString = new StringBuilder();
 
-            if (!string.IsNullOrWhiteSpace(text))
-                foreach (char character in text)
-                    hexString.Append(Convert.ToInt32(character).ToString("x", CultureInfo.InvariantCulture));
+            foreach (char character in text)
+                hexString.Append(Convert.ToInt32(character).ToString("x", CultureInfo.InvariantCulture));
 
             return hexString.ToString();
         }
 
         public static byte[] GetBytes(this string str)
         {
-            if (str == null) throw new ArgumentNullException("str");
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
 
             byte[] bytes = new byte[str.Length * sizeof(char)];
             Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);

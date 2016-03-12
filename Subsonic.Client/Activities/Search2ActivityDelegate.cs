@@ -8,14 +8,14 @@ namespace Subsonic.Client.Activities
 {
 	public class Search2ActivityDelegate<TImageType> : SubsonicActivityDelegate<SearchResult2, TImageType> where TImageType : class, IDisposable
 	{
-		string Query { get; }
-		int? ArtistCount { get; }
-		int? ArtistOffset { get; }
-		int? AlbumCount { get; }
-		int? AlbumOffset { get; }
-		int? SongCount { get; }
-		int? SongOffset { get; }
-		string MusicFolderId { get; }
+	    private string Query { get; }
+	    private int? ArtistCount { get; }
+	    private int? ArtistOffset { get; }
+	    private int? AlbumCount { get; }
+	    private int? AlbumOffset { get; }
+	    private int? SongCount { get; }
+	    private int? SongOffset { get; }
+	    private string MusicFolderId { get; }
 
 		public Search2ActivityDelegate(string query, int? artistCount = null, int? artistOffset = null, int? albumCount = null, int? albumOffset = null, int? songCount = null, int? songOffset = null, string musicFolderId = null)
 		{
@@ -36,8 +36,9 @@ namespace Subsonic.Client.Activities
 
 		// Overrides for equality
 		#region HashCode and Equality Overrides
-		const int HashSeed = 73; // Should be prime number
-		const int HashFactor = 17; // Should be prime number
+
+	    private const int HashSeed = 73; // Should be prime number
+	    private const int HashFactor = 17; // Should be prime number
 
 		public override int GetHashCode()
 		{
@@ -76,7 +77,7 @@ namespace Subsonic.Client.Activities
 			return obj != null && Equals(obj as Search2ActivityDelegate<TImageType>);
 		}
 
-		bool Equals(Search2ActivityDelegate<TImageType> item)
+	    private bool Equals(Search2ActivityDelegate<TImageType> item)
 		{
 			return item != null && this == item;
 		}

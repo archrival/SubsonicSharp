@@ -5,8 +5,8 @@ namespace Subsonic.Client
 {
     public class SubsonicAuthentication : ISubsonicAuthentication
     {
-        string Password { get; set; }
-        int SaltComplexity { get; set; }
+        private string Password { get; set; }
+        private int SaltComplexity { get; set; }
 
         public SubsonicAuthentication(string password, int saltComplexity = 20)
         {
@@ -33,8 +33,8 @@ namespace Subsonic.Client
 
             return subsonicToken;
         }
-            
-        static string GetUniqueString(int size)
+
+        private static string GetUniqueString(int size)
         {
             char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".ToCharArray();
 

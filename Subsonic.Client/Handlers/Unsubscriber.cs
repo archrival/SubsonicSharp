@@ -5,8 +5,8 @@ namespace Subsonic.Client.Handlers
 {
     internal class Unsubscriber<T> : IDisposable
     {
-        readonly List<IObserver<T>> _observers;
-        readonly IObserver<T> _observer;
+        private readonly List<IObserver<T>> _observers;
+        private readonly IObserver<T> _observer;
 
         internal Unsubscriber(List<IObserver<T>> observers, IObserver<T> observer)
         {
