@@ -33,5 +33,13 @@ namespace Subsonic.Client.Extensions
             Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
             return bytes;
         }
+
+        public static int GetHashCode(this string str, int hash, int hashFactor)
+        {
+            if (str == null)
+                return hash;
+
+            return (hash * hashFactor) + str.GetHashCode();
+        }
     }
 }

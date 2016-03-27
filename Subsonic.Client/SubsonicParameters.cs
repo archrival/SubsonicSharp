@@ -15,7 +15,7 @@ namespace Subsonic.Client
 
         public static SubsonicParameters Create(SubsonicParameterType type = SubsonicParameterType.Single)
         {
-            SubsonicParameters parameters = new SubsonicParameters {ParameterType = type};
+            var parameters = new SubsonicParameters {ParameterType = type};
 
             switch (type)
             {
@@ -36,23 +36,23 @@ namespace Subsonic.Client
             {
                 case SubsonicParameterType.List:
                     {
-                        string stringValue = value as string;
+                        var stringValue = value as string;
 
                         if (stringValue != null)
                             Add(key, new List<string> { stringValue });
                         else if (required)
-                            throw new SubsonicErrorException(string.Format("Parameter '{0}' is required, the value provided is null", key));
+                            throw new SubsonicErrorException($"Parameter '{key}' is required, the value provided is null");
                     }
                     break;
                 case SubsonicParameterType.Single:
                     {
-                        Dictionary<string, string> parameters = Parameters as Dictionary<string, string>;
+                        var parameters = Parameters as Dictionary<string, string>;
 
                         if (parameters != null)
                             if (value != null)
                                 parameters.Add(key, value.ToString());
                             else if (required)
-                                throw new SubsonicErrorException(string.Format("Parameter '{0}' is required, the value provided is null", key));
+                                throw new SubsonicErrorException($"Parameter '{key}' is required, the value provided is null");
                     }
                     break;
             }
@@ -60,7 +60,7 @@ namespace Subsonic.Client
 
         public void Add(string key, IEnumerable<string> values, bool required = false)
         {
-            List<KeyValuePair<string, string>> parameters = Parameters as List<KeyValuePair<string, string>>;
+            var parameters = Parameters as List<KeyValuePair<string, string>>;
 
             if (parameters == null)
                 return;
@@ -68,7 +68,7 @@ namespace Subsonic.Client
             if (values != null)
                 parameters.AddRange(values.Where(value => !string.IsNullOrWhiteSpace(value)).Select(value => new KeyValuePair<string, string>(key, value)));
             else if (required)
-                throw new SubsonicErrorException(string.Format("Parameter '{0}' is required, the value provided is null", key));
+                throw new SubsonicErrorException($"Parameter '{key}' is required, the value provided is null");
         }
     }
 }

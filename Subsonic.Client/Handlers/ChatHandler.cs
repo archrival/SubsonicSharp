@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Subsonic.Client.Items;
+using Subsonic.Client.Models;
 using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Handlers
 {
-    public class ChatHandler<T> : IObservable<ChatItem>, IDisposable where T : class, IDisposable
+    public class ChatHandler<T> : IObservable<ChatModel>, IDisposable where T : class, IDisposable
     {
-        private readonly List<IObserver<ChatItem>> _observers;
-        private readonly HashSet<ChatItem> _chatItems;
+        private readonly List<IObserver<ChatModel>> _observers;
+        private readonly HashSet<ChatModel> _chatItems;
         private readonly Lazy<Task> _worker;
 
         public int Interval { get; set; }
@@ -23,18 +23,18 @@ namespace Subsonic.Client.Handlers
         public ChatHandler()
         {
             _worker = new Lazy<Task>(() => Task.Factory.StartNew(SpawnWorker));
-            _observers = new List<IObserver<ChatItem>>();
-            _chatItems = new HashSet<ChatItem>();
+            _observers = new List<IObserver<ChatModel>>();
+            _chatItems = new HashSet<ChatModel>();
             Interval = 1000;
         }
 
-        public IDisposable Subscribe(IObserver<ChatItem> observer)
+        public IDisposable Subscribe(IObserver<ChatModel> observer)
         {
             var worker = _worker.Value;
 
             // Check whether observer is already registered. If not, add it 
             if (_observers.Contains(observer))
-                return new Unsubscriber<ChatItem>(_observers, observer);
+                return new Unsubscriber<ChatModel>(_observers, observer);
 
             _observers.Add(observer);
 
@@ -42,7 +42,7 @@ namespace Subsonic.Client.Handlers
             foreach (var item in _chatItems.OrderBy(ci => ci.TimeStamp))
                 observer.OnNext(item);
 
-            return new Unsubscriber<ChatItem>(_observers, observer);
+            return new Unsubscriber<ChatModel>(_observers, observer);
         }
 
         private async void SpawnWorker()
@@ -57,7 +57,7 @@ namespace Subsonic.Client.Handlers
 
                     if (_observers.Any() && Client != null)
                     {
-                        await Client.GetChatMessagesAsync(_lastChatItem, CancellationToken).ContinueWith((response) =>
+                        await Client.GetChatMessagesAsync(_lastChatItem, CancellationToken).ContinueWith(response =>
                         {
                             if (response.Status != TaskStatus.RanToCompletion) return;
 
@@ -65,7 +65,7 @@ namespace Subsonic.Client.Handlers
 
                             foreach (var chatMessage in result.Items.OrderBy(ci => ci.Time))
                             {
-                                var item = new ChatItem(chatMessage);
+                                var item = new ChatModel(chatMessage);
 
                                 _chatItems.Add(item);
 

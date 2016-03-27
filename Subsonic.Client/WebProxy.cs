@@ -10,12 +10,12 @@ namespace Subsonic.Client
 
         private readonly Uri _proxyUri;
 
-        public WebProxy(Uri proxyUri)
+        private WebProxy(Uri proxyUri)
         {
             _proxyUri = proxyUri;
         }
 
-        public WebProxy(string host, int port) : this(new Uri("http://" + host + ":" + port.ToString(CultureInfo.InvariantCulture)))
+        public WebProxy(string host, int port) : this(new Uri(string.Format("http://{0}:{1}", host, port.ToString(CultureInfo.InvariantCulture))))
         {
         }
 

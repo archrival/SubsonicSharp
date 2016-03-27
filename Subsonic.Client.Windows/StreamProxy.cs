@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using Subsonic.Client.Items;
+using Subsonic.Client.Models;
 
 namespace Subsonic.Client.Windows
 {
@@ -16,18 +16,15 @@ namespace Subsonic.Client.Windows
         bool _isRunning;
         TcpListener _socket;
         int _port;
-        TrackItem _trackItem;
+        TrackModel _trackItem;
         StreamToMediaPlayerTask _task;
         static readonly Lazy<StreamProxy> StreamProxyInstance = new Lazy<StreamProxy>(() => new StreamProxy());
 
         StreamProxy() { }
 
-        public static StreamProxy Instance
-        {
-            get { return StreamProxyInstance.Value; }
-        }
+        public static StreamProxy Instance => StreamProxyInstance.Value;
 
-        public void SetTrackItem(TrackItem trackItem)
+        public void SetTrackItem(TrackModel trackItem)
         {
             _trackItem = trackItem;
         }
@@ -101,8 +98,7 @@ namespace Subsonic.Client.Windows
             if (_isRunning)
                 Stop();
 
-            if (_task != null)
-                _task.Dispose();
+            _task?.Dispose();
         }
 
         class StreamToMediaPlayerTask : IDisposable
@@ -116,8 +112,7 @@ namespace Subsonic.Client.Windows
 
             internal void SetClient(TcpClient client)
             {
-                if (_client != null)
-                    _client.Close();
+                _client?.Close();
 
                 _client = client;
                 _client.NoDelay = true;

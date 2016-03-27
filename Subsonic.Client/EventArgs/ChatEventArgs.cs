@@ -1,12 +1,12 @@
-﻿using Subsonic.Client.Items;
+﻿using Subsonic.Client.Models;
 
 namespace Subsonic.Client.EventArgs
 {
     public class ChatEventArgs : System.EventArgs
     {
-        public ChatItem ChatItem { get; set; }
+        public ChatModel ChatItem { get; set; }
 
-        public ChatEventArgs(ChatItem chatItem)
+        public ChatEventArgs(ChatModel chatItem)
         {
             ChatItem = chatItem;
         }

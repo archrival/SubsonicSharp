@@ -20,6 +20,10 @@ namespace Subsonic.Client
     {
         protected ISubsonicServer SubsonicServer { get; }
         private IImageFormatFactory<T> ImageFormatFactory { get; }
+        private static HttpClient HttpClient { get; set; }
+        private static HttpClientHandler HttpClientHandler { get; set; }
+
+        private static int SubsonicServerHashCode { get; set; }
 
         protected SubsonicRequest(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory)
         {
@@ -29,18 +33,19 @@ namespace Subsonic.Client
 
         public virtual async Task<Response> RequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
-            Response result;
-            Uri requestUri = SubsonicServer.BuildRequestUri(method, methodApiVersion, parameters);
-            HttpClientHandler clientHandler = GetClientHandler();
-            HttpClient client = GetClient(clientHandler);
+            var requestUri = SubsonicServer.BuildRequestUri(method, methodApiVersion, parameters);
+            var clientHandler = GetClientHandler();
+            var client = GetClient(clientHandler);
 
             cancelToken?.ThrowIfCancellationRequested();
 
+            Response result;
+
             try
             {
-                using (HttpResponseMessage response = cancelToken.HasValue ? await client.PostAsync(requestUri, null, cancelToken.Value) : await client.PostAsync(requestUri, null))
+                using (var response = cancelToken.HasValue ? await client.PostAsync(requestUri, null, cancelToken.Value) : await client.PostAsync(requestUri, null))
                 {
-                    string stringResponse = await response.Content.ReadAsStringAsync();
+                    var stringResponse = await response.Content.ReadAsStringAsync();
 
                     if (stringResponse == null) throw new SubsonicErrorException("HTTP response contains no content");
 
@@ -67,16 +72,16 @@ namespace Subsonic.Client
 
         public virtual async Task RequestWithoutResponseAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
-            Uri requestUri = SubsonicServer.BuildRequestUri(method, methodApiVersion, parameters);
-            HttpClientHandler clientHandler = GetClientHandler();
-            HttpClient client = GetClient(clientHandler);
+            var requestUri = SubsonicServer.BuildRequestUri(method, methodApiVersion, parameters);
+            var clientHandler = GetClientHandler();
+            var client = GetClient(clientHandler);
 
             cancelToken?.ThrowIfCancellationRequested();
 
             try
             {
-                using (HttpRequestMessage message = new HttpRequestMessage(System.Net.Http.HttpMethod.Head, requestUri))
-                using (HttpResponseMessage ignored = cancelToken.HasValue ? await client.SendAsync(message, cancelToken.Value) : await client.SendAsync(message)) { }
+                using (var message = new HttpRequestMessage(System.Net.Http.HttpMethod.Head, requestUri))
+                using (var ignored = cancelToken.HasValue ? await client.SendAsync(message, cancelToken.Value) : await client.SendAsync(message)) { }
             }
             catch (Exception ex)
             {
@@ -88,24 +93,24 @@ namespace Subsonic.Client
 
         public virtual async Task<string> StringRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
-            Uri requestUri = SubsonicServer.BuildRequestUri(method, methodApiVersion, parameters);
-            HttpClientHandler clientHandler = GetClientHandler();
-            HttpClient client = GetClient(clientHandler);
+            var requestUri = SubsonicServer.BuildRequestUri(method, methodApiVersion, parameters);
+            var clientHandler = GetClientHandler();
+            var client = GetClient(clientHandler);
 
             cancelToken?.ThrowIfCancellationRequested();
 
             try
             {
-                using (HttpResponseMessage response = cancelToken.HasValue ? await client.PostAsync(requestUri, null, cancelToken.Value) : await client.PostAsync(requestUri, null))
+                using (var response = cancelToken.HasValue ? await client.PostAsync(requestUri, null, cancelToken.Value) : await client.PostAsync(requestUri, null))
                 {
-                    string stringResponse = await response.Content.ReadAsStringAsync();
+                    var stringResponse = await response.Content.ReadAsStringAsync();
 
                     if (stringResponse == null) throw new SubsonicErrorException("HTTP response contains no content");
 
                     if (!response.Content.Headers.ContentType.MediaType.Contains(HttpContentTypes.TextXml))
                         return stringResponse;
 
-                    Response result = await DeserializeResponseAsync(stringResponse);
+                    var result = await DeserializeResponseAsync(stringResponse);
 
                     if (result.ItemElementName == ItemChoiceType.Error)
                         throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
@@ -121,51 +126,48 @@ namespace Subsonic.Client
 
         public virtual async Task<IImageFormat<T>> ImageRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
-            Uri requestUri = SubsonicServer.BuildRequestUri(method, methodApiVersion, parameters);
-            HttpClientHandler clientHandler = GetClientHandler();
-            HttpClient client = GetClient(clientHandler);
+            var requestUri = SubsonicServer.BuildRequestUri(method, methodApiVersion, parameters);
+            var clientHandler = GetClientHandler();
+            var client = GetClient(clientHandler);
 
             cancelToken?.ThrowIfCancellationRequested();
 
-            IImageFormat<T> image;
+            var content = new MemoryStream();
 
-            using (var content = new MemoryStream())
+            try
             {
-                try
+                using (var response = cancelToken.HasValue ? await client.GetAsync(requestUri, cancelToken.Value) : await client.GetAsync(requestUri))
                 {
-                    using (var response = cancelToken.HasValue ? await client.GetAsync(requestUri, cancelToken.Value) : await client.GetAsync(requestUri))
+                    if (response.Content.Headers.ContentType != null && response.Content.Headers.ContentType.MediaType.Contains(HttpContentTypes.TextXml))
                     {
-                        if (response.Content.Headers.ContentType != null && response.Content.Headers.ContentType.MediaType.Contains(HttpContentTypes.TextXml))
-                        {
-                            string stringResponse = await response.Content.ReadAsStringAsync();
+                        var stringResponse = await response.Content.ReadAsStringAsync();
 
-                            if (stringResponse == null)
-                                throw new SubsonicErrorException("HTTP response contains no content");
+                        if (stringResponse == null)
+                            throw new SubsonicErrorException("HTTP response contains no content");
 
-                            Response result = await DeserializeResponseAsync(stringResponse);
+                        var result = await DeserializeResponseAsync(stringResponse);
 
-                            if (result.ItemElementName == ItemChoiceType.Error)
-                                throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
+                        if (result.ItemElementName == ItemChoiceType.Error)
+                            throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
 
-                            throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof (ItemChoiceType), result.ItemElementName)));
-                        }
-
-                        await response.Content.CopyToAsync(content);
+                        throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
                     }
+
+                    await response.Content.CopyToAsync(content);
                 }
-                catch (Exception ex)
-                {
-                    throw new SubsonicApiException(ex.Message, ex);
-                }
-
-                cancelToken?.ThrowIfCancellationRequested();
-
-                content.Position = 0;
-
-                image = ImageFormatFactory.Create();
-
-                await image.SetImageFromStreamAsync(content);
             }
+            catch (Exception ex)
+            {
+                throw new SubsonicApiException(ex.Message, ex);
+            }
+
+            cancelToken?.ThrowIfCancellationRequested();
+
+            content.Position = 0;
+
+            var image = ImageFormatFactory.Create();
+
+            await image.SetImageFromStreamAsync(content);
 
             cancelToken?.ThrowIfCancellationRequested();
 
@@ -174,9 +176,9 @@ namespace Subsonic.Client
 
         public virtual async Task<long> ContentLengthRequestAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
-            Uri requestUri = SubsonicServer.BuildRequestUri(method, methodApiVersion, parameters);
-            HttpClientHandler clientHandler = GetClientHandler();
-            HttpClient client = GetClient(clientHandler);
+            var requestUri = SubsonicServer.BuildRequestUri(method, methodApiVersion, parameters);
+            var clientHandler = GetClientHandler();
+            var client = GetClient(clientHandler);
 
             long length = -1;
 
@@ -184,8 +186,8 @@ namespace Subsonic.Client
 
             try
             {
-                using (HttpRequestMessage message = new HttpRequestMessage(System.Net.Http.HttpMethod.Head, requestUri))
-                using (HttpResponseMessage response = cancelToken.HasValue ? await client.SendAsync(message, cancelToken.Value) : await client.SendAsync(message))
+                using (var message = new HttpRequestMessage(System.Net.Http.HttpMethod.Head, requestUri))
+                using (var response = cancelToken.HasValue ? await client.SendAsync(message, cancelToken.Value) : await client.SendAsync(message))
                 {
                     if (!response.IsSuccessStatusCode)
                         throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response status code: {0}", Enum.GetName(typeof(ItemChoiceType), response.StatusCode)));
@@ -206,9 +208,9 @@ namespace Subsonic.Client
 
         public virtual async Task<bool> SettingChangeRequestAsync(SettingMethods method, CancellationToken? cancelToken = null)
         {
-            Uri requestUri = SubsonicServer.BuildSettingsRequestUri(method);
-            HttpClientHandler clientHandler = GetClientHandler();
-            HttpClient client = GetClient(clientHandler);
+            var requestUri = SubsonicServer.BuildSettingsRequestUri(method);
+            var clientHandler = GetClientHandler();
+            var client = GetClient(clientHandler);
 
             cancelToken?.ThrowIfCancellationRequested();
 
@@ -216,7 +218,7 @@ namespace Subsonic.Client
 
             try
             {
-                using (HttpResponseMessage response = cancelToken.HasValue ? await client.GetAsync(requestUri, cancelToken.Value) : await client.GetAsync(requestUri))
+                using (var response = cancelToken.HasValue ? await client.GetAsync(requestUri, cancelToken.Value) : await client.GetAsync(requestUri))
                     success = response.IsSuccessStatusCode;
             }
             catch (Exception ex)
@@ -231,14 +233,25 @@ namespace Subsonic.Client
 
         private bool UseOldAuthenticationMethod()
         {
-            return SubsonicServer.ApiVersion == null || SubsonicServer.ApiVersion < Common.SubsonicApiVersions.Version1_13_0;
+            return SubsonicServer.ApiVersion == null || SubsonicServer.ApiVersion < Common.SubsonicApiVersion.Version1_13_0;
         }
 
-        public virtual HttpClientHandler GetClientHandler()
+        public HttpClientHandler GetClientHandler()
         {
-            NetworkCredential networkCredential = UseOldAuthenticationMethod() ? new NetworkCredential(SubsonicServer.UserName, SubsonicServer.Password) : null;
+            var serverHashCode = SubsonicServer.GetHashCode();
 
-            return new HttpClientHandler
+            if (SubsonicServerHashCode != serverHashCode)
+            {
+                SubsonicServerHashCode = serverHashCode;
+                HttpClientHandler = null;
+            }
+
+            if (HttpClientHandler != null)
+                return HttpClientHandler;
+
+            var networkCredential = UseOldAuthenticationMethod() ? new NetworkCredential(SubsonicServer.UserName, SubsonicServer.Password) : null;
+
+            HttpClientHandler = new HttpClientHandler
             {
                 Credentials = networkCredential,
                 UseCookies = false,
@@ -246,23 +259,36 @@ namespace Subsonic.Client
                 Proxy = SubsonicServer.Proxy,
                 UseProxy = SubsonicServer.Proxy != null
             };
+
+            return HttpClientHandler;
         }
 
-        public virtual HttpClient GetClient(HttpMessageHandler handler, bool addAuthentication = true)
+        public HttpClient GetClient(HttpMessageHandler handler, bool addAuthentication = true)
         {
-            HttpClient httpClient = new HttpClient(handler);
+            var serverHashCode = SubsonicServer.GetHashCode();
+
+            if (SubsonicServerHashCode != serverHashCode)
+            {
+                SubsonicServerHashCode = serverHashCode;
+                HttpClient = null;
+            }
+
+            if (HttpClient != null)
+                return HttpClient;
+
+            HttpClient = new HttpClient(handler);
 
             if (addAuthentication && UseOldAuthenticationMethod())
-                httpClient.DefaultRequestHeaders.Add(HttpHeaderField.Authorization, GetAuthorizationHeader());
+                HttpClient.DefaultRequestHeaders.Add(HttpHeaderField.Authorization, GetAuthorizationHeader(SubsonicServer.UserName, SubsonicServer.Password));
 
-            httpClient.DefaultRequestHeaders.Add(HttpHeaderField.UserAgent, SubsonicServer.ClientName);
+            HttpClient.DefaultRequestHeaders.Add(HttpHeaderField.UserAgent, SubsonicServer.ClientName);
 
-            return httpClient;
+            return HttpClient;
         }
 
-        private string GetAuthorizationHeader()
+        private static string GetAuthorizationHeader(string username, string password)
         {
-            string authInfo = string.Format(CultureInfo.InvariantCulture, "{0}:{1}", SubsonicServer.UserName, SubsonicServer.Password);
+            var authInfo = string.Format(CultureInfo.InvariantCulture, "{0}:{1}", username, password);
             authInfo = Convert.ToBase64String(Encoding.UTF8.GetBytes(authInfo));
             return string.Format(CultureInfo.InvariantCulture, "Basic {0}", authInfo);
         }
@@ -275,10 +301,10 @@ namespace Subsonic.Client
             {
                 result = await response.DeserializeFromXmlAsync<Response>();
 
-                Version serverVersion = Version.Parse(result.Version);
+                var serverVersion = Version.Parse(result.Version);
 
                 // Store the subsonic server version if we don't already have it
-                if (SubsonicServer.ApiVersion == null || serverVersion != SubsonicServer.ApiVersion)
+                if (SubsonicServer.ApiVersion != serverVersion)
                     SubsonicServer.ApiVersion = serverVersion;
             }
             else

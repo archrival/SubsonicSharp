@@ -1,10 +1,9 @@
 ﻿using Subsonic.Common.Enums;
 using System.Xml.Serialization;
-using System;
 
 namespace Subsonic.Common.Classes
 {
-	[XmlRoot("subsonic-response", Namespace = null, IsNullable = false)]
+    [XmlRoot("subsonic-response", Namespace = null, IsNullable = false)]
 	public class Response
 	{
 		[XmlElement("album", typeof(AlbumWithSongsID3))]
@@ -48,7 +47,8 @@ namespace Subsonic.Common.Classes
 		[XmlElement("user", typeof(User))]
 		[XmlElement("users", typeof(Users))]
 		[XmlElement("videos", typeof(Videos))]
-		[XmlChoiceIdentifier("ItemElementName")] public object Item;
+        [XmlElement("videoInfo", typeof(VideoInfo))]
+        [XmlChoiceIdentifier("ItemElementName")] public object Item;
 		[XmlIgnore] public ItemChoiceType ItemElementName;
 		[XmlAttribute("status")] public ResponseStatus Status;
 		[XmlAttribute("version")] public string Version;

@@ -40,5 +40,44 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("type")] public MediaType Type;
         [Range(1, 5, ErrorMessage = "Value for {0} must be between {1} and {2}.")] [XmlAttribute("userRating")] public int UserRating;
         [XmlAttribute("year")] public int Year;
+
+        public override bool Equals(object obj)
+        {
+            return obj != null && Equals(obj as Child);
+        }
+
+        private bool Equals(Child item)
+        {
+            return item != null && this == item;
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            int hashFactor = 7;
+
+            hash = (hash * hashFactor) + Id.GetHashCode();
+
+            return hash;
+        }
+
+        public static bool operator ==(Child left, Child right)
+        {
+            if (ReferenceEquals(null, left))
+                return ReferenceEquals(null, right);
+
+            if (ReferenceEquals(null, right))
+                return false;
+
+            if (!string.Equals(left.Id, right.Id))
+                return false;
+
+            return true;
+        }
+
+        public static bool operator !=(Child left, Child right)
+        {
+            return !(left == right);
+        }
     }
 }

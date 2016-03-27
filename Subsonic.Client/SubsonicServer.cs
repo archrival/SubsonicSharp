@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using Subsonic.Common;
 
 namespace Subsonic.Client
 {
@@ -27,6 +28,7 @@ namespace Subsonic.Client
             Password = password;
             ClientName = clientName;
             SubsonicAuthentication = new SubsonicAuthentication(Password);
+            ApiVersion = SubsonicApiVersion.Max;
         }
 
         public SubsonicServer(Uri serverUrl, string userName, string password, string clientName, string proxyServer, int proxyPort) : this(serverUrl, userName, password, clientName)
@@ -54,30 +56,30 @@ namespace Subsonic.Client
 
         private bool ShouldUseNewAuthentication()
         {
-            return ApiVersion >= Common.SubsonicApiVersions.Version1_13_0;
+            return ApiVersion >= SubsonicApiVersion.Version1_13_0;
         }
 
         public Uri BuildRequestUri(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, bool checkForTokenUsability = true)
         {
-            UriBuilder uriBuilder = new UriBuilder(Url);
+            var uriBuilder = new UriBuilder(Url);
 
-            StringBuilder pathBuilder = new StringBuilder(uriBuilder.Path);
+            var pathBuilder = new StringBuilder(uriBuilder.Path);
             pathBuilder.AppendFormat("/rest/{0}.view", method.GetXmlEnumAttribute());
             uriBuilder.Path = Regex.Replace(pathBuilder.ToString(), "/+", "/");
 
-            StringBuilder queryBuilder = new StringBuilder();
+            var queryBuilder = new StringBuilder();
             queryBuilder.AppendFormat("v={0}&c={1}", methodApiVersion, ClientName);
 
             if (parameters != null && parameters.Parameters.Count > 0)
             {
                 foreach (object parameter in parameters.Parameters)
                 {
-                    string key = string.Empty;
-                    string value = string.Empty;
+                    var key = string.Empty;
+                    var value = string.Empty;
 
                     if (parameter is DictionaryEntry)
                     {
-                        DictionaryEntry entry = (DictionaryEntry)parameter;
+                        var entry = (DictionaryEntry)parameter;
 
                         key = entry.Key.ToString();
                         value = entry.Value.ToString();
@@ -85,7 +87,7 @@ namespace Subsonic.Client
 
                     if (parameter is KeyValuePair<string, string>)
                     {
-                        KeyValuePair<string, string> entry = (KeyValuePair<string, string>)parameter;
+                        var entry = (KeyValuePair<string, string>)parameter;
 
                         key = entry.Key;
                         value = entry.Value;
@@ -97,7 +99,7 @@ namespace Subsonic.Client
 
             if (checkForTokenUsability && ShouldUseNewAuthentication())
             {
-                SubsonicToken subsonicToken = SubsonicAuthentication.GetToken();
+                var subsonicToken = SubsonicAuthentication.GetToken();
                 queryBuilder.AppendFormat("&u={0}&t={1}&s={2}", UserName, subsonicToken.Token, subsonicToken.Salt);
             }
 
@@ -107,18 +109,18 @@ namespace Subsonic.Client
 
         public Uri BuildRequestUriUser(Methods method, Version methodApiVersion, SubsonicParameters parameters = null)
         {
-            UriBuilder uriBuilder = new UriBuilder(BuildRequestUri(method, methodApiVersion, parameters, false));
+            var uriBuilder = new UriBuilder(BuildRequestUri(method, methodApiVersion, parameters, false));
 
-            StringBuilder queryBuilder = new StringBuilder(uriBuilder.Query.TrimStart('?'));
+            var queryBuilder = new StringBuilder(uriBuilder.Query.TrimStart('?'));
 
             if (ShouldUseNewAuthentication())
             {
-                SubsonicToken subsonicToken = SubsonicAuthentication.GetToken();
+                var subsonicToken = SubsonicAuthentication.GetToken();
                 queryBuilder.AppendFormat("&u={0}&t={1}&s={2}", UserName, subsonicToken.Token, subsonicToken.Salt);
             }
             else
             {
-                string encodedPassword = string.Format("enc:{0}", Password.ToHexString());
+                string encodedPassword = $"enc:{Password.ToHexString()}";
                 queryBuilder.AppendFormat("&u={0}&p={1}", UserName, encodedPassword);
             }
 
@@ -129,22 +131,48 @@ namespace Subsonic.Client
 
         public Uri BuildSettingsRequestUri(SettingMethods method)
         {
-            UriBuilder uriBuilder = new UriBuilder(Url)
+            var uriBuilder = new UriBuilder(Url)
             {
                 UserName = UserName,
                 Password = Password
             };
 
-            StringBuilder pathBuilder = new StringBuilder(uriBuilder.Path);
+            var pathBuilder = new StringBuilder(uriBuilder.Path);
             pathBuilder.Append("/musicFolderSettings.view");
             uriBuilder.Path = Regex.Replace(pathBuilder.ToString(), "/+", "/");
 
-            StringBuilder queryBuilder = new StringBuilder();
+            var queryBuilder = new StringBuilder();
             queryBuilder.AppendFormat("{0}", method.GetXmlEnumAttribute());
 
             uriBuilder.Query = queryBuilder.ToString();
 
             return uriBuilder.Uri;
+        }
+
+        private const int HashSeed = 73; // Should be prime number
+        private const int HashFactor = 17; // Should be prime number
+
+        public override int GetHashCode()
+        {
+            var hash = HashSeed;
+            hash = (hash * HashFactor) + typeof(SubsonicServer).GetHashCode();
+
+            if (Url != null)
+                hash = (hash * HashFactor) + Url.GetHashCode();
+
+            if (UserName != null)
+                hash = (hash * HashFactor) + UserName.GetHashCode();
+
+            if (Password != null)
+                hash = (hash * HashFactor) + Password.GetHashCode();
+
+            if (ClientName != null)
+                hash = (hash * HashFactor) + ClientName.GetHashCode();
+
+            if (ApiVersion != null)
+                hash = (hash * HashFactor) + ApiVersion.GetHashCode();
+
+            return hash;
         }
     }
 }

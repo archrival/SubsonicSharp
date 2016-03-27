@@ -13,7 +13,7 @@ namespace Subsonic.Client.Extensions
         /// <typeparam name="T">Object type to deserialize the XML into.</typeparam>
         /// <param name="xml">XML string to deserialize.</param>
         /// <param name="ignoreNamespace"></param>
-        /// <returns cref="T">Deserialized object T</returns>
+        /// <returns>Deserialized object T</returns>
         public static T DeserializeFromXml<T>(this string xml, bool ignoreNamespace = true)
         {
             T result;
@@ -35,7 +35,7 @@ namespace Subsonic.Client.Extensions
         /// <typeparam name="T">Object type to deserialize the XML into.</typeparam>
         /// <param name="xml">XML string to deserialize.</param>
         /// <param name="ignoreNamespace"></param>
-        /// <returns cref="T">Deserialized object T</returns>
+        /// <returns>Deserialized object T</returns>
         public static async Task<T> DeserializeFromXmlAsync<T>(this string xml, bool ignoreNamespace = true)
         {
             return await Task.Run(() => xml.DeserializeFromXml<T>(ignoreNamespace));

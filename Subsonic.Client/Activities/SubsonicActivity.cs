@@ -29,8 +29,8 @@ namespace Subsonic.Client.Activities
 			if (Cache.Value.ContainsKey(ActivityDelegate))
 				cache = Cache.Value[ActivityDelegate];
 
-			DateTime timeStamp = new DateTime();
-			T result = default(T);
+			var timeStamp = new DateTime();
+			var result = default(T);
 
 			if (cache != null)
 			{

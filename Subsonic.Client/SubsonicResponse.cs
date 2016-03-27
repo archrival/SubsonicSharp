@@ -26,9 +26,9 @@ namespace Subsonic.Client
         {
             ValidateApiVersion(method, methodApiVersion);
 
-            bool success = false;
+            var success = false;
 
-            Response response = await SubsonicRequest.RequestAsync(method, methodApiVersion, parameters, cancelToken);
+            var response = await SubsonicRequest.RequestAsync(method, methodApiVersion, parameters, cancelToken);
 
             switch (response.Status)
             {
@@ -37,7 +37,7 @@ namespace Subsonic.Client
                     break;
                 case ResponseStatus.Failed:
                     if (response.ItemElementName == ItemChoiceType.Error)
-                        throw new SubsonicErrorException(string.Format(CultureInfo.CurrentCulture, "Error occurred in {0}", method.GetXmlEnumAttribute(), response.Item as Error));
+                        throw new SubsonicErrorException(string.Format(CultureInfo.CurrentCulture, "Error occurred in {0}", method.GetXmlEnumAttribute()), response.Item as Error);
 
                     break;
             }
@@ -63,9 +63,9 @@ namespace Subsonic.Client
         {
             ValidateApiVersion(method, methodApiVersion);
 
-            TResponse result = default(TResponse);
+            var result = default(TResponse);
 
-            Response response = await SubsonicRequest.RequestAsync(method, methodApiVersion, parameters, cancelToken);
+            var response = await SubsonicRequest.RequestAsync(method, methodApiVersion, parameters, cancelToken);
 
             switch (response.Status)
             {
@@ -108,7 +108,7 @@ namespace Subsonic.Client
         private void ValidateApiVersion(Methods method, Version methodApiVersion)
         {
             if (SubsonicServer.ApiVersion != null && methodApiVersion > SubsonicServer.ApiVersion)
-                throw new SubsonicInvalidApiException(string.Format(CultureInfo.CurrentCulture, "Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", method.GetXmlEnumAttribute(), methodApiVersion, SubsonicServer.ApiVersion));
+                throw new SubsonicInvalidApiException(string.Format("Method {0} requires Subsonic Server API version {1}, but the actual Subsonic Server API version is {2}.", method.GetXmlEnumAttribute(), methodApiVersion, SubsonicServer.ApiVersion));
         }
     }
 }

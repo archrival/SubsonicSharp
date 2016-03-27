@@ -8,7 +8,7 @@ namespace Subsonic.Client.Activities
 	{
 		public Search2Activity(ISubsonicClient<TImageType> subsonicClient, string query, int? artistCount = null, int? artistOffset = null, int? albumCount = null, int? albumOffset = null, int? songCount = null, int? songOffset = null, string musicFolderId = null)
 		{
-			Search2ActivityDelegate<TImageType> activityDelegate = new Search2ActivityDelegate<TImageType>(query, artistCount, artistOffset, albumCount, albumOffset, songCount, songOffset, musicFolderId);
+			var activityDelegate = new Search2ActivityDelegate<TImageType>(query, artistCount, artistOffset, albumCount, albumOffset, songCount, songOffset, musicFolderId);
 			activityDelegate.Method = activityDelegate.CreateMethod(subsonicClient);
 			ActivityDelegate = activityDelegate;
 		}

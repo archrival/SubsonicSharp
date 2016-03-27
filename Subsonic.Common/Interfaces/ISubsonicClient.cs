@@ -97,6 +97,14 @@ namespace Subsonic.Common.Interfaces
 		Task<Videos> GetVideosAsync(CancellationToken? cancelToken = null);
 
 		/// <summary>
+		/// Returns details for a video, including information about available audio tracks, subtitles (captions) and conversions.
+		/// </summary>
+		/// <param name="id">The video ID.</param>
+		/// <param name="cancelToken">The CancellationToken associated with a managed CancellationTokenSource.</param>
+		/// <returns>Videos</returns>
+		Task<VideoInfo> GetVideoInfoAsync(string id, CancellationToken? cancelToken = null);
+
+		/// <summary>
 		/// Returns a list of random, newest, highest rated etc. albums. Similar to the album lists on the home page of the Subsonic web interface.
 		/// </summary>
 		/// <param name="type"> The list type. Must be one of the following: random, newest, highest, frequent, recent. Since 1.8.0 you can also use alphabeticalByName or alphabeticalByArtist to page through all albums alphabetically, and starred to retrieve starred albums.</param>
@@ -269,10 +277,11 @@ namespace Subsonic.Common.Interfaces
 		/// <param name="format">(Since 1.6.0) Specifies the preferred target format (e.g., "mp3" or "flv") in case there are multiple applicable transcodings. (Since 1.9.0) you can use the special value "raw" to disable transcoding.</param>
 		/// <param name="timeOffset">Only applicable to video streaming. If specified, start streaming at the given offset (in seconds) into the video. Typically used to implement video skipping.</param>
 		/// <param name="estimateContentLength">(Since 1.8.0). If set to "true", the Content-Length HTTP header will be set to an estimated value for transcoded or downsampled media. [Default = false]</param>
+		/// <param name="converted">(Since 1.14.0) Only applicable to video streaming. Subsonic can optimize videos for streaming by converting them to MP4. If a conversion exists for the video in question, then setting this parameter to "true" will cause the converted video to be returned instead of the original.</param>
 		/// <param name="cancelToken">The CancellationToken associated with a managed CancellationTokenSource.</param>
 		/// <param name="noResponse"></param>
 		/// <returns>long</returns>
-		Task<long> StreamAsync(string id, string path, StreamParameters? streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, CancellationToken? cancelToken = null, bool noResponse = false);
+		Task<long> StreamAsync(string id, string path, StreamParameters? streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, bool? converted = null, CancellationToken? cancelToken = null, bool noResponse = false);
 		
 		/// <summary>
 		/// Downloads a given media file. Similar to stream, but this method returns the original media data without transcoding or downsampling.
@@ -292,6 +301,15 @@ namespace Subsonic.Common.Interfaces
 		/// <param name="cancelToken">The CancellationToken associated with a managed CancellationTokenSource.</param>
 		/// <returns>string</returns>
 		Task<string> HlsAsync(string id, IList<StreamParameters> streamParameters = null, CancellationToken? cancelToken = null);
+
+		/// <summary>
+		/// Returns captions (subtitles) for a video. Use getVideoInfo to get a list of available captions.
+		/// </summary>
+		/// <param name="id">The ID of the video.</param>
+		/// <param name="format">Preferred captions format ("srt" or "vtt").</param>
+		/// <param name="cancelToken">The CancellationToken associated with a managed CancellationTokenSource.</param>
+		/// <returns>IImageFormat</returns>
+		Task<string> GetCaptionsAsync(string id, string format = null, CancellationToken? cancelToken = null);
 
 		/// <summary>
 		/// Returns a cover art image.

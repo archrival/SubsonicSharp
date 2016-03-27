@@ -1,16 +1,17 @@
 ﻿using System;
 using Subsonic.Client.Extensions;
 using Subsonic.Common.Classes;
+using Subsonic.Client.Tasks;
 
-namespace Subsonic.Client.Items
+namespace Subsonic.Client.Models
 {
-    public class ChatItem
+    public class ChatModel : ObservableObject
     {
         public string User { get; }
         public string Message { get; }
         public DateTime TimeStamp { get; }
 
-        public ChatItem(ChatMessage chatMessage)
+        public ChatModel(ChatMessage chatMessage)
         {
             User = chatMessage.Username;
             Message = chatMessage.Message;
@@ -25,7 +26,7 @@ namespace Subsonic.Client.Items
         public override int GetHashCode()
         {
             int hash = HashSeed;
-            hash = (hash * HashFactor) + typeof(ChatItem).GetHashCode();
+            hash = (hash * HashFactor) + typeof(ChatModel).GetHashCode();
             hash = (hash * HashFactor) + TimeStamp.GetHashCode();
             hash = (hash * HashFactor) + User.GetHashCode();
             hash = (hash * HashFactor) + Message.GetHashCode();
@@ -35,15 +36,15 @@ namespace Subsonic.Client.Items
 
         public override bool Equals(object obj)
         {
-            return obj != null && Equals(obj as ChatItem);
+            return obj != null && Equals(obj as ChatModel);
         }
 
-        private bool Equals(ChatItem chatItem)
+        private bool Equals(ChatModel chatItem)
         {
             return chatItem != null && this == chatItem;
         }
 
-        public static bool operator ==(ChatItem left, ChatItem right)
+        public static bool operator ==(ChatModel left, ChatModel right)
         {
             if (ReferenceEquals(null, left))
                 return ReferenceEquals(null, right);
@@ -57,7 +58,7 @@ namespace Subsonic.Client.Items
             return false;
         }
 
-        public static bool operator !=(ChatItem left, ChatItem right)
+        public static bool operator !=(ChatModel left, ChatModel right)
         {
             return !(left == right);
         }

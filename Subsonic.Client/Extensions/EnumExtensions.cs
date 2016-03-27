@@ -20,15 +20,15 @@ namespace Subsonic.Client.Extensions
 
             Type type = en.GetType();
 
-            var memInfo = type.GetTypeInfo().DeclaredMembers.Where(m => m.Name == en.ToString());
+            var memInfo = type.GetTypeInfo().DeclaredMembers.Where(m => m.Name == en.ToString()).ToList();
 
-            if (memInfo.Any())
-            {
-                var attrs = memInfo.First().CustomAttributes.Where(ca => ca.AttributeType == typeof(System.Xml.Serialization.XmlEnumAttribute));
+            if (!memInfo.Any())
+                return en.ToString();
 
-                if (attrs.Any())
-                    return attrs.First().ConstructorArguments.First().Value as string;
-            }
+            var attrs = memInfo.First().CustomAttributes.Where(ca => ca.AttributeType == typeof(System.Xml.Serialization.XmlEnumAttribute)).ToList();
+
+            if (attrs.Any())
+                return attrs.First().ConstructorArguments.First().Value as string;
 
             return en.ToString();
         }

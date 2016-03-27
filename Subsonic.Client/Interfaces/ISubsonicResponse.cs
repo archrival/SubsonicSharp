@@ -30,7 +30,7 @@ namespace Subsonic.Client.Interfaces
         /// <param name="methodApiVersion" cref="Version">Subsonic API version of the method.</param>
         /// <param name="parameters" cref="SubsonicParameters">Parameters used by the method.</param>
         /// <param name="cancelToken" cref="CancellationToken">Propagates notification that operations should be canceled.</param>
-        /// <returns cref="TResponse">Response</returns>
+        /// <returns>Response</returns>
         Task<TResponse> GetResponseAsync<TResponse>(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null);
 
         /// <summary>

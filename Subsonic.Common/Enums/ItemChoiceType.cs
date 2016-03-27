@@ -45,6 +45,7 @@ namespace Subsonic.Common.Enums
 		[XmlEnum("topSongs")] TopSongs,
 		[XmlEnum("user")] User,
 		[XmlEnum("users")] Users,
+		[XmlEnum("videoInfo")] VideoInfo,
 		[XmlEnum("videos")] Videos
 	}
 }

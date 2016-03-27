@@ -1,11 +1,11 @@
 ﻿using System;
 using Subsonic.Client.EventArgs;
 using Subsonic.Client.Handlers;
-using Subsonic.Client.Items;
+using Subsonic.Client.Models;
 
 namespace Subsonic.Client.Monitors
 {
-    public class ChatMonitor<T> : IObserver<ChatItem> where T : class, IDisposable
+    public class ChatMonitor<T> : IObserver<ChatModel> where T : class, IDisposable
     {
         private IDisposable _cancellation;
         public ChatHandler<T> ChatHandler { get; set; }
@@ -24,7 +24,7 @@ namespace Subsonic.Client.Monitors
             OnPropertyChanged(null);
         }
 
-        public void OnNext(ChatItem value)
+        public void OnNext(ChatModel value)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace Subsonic.Client.Monitors
 
         public event Action<ChatMonitor<T>, ChatEventArgs> PropertyChanged;
 
-        protected virtual void OnPropertyChanged(ChatItem chatItem)
+        protected virtual void OnPropertyChanged(ChatModel chatItem)
         {
             Action<ChatMonitor<T>, ChatEventArgs> handler = PropertyChanged;
             handler?.Invoke(this, new ChatEventArgs(chatItem));

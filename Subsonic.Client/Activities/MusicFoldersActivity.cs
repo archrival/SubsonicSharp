@@ -4,11 +4,11 @@ using System;
 
 namespace Subsonic.Client.Activities
 {
-	public class MusicFoldersActivity<T> : SubsonicActivity<MusicFolders, T> where T : class, IDisposable
+	public class MusicFoldersActivity<TImageType> : SubsonicActivity<MusicFolders, TImageType> where TImageType : class, IDisposable
 	{
-		public MusicFoldersActivity(ISubsonicClient<T> subsonicClient)
+		public MusicFoldersActivity(ISubsonicClient<TImageType> subsonicClient)
 		{
-			ActivityDelegate = new SubsonicActivityDelegate<MusicFolders, T> { Method = subsonicClient.GetMusicFoldersAsync };
+			ActivityDelegate = new SubsonicActivityDelegate<MusicFolders, TImageType> { Method = subsonicClient.GetMusicFoldersAsync };
 		}
 	}
 }

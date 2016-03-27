@@ -23,5 +23,6 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("uploadRole")] public bool UploadRole;
         [XmlAttribute("username")] public string Username;
         [XmlAttribute("videoConversionRole")] public bool VideoConversionRole;
+        [XmlAttribute("avatarLastChanged")] public DateTime AvatarLastChanged;
     }
 }

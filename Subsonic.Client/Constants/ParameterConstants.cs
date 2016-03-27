@@ -69,5 +69,7 @@
 		public const string IncludeNotPresent = "includeNotPresent";
 		public const string Current = "current";
 		public const string VideoConversionRole = "videoConversionRole";
+	    public const string Converted = "converted";
+	    public const string Format = "format";
 	}
 }

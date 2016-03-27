@@ -5,8 +5,8 @@
     "dnxcore50.app": {}
   },
   "dependencies": {
-    "Microsoft.Bcl.Build": "1.0.21",
     "Microsoft.NETCore": "5.0.0",
+    "Microsoft.NETCore.Portable.Compatibility": "1.0.0",
     "System.Xml.XmlSerializer": "4.0.10"
   },
   "frameworks": {

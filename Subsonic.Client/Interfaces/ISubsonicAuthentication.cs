@@ -1,4 +1,4 @@
-﻿namespace Subsonic.Client
+﻿namespace Subsonic.Client.Interfaces
 {
     public interface ISubsonicAuthentication
     {

@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System;
+using Subsonic.Client.Interfaces;
 
 namespace Subsonic.Client
 {
@@ -28,7 +29,7 @@ namespace Subsonic.Client
         {
             SubsonicToken subsonicToken = new SubsonicToken {Salt = GetUniqueString(SaltComplexity)};
 
-            string tokenSource = string.Format("{0}{1}", Password, subsonicToken.Salt);
+            string tokenSource = $"{Password}{subsonicToken.Salt}";
             subsonicToken.Token = MD5.GetMd5Sum(tokenSource);
 
             return subsonicToken;

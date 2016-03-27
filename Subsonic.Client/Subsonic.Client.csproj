@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_APP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -30,11 +30,13 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_APP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Activities\AlbumListActivity.cs" />
+    <Compile Include="Activities\AlbumListActivityDelegate.cs" />
     <Compile Include="Activities\IndexesActivity.cs" />
     <Compile Include="Activities\IndexesActivityDelegate.cs" />
     <Compile Include="Activities\MusicDirectoryActivity.cs" />
@@ -45,22 +47,22 @@
     <Compile Include="Handlers\Unsubscriber.cs" />
     <Compile Include="Monitors\ChatMonitor.cs" />
     <Compile Include="Interfaces\IFileLogger.cs" />
-    <Compile Include="Items\AlbumItem.cs" />
-    <Compile Include="Items\AlbumListItem.cs" />
-    <Compile Include="Items\ArtistItem.cs" />
-    <Compile Include="Items\ChatItem.cs" />
-    <Compile Include="Items\ChildItem.cs" />
+    <Compile Include="Models\AlbumModel.cs" />
+    <Compile Include="Models\AlbumListModel.cs" />
+    <Compile Include="Models\ArtistModel.cs" />
+    <Compile Include="Models\ChatModel.cs" />
+    <Compile Include="Models\ChildModel.cs" />
     <Compile Include="Enums\SubsonicParameterTypes.cs" />
     <Compile Include="Exceptions\Exceptions.cs" />
     <Compile Include="Interfaces\ISubsonicRequest.cs" />
     <Compile Include="Interfaces\ISubsonicResponse.cs" />
-    <Compile Include="Items\NowPlayingItem.cs" />
-    <Compile Include="Items\PlaylistItem.cs" />
+    <Compile Include="Models\NowPlayingModel.cs" />
+    <Compile Include="Models\PlaylistModel.cs" />
     <Compile Include="SubsonicClient.cs" />
     <Compile Include="SubsonicParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Items\TrackItem.cs" />
-    <Compile Include="Items\GenreItem.cs" />
+    <Compile Include="Models\TrackModel.cs" />
+    <Compile Include="Models\GenreModel.cs" />
     <Compile Include="SubsonicServer.cs" />
     <Compile Include="Interfaces\ISubsonicServer.cs" />
     <Compile Include="Extensions\VersionExtensions.cs" />
@@ -75,6 +77,8 @@
     <Compile Include="Activities\SubsonicActivity.cs" />
     <Compile Include="Activities\GenresActivity.cs" />
     <Compile Include="Activities\MusicFoldersActivity.cs" />
+    <Compile Include="Tasks\NotifyTaskCompletion.cs" />
+    <Compile Include="Tasks\ObservableObject.cs" />
     <Compile Include="WebProxy.cs" />
     <Compile Include="Constants\HttpMethod.cs" />
     <Compile Include="SubsonicResponse.cs" />
@@ -98,10 +102,6 @@
   </Target>
   -->
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>

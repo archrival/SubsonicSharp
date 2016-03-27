@@ -10,6 +10,7 @@ namespace Subsonic.Client.UniversalWindows
     public class ImageFormat : IImageFormat<SoftwareBitmapSource>
     {
         public SoftwareBitmapSource Image { get; set; }
+        private Stream Stream { get; set; }
 
         public async Task SetImageFromStreamAsync(Stream stream)
         {
@@ -17,11 +18,14 @@ namespace Subsonic.Client.UniversalWindows
             var bitmap = await decoder.GetSoftwareBitmapAsync(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
             SoftwareBitmapSource image = new SoftwareBitmapSource();
             await image.SetBitmapAsync(bitmap);
+
+            Stream = stream;
             Image = image;
         }
 
         public void Dispose()
         {
+            Stream?.Dispose();
             Image?.Dispose();
         }
     }

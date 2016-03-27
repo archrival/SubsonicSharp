@@ -4,11 +4,11 @@ using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Activities
 {
-	public class GenresActivity<T> : SubsonicActivity<Genres, T> where T : class, IDisposable
+	public class GenresActivity<TImageType> : SubsonicActivity<Genres, TImageType> where TImageType : class, IDisposable
 	{
-		public GenresActivity(ISubsonicClient<T> subsonicClient)
+		public GenresActivity(ISubsonicClient<TImageType> subsonicClient)
 		{
-		    ActivityDelegate = new SubsonicActivityDelegate<Genres, T> { Method = subsonicClient.GetGenresAsync };
+		    ActivityDelegate = new SubsonicActivityDelegate<Genres, TImageType> { Method = subsonicClient.GetGenresAsync };
 		}
 	}
 }
