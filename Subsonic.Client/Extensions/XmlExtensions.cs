@@ -38,7 +38,7 @@ namespace Subsonic.Client.Extensions
         /// <returns>Deserialized object T</returns>
         public static async Task<T> DeserializeFromXmlAsync<T>(this string xml, bool ignoreNamespace = true)
         {
-            return await Task.Run(() => xml.DeserializeFromXml<T>(ignoreNamespace));
+            return await Task.FromResult(xml.DeserializeFromXml<T>(ignoreNamespace));
         }
     }
 }
