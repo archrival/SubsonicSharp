@@ -9,14 +9,13 @@ using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
 using Subsonic.Common.Interfaces;
 using Subsonic.Client.Interfaces;
-using System.Net.Http;
 using Path = System.IO.Path;
 
 namespace Subsonic.Client.Android
 {
-    public class SubsonicRequestAndroid<T> : SubsonicRequest<T>
+    public class SubsonicRequest<T> : Client.SubsonicRequest<T> where T : class, IDisposable
     {
-        public SubsonicRequestAndroid(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, imageFormatFactory) { }
+        public SubsonicRequest(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, imageFormatFactory) { }
 
         public override async Task<long> RequestAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
@@ -24,8 +23,7 @@ namespace Subsonic.Client.Android
             var clientHandler = GetClientHandler();
             var client = GetClient(clientHandler);
 
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
+            cancelToken?.ThrowIfCancellationRequested();
 
             long bytesTransferred = 0;
             var download = true;

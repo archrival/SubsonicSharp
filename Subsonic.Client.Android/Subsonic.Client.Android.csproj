@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -8,12 +8,12 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Subsonic.Client.Android</RootNamespace>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
+    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <AssemblyName>Subsonic.Client.Android</AssemblyName>
-    <TargetFrameworkVersion>v4.4</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,54 +41,34 @@
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
     <Reference Include="System.Net" />
-    <Reference Include="Microsoft.Threading.Tasks">
-      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net45+win8+wpa81\Microsoft.Threading.Tasks.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Threading.Tasks.Extensions">
-      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net45+win8+wpa81\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.Extensions">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\monoandroid\System.Net.Http.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.Primitives">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\monoandroid\System.Net.Http.Primitives.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
-    <Compile Include="SubsonicClientAndroid.cs" />
+    <Compile Include="SubsonicClient.cs" />
     <Compile Include="StreamProxy.cs" />
-    <Compile Include="AndroidMediaStore.cs" />
-    <Compile Include="Items\AndroidAlbumItem.cs" />
-    <Compile Include="Items\AndroidArtistItem.cs" />
-    <Compile Include="Items\AndroidChildItem.cs" />
-    <Compile Include="Items\AndroidNowPlayingItem.cs" />
-    <Compile Include="Items\AndroidTrackItem.cs" />
-    <Compile Include="Items\AndroidGenreItem.cs" />
-    <Compile Include="SubsonicRequestAndroid.cs" />
-    <Compile Include="SubsonicResponseAndroid.cs" />
-    <Compile Include="ImageFormatFactoryAndroid.cs" />
-    <Compile Include="ImageFormatAndroid.cs" />
+    <Compile Include="SubsonicRequest.cs" />
+    <Compile Include="SubsonicResponse.cs" />
+    <Compile Include="ImageFormatFactory.cs" />
+    <Compile Include="ImageFormat.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Subsonic.Client\Subsonic.Client.csproj">
+      <Project>{cbb112d5-2507-4453-83be-51232fb95ca6}</Project>
+      <Name>Subsonic.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Subsonic.Common\Subsonic.Common.csproj">
+      <Project>{a533a041-6d2d-46b3-a3e7-4cc7e64a16f3}</Project>
+      <Name>Subsonic.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
-  <ItemGroup>
-    <ProjectReference Include="..\Subsonic.Common\Subsonic.Common.csproj">
-      <Project>{A533A041-6D2D-46B3-A3E7-4CC7E64A16F3}</Project>
-      <Name>Subsonic.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Subsonic.Client\Subsonic.Client.csproj">
-      <Project>{CBB112D5-2507-4453-83BE-51232FB95CA6}</Project>
-      <Name>Subsonic.Client</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

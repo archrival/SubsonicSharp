@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using Subsonic.Client.Items;
+using Subsonic.Client.Models;
 
 namespace Subsonic.Client.Android
 {
@@ -16,7 +16,7 @@ namespace Subsonic.Client.Android
         bool _isRunning;
         TcpListener _socket;
         int _port;
-        TrackItem _trackItem;
+        TrackModel _trackItem;
         StreamToMediaPlayerTask _task;
         static readonly Lazy<StreamProxy> StreamProxyInstance = new Lazy<StreamProxy>(() => new StreamProxy());
 
@@ -27,7 +27,7 @@ namespace Subsonic.Client.Android
             get { return StreamProxyInstance.Value; }
         }
 
-        public void SetTrackItem(TrackItem trackItem)
+        public void SetTrackItem(TrackModel trackItem)
         {
             _trackItem = trackItem;
         }

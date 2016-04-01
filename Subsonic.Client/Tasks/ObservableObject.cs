@@ -22,14 +22,12 @@ namespace Subsonic.Client.Tasks
         {
             VerifyPropertyName(propertyName);
 
-            if (PropertyChanged != null)
-            {
-                var e = new PropertyChangedEventArgs(propertyName);
-                PropertyChanged(this, e);
-            }
-        }
+            if (PropertyChanged == null)
+                return;
 
-        #region Debugging Aides
+            var e = new PropertyChangedEventArgs(propertyName);
+            PropertyChanged(this, e);
+        }
 
         /// <summary>
         /// Warns the developer if this object does not have
@@ -43,25 +41,10 @@ namespace Subsonic.Client.Tasks
             // Verify that the property name matches a real,
             // public, instance property on this object.
 
-            if (GetType().GetRuntimeProperties().FirstOrDefault(p => p.Name == propertyName) == null)
-            {
-                string msg = "Invalid property name: " + propertyName;
+            if (GetType().GetRuntimeProperties().FirstOrDefault(p => p.Name == propertyName) != null)
+                return;
 
-                if (ThrowOnInvalidPropertyName)
-                    throw new Exception(msg);
-                else
-                    Debug.Fail(msg);
-            }
+            throw new Exception($"Invalid property name: {propertyName}");
         }
-
-        /// <summary>
-        /// Returns whether an exception is thrown, or if a Debug.Fail() is used
-        /// when an invalid property name is passed to the VerifyPropertyName method.
-        /// The default value is false, but subclasses used by unit tests might
-        /// override this property's getter to return true.
-        /// </summary>
-        private bool ThrowOnInvalidPropertyName { get; set; }
-
-        #endregion // Debugging Aides
     }
 }
