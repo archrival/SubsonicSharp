@@ -86,7 +86,7 @@ namespace Subsonic.Client.Handlers
 
                     await Task.Delay(Interval, CancellationToken);
                 }
-                catch (TaskCanceledException ex)
+                catch (TaskCanceledException)
                 {
                     execute = false;
                 }
