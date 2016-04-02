@@ -6,6 +6,11 @@ namespace Subsonic.Client.UniversalWindows
 {
     public class SubsonicClient : SubsonicClient<SoftwareBitmapSource>
     {
+        public SubsonicClient(ISubsonicServer subsonicServer) : base(subsonicServer)
+        {
+            SubsonicResponse = new SubsonicResponse<SoftwareBitmapSource>(subsonicServer, new ImageFormatFactory());
+        }
+
         public SubsonicClient(ISubsonicServer subsonicServer, IImageFormatFactory<SoftwareBitmapSource> imageFormatFactory) : base(subsonicServer)
         {
             SubsonicResponse = new SubsonicResponse<SoftwareBitmapSource>(subsonicServer, imageFormatFactory);
