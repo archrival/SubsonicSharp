@@ -276,12 +276,14 @@ namespace Subsonic.Client
             if (HttpClient != null)
                 return HttpClient;
 
-            HttpClient = new HttpClient(handler);
+            var httpClient = new HttpClient(handler);
 
             if (addAuthentication && UseOldAuthenticationMethod())
-                HttpClient.DefaultRequestHeaders.Add(HttpHeaderField.Authorization, GetAuthorizationHeader(SubsonicServer.UserName, SubsonicServer.Password));
+                httpClient.DefaultRequestHeaders.Add(HttpHeaderField.Authorization, GetAuthorizationHeader(SubsonicServer.UserName, SubsonicServer.Password));
 
-            HttpClient.DefaultRequestHeaders.Add(HttpHeaderField.UserAgent, SubsonicServer.ClientName);
+            httpClient.DefaultRequestHeaders.Add(HttpHeaderField.UserAgent, SubsonicServer.ClientName);
+
+            HttpClient = httpClient;
 
             return HttpClient;
         }
