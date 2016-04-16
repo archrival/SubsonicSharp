@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Subsonic.Client.Interfaces;
+using System;
 using System.Globalization;
 using System.IO;
-using Subsonic.Client.Interfaces;
 using LoggingLevel = Subsonic.Client.Enums.LoggingLevel;
 
 namespace Subsonic.Client.UniversalWindows

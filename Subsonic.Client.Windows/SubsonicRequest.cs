@@ -14,7 +14,9 @@ namespace Subsonic.Client.Windows
 {
     public class SubsonicRequest<T> : Client.SubsonicRequest<T> where T : class, IDisposable
     {
-        public SubsonicRequest(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, imageFormatFactory) { }
+        public SubsonicRequest(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, imageFormatFactory)
+        {
+        }
 
         public override async Task<long> RequestAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
@@ -43,7 +45,7 @@ namespace Subsonic.Client.Windows
                         if (result.ItemElementName == ItemChoiceType.Error)
                             throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
 
-                        throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof (ItemChoiceType), result.ItemElementName)));
+                        throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
                     }
 
                     // Read the file name from the Content-Disposition header if a path override value was not provided

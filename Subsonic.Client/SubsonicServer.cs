@@ -1,5 +1,6 @@
 ﻿using Subsonic.Client.Extensions;
 using Subsonic.Client.Interfaces;
+using Subsonic.Common;
 using Subsonic.Common.Enums;
 using System;
 using System.Collections;
@@ -7,7 +8,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using Subsonic.Common;
 
 namespace Subsonic.Client
 {

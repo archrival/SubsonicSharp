@@ -11,6 +11,7 @@ namespace Subsonic.Common.Interfaces
     public interface IImageFormat<T> : IDisposable where T : class, IDisposable
     {
         T Image { get; set; }
+
         Task SetImageFromStreamAsync(Stream stream);
     }
 }

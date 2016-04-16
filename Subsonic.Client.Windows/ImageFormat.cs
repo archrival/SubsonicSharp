@@ -21,6 +21,7 @@ namespace Subsonic.Client.Windows
 
         public void Dispose()
         {
+            Stream?.Close();
             Stream?.Dispose();
             Image?.Dispose();
         }

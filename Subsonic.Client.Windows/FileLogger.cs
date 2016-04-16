@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Subsonic.Client.Enums;
+using Subsonic.Client.Interfaces;
+using System;
 using System.Globalization;
 using System.IO;
-using Subsonic.Client.Enums;
-using Subsonic.Client.Interfaces;
 
 namespace Subsonic.Client.Windows
 {

@@ -1,21 +1,23 @@
-﻿using System;
+﻿using Subsonic.Client.Constants;
+using Subsonic.Client.Exceptions;
+using Subsonic.Client.Interfaces;
+using Subsonic.Common.Classes;
+using Subsonic.Common.Enums;
+using Subsonic.Common.Interfaces;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Subsonic.Client.Constants;
-using Subsonic.Client.Exceptions;
-using Subsonic.Common.Classes;
-using Subsonic.Common.Enums;
-using Subsonic.Common.Interfaces;
-using Subsonic.Client.Interfaces;
 using Path = System.IO.Path;
 
 namespace Subsonic.Client.Android
 {
     public class SubsonicRequest<T> : Client.SubsonicRequest<T> where T : class, IDisposable
     {
-        public SubsonicRequest(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, imageFormatFactory) { }
+        public SubsonicRequest(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, imageFormatFactory)
+        {
+        }
 
         public override async Task<long> RequestAsync(string path, bool pathOverride, Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
@@ -44,7 +46,7 @@ namespace Subsonic.Client.Android
                         if (result.ItemElementName == ItemChoiceType.Error)
                             throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
 
-                        throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof (ItemChoiceType), result.ItemElementName)));
+                        throw new SubsonicApiException(string.Format(CultureInfo.CurrentCulture, "Unexpected response type: {0}", Enum.GetName(typeof(ItemChoiceType), result.ItemElementName)));
                     }
 
                     // Read the file name from the Content-Disposition header if a path override value was not provided

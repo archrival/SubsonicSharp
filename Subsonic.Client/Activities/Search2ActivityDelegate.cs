@@ -1,147 +1,148 @@
-﻿using System;
+﻿using Subsonic.Common.Classes;
+using Subsonic.Common.Interfaces;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Subsonic.Common.Classes;
-using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Activities
 {
-	public class Search2ActivityDelegate<TImageType> : SubsonicActivityDelegate<SearchResult2, TImageType> where TImageType : class, IDisposable
-	{
-	    private string Query { get; }
-	    private int? ArtistCount { get; }
-	    private int? ArtistOffset { get; }
-	    private int? AlbumCount { get; }
-	    private int? AlbumOffset { get; }
-	    private int? SongCount { get; }
-	    private int? SongOffset { get; }
-	    private string MusicFolderId { get; }
+    public class Search2ActivityDelegate<TImageType> : SubsonicActivityDelegate<SearchResult2, TImageType> where TImageType : class, IDisposable
+    {
+        private string Query { get; }
+        private int? ArtistCount { get; }
+        private int? ArtistOffset { get; }
+        private int? AlbumCount { get; }
+        private int? AlbumOffset { get; }
+        private int? SongCount { get; }
+        private int? SongOffset { get; }
+        private string MusicFolderId { get; }
 
-		public Search2ActivityDelegate(string query, int? artistCount = null, int? artistOffset = null, int? albumCount = null, int? albumOffset = null, int? songCount = null, int? songOffset = null, string musicFolderId = null)
-		{
-			Query = query;
-			ArtistCount = artistCount;
-			ArtistOffset = artistOffset;
-			AlbumCount = albumCount;
-			AlbumOffset = albumOffset;
-			SongCount = songCount;
-			SongOffset = songOffset;
-			MusicFolderId = musicFolderId;
-		}
+        public Search2ActivityDelegate(string query, int? artistCount = null, int? artistOffset = null, int? albumCount = null, int? albumOffset = null, int? songCount = null, int? songOffset = null, string musicFolderId = null)
+        {
+            Query = query;
+            ArtistCount = artistCount;
+            ArtistOffset = artistOffset;
+            AlbumCount = albumCount;
+            AlbumOffset = albumOffset;
+            SongCount = songCount;
+            SongOffset = songOffset;
+            MusicFolderId = musicFolderId;
+        }
 
-		public Func<CancellationToken?, Task<SearchResult2>> CreateMethod(ISubsonicClient<TImageType> subsonicClient)
-		{
-			return cancelToken => subsonicClient.Search2Async(Query, ArtistCount, ArtistOffset, AlbumCount, AlbumOffset, SongCount, SongOffset, MusicFolderId, cancelToken);
-		}
+        public Func<CancellationToken?, Task<SearchResult2>> CreateMethod(ISubsonicClient<TImageType> subsonicClient)
+        {
+            return cancelToken => subsonicClient.Search2Async(Query, ArtistCount, ArtistOffset, AlbumCount, AlbumOffset, SongCount, SongOffset, MusicFolderId, cancelToken);
+        }
 
-		// Overrides for equality
-		#region HashCode and Equality Overrides
+        // Overrides for equality
 
-	    private const int HashSeed = 73; // Should be prime number
-	    private const int HashFactor = 17; // Should be prime number
+        #region HashCode and Equality Overrides
 
-		public override int GetHashCode()
-		{
-			int hash = HashSeed;
-			hash = (hash * HashFactor) + typeof(Search2ActivityDelegate<TImageType>).GetHashCode();
+        private const int HashSeed = 73; // Should be prime number
+        private const int HashFactor = 17; // Should be prime number
 
-			if (Query != null)
-				hash = (hash * HashFactor) + Query.GetHashCode();
+        public override int GetHashCode()
+        {
+            int hash = HashSeed;
+            hash = (hash * HashFactor) + typeof(Search2ActivityDelegate<TImageType>).GetHashCode();
 
-			if (MusicFolderId != null)
-				hash = (hash * HashFactor) + MusicFolderId.GetHashCode();
+            if (Query != null)
+                hash = (hash * HashFactor) + Query.GetHashCode();
 
-			if (ArtistCount.HasValue)
-				hash = (hash * HashFactor) + ArtistCount.Value.GetHashCode();
+            if (MusicFolderId != null)
+                hash = (hash * HashFactor) + MusicFolderId.GetHashCode();
 
-			if (ArtistOffset.HasValue)
-				hash = (hash * HashFactor) + ArtistOffset.Value.GetHashCode();
+            if (ArtistCount.HasValue)
+                hash = (hash * HashFactor) + ArtistCount.Value.GetHashCode();
 
-			if (AlbumCount.HasValue)
-				hash = (hash * HashFactor) + AlbumCount.Value.GetHashCode();
+            if (ArtistOffset.HasValue)
+                hash = (hash * HashFactor) + ArtistOffset.Value.GetHashCode();
 
-			if (AlbumOffset.HasValue)
-				hash = (hash * HashFactor) + AlbumOffset.Value.GetHashCode();
+            if (AlbumCount.HasValue)
+                hash = (hash * HashFactor) + AlbumCount.Value.GetHashCode();
 
-			if (SongCount.HasValue)
-				hash = (hash * HashFactor) + SongCount.Value.GetHashCode();
+            if (AlbumOffset.HasValue)
+                hash = (hash * HashFactor) + AlbumOffset.Value.GetHashCode();
 
-			if (SongOffset.HasValue)
-				hash = (hash * HashFactor) + SongOffset.Value.GetHashCode();
+            if (SongCount.HasValue)
+                hash = (hash * HashFactor) + SongCount.Value.GetHashCode();
 
-			return hash;
-		}
+            if (SongOffset.HasValue)
+                hash = (hash * HashFactor) + SongOffset.Value.GetHashCode();
 
-		public override bool Equals(object obj)
-		{
-			return obj != null && Equals(obj as Search2ActivityDelegate<TImageType>);
-		}
+            return hash;
+        }
 
-	    private bool Equals(Search2ActivityDelegate<TImageType> item)
-		{
-			return item != null && this == item;
-		}
+        public override bool Equals(object obj)
+        {
+            return obj != null && Equals(obj as Search2ActivityDelegate<TImageType>);
+        }
 
-		public static bool operator ==(Search2ActivityDelegate<TImageType> left, Search2ActivityDelegate<TImageType> right)
-		{
-			if (ReferenceEquals(null, left))
-				return ReferenceEquals(null, right);
+        private bool Equals(Search2ActivityDelegate<TImageType> item)
+        {
+            return item != null && this == item;
+        }
 
-			if (ReferenceEquals(null, right))
-				return false;
+        public static bool operator ==(Search2ActivityDelegate<TImageType> left, Search2ActivityDelegate<TImageType> right)
+        {
+            if (ReferenceEquals(null, left))
+                return ReferenceEquals(null, right);
 
-			if (left.Query != null)
-			if (!left.Query.Equals(right.Query))
-				return false;
+            if (ReferenceEquals(null, right))
+                return false;
 
-			if (left.MusicFolderId != null)
-			if (!left.MusicFolderId.Equals(right.MusicFolderId))
-				return false;
+            if (left.Query != null)
+                if (!left.Query.Equals(right.Query))
+                    return false;
 
-			if (left.ArtistCount.HasValue)
-			if (!right.ArtistCount.HasValue)
-				return false;
-			else if (!left.ArtistCount.Value.Equals(right.ArtistCount.Value))
-				return false;
+            if (left.MusicFolderId != null)
+                if (!left.MusicFolderId.Equals(right.MusicFolderId))
+                    return false;
 
-			if (left.ArtistOffset.HasValue)
-			if (!right.ArtistOffset.HasValue)
-				return false;
-			else if (!left.ArtistOffset.Value.Equals(right.ArtistOffset.Value))
-				return false;
+            if (left.ArtistCount.HasValue)
+                if (!right.ArtistCount.HasValue)
+                    return false;
+                else if (!left.ArtistCount.Value.Equals(right.ArtistCount.Value))
+                    return false;
 
-			if (left.AlbumCount.HasValue)
-			if (!right.AlbumCount.HasValue)
-				return false;
-			else if (!left.AlbumCount.Value.Equals(right.AlbumCount.Value))
-				return false;
+            if (left.ArtistOffset.HasValue)
+                if (!right.ArtistOffset.HasValue)
+                    return false;
+                else if (!left.ArtistOffset.Value.Equals(right.ArtistOffset.Value))
+                    return false;
 
-			if (left.AlbumOffset.HasValue)
-			if (!right.AlbumOffset.HasValue)
-				return false;
-			else if (!left.AlbumOffset.Value.Equals(right.AlbumOffset.Value))
-				return false;
+            if (left.AlbumCount.HasValue)
+                if (!right.AlbumCount.HasValue)
+                    return false;
+                else if (!left.AlbumCount.Value.Equals(right.AlbumCount.Value))
+                    return false;
 
-			if (left.SongCount.HasValue)
-			if (!right.SongCount.HasValue)
-				return false;
-			else if (!left.SongCount.Value.Equals(right.SongCount.Value))
-				return false;
+            if (left.AlbumOffset.HasValue)
+                if (!right.AlbumOffset.HasValue)
+                    return false;
+                else if (!left.AlbumOffset.Value.Equals(right.AlbumOffset.Value))
+                    return false;
 
-			if (left.SongOffset.HasValue)
-			if (!right.SongOffset.HasValue)
-				return false;
-			else if (!left.SongOffset.Value.Equals(right.SongOffset.Value))
-				return false;
+            if (left.SongCount.HasValue)
+                if (!right.SongCount.HasValue)
+                    return false;
+                else if (!left.SongCount.Value.Equals(right.SongCount.Value))
+                    return false;
 
-			return true;
-		}
+            if (left.SongOffset.HasValue)
+                if (!right.SongOffset.HasValue)
+                    return false;
+                else if (!left.SongOffset.Value.Equals(right.SongOffset.Value))
+                    return false;
 
-		public static bool operator !=(Search2ActivityDelegate<TImageType> left, Search2ActivityDelegate<TImageType> right)
-		{
-			return !(left == right);
-		}
-		#endregion
-	}
+            return true;
+        }
+
+        public static bool operator !=(Search2ActivityDelegate<TImageType> left, Search2ActivityDelegate<TImageType> right)
+        {
+            return !(left == right);
+        }
+
+        #endregion HashCode and Equality Overrides
+    }
 }
-

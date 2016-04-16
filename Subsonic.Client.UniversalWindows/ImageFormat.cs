@@ -1,5 +1,5 @@
-﻿using System;
-using Subsonic.Common.Interfaces;
+﻿using Subsonic.Common.Interfaces;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;

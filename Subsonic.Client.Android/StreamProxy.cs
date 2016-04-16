@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Subsonic.Client.Models;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -6,21 +7,21 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using Subsonic.Client.Models;
 
 namespace Subsonic.Client.Android
 {
     public class StreamProxy : IDisposable
     {
-        Thread _thread;
-        bool _isRunning;
-        TcpListener _socket;
-        int _port;
-        TrackModel _trackItem;
-        StreamToMediaPlayerTask _task;
-        static readonly Lazy<StreamProxy> StreamProxyInstance = new Lazy<StreamProxy>(() => new StreamProxy());
+        private Thread _thread;
+        private bool _isRunning;
+        private TcpListener _socket;
+        private int _port;
+        private TrackModel _trackItem;
+        private StreamToMediaPlayerTask _task;
+        private static readonly Lazy<StreamProxy> StreamProxyInstance = new Lazy<StreamProxy>(() => new StreamProxy());
 
-        StreamProxy() { }
+        private StreamProxy()
+        { }
 
         public static StreamProxy Instance
         {
@@ -64,7 +65,7 @@ namespace Subsonic.Client.Android
             _thread.Abort();
         }
 
-        void Run()
+        private void Run()
         {
             _isRunning = true;
 
@@ -73,7 +74,7 @@ namespace Subsonic.Client.Android
             SpinWait.SpinUntil(CheckForWork);
         }
 
-        bool CheckForWork()
+        private bool CheckForWork()
         {
             try
             {
@@ -105,14 +106,14 @@ namespace Subsonic.Client.Android
                 _task.Dispose();
         }
 
-        class StreamToMediaPlayerTask : IDisposable
+        private class StreamToMediaPlayerTask : IDisposable
         {
-            string _localPath;
-            TcpClient _client;
-            int _cbSkip;
-            NetworkStream _inputStream;
-            StreamReader _streamReader;
-            const string Headers = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nConnection: close\r\n\r\n";
+            private string _localPath;
+            private TcpClient _client;
+            private int _cbSkip;
+            private NetworkStream _inputStream;
+            private StreamReader _streamReader;
+            private const string Headers = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nConnection: close\r\n\r\n";
 
             internal void SetClient(TcpClient client)
             {
@@ -126,7 +127,7 @@ namespace Subsonic.Client.Android
                 _localPath = null;
             }
 
-            string ReadRequest()
+            private string ReadRequest()
             {
                 String firstLine;
 

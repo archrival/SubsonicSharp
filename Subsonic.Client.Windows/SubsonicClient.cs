@@ -1,6 +1,6 @@
-﻿using System.Drawing;
-using Subsonic.Client.Interfaces;
+﻿using Subsonic.Client.Interfaces;
 using Subsonic.Common.Interfaces;
+using System.Drawing;
 
 namespace Subsonic.Client.Windows
 {

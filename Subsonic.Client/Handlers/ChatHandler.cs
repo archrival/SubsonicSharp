@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Subsonic.Client.Models;
+using Subsonic.Common.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Subsonic.Client.Models;
-using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Handlers
 {
@@ -32,13 +32,13 @@ namespace Subsonic.Client.Handlers
         {
             var worker = _worker.Value;
 
-            // Check whether observer is already registered. If not, add it 
+            // Check whether observer is already registered. If not, add it
             if (_observers.Contains(observer))
                 return new Unsubscriber<ChatModel>(_observers, observer);
 
             _observers.Add(observer);
 
-            // Provide observer with existing data. 
+            // Provide observer with existing data.
             foreach (var item in _chatItems.OrderBy(ci => ci.TimeStamp))
                 observer.OnNext(item);
 

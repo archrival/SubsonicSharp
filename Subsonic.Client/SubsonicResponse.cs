@@ -1,4 +1,5 @@
 ﻿using Subsonic.Client.Exceptions;
+using Subsonic.Client.Extensions;
 using Subsonic.Client.Interfaces;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
@@ -7,7 +8,6 @@ using System;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
-using Subsonic.Client.Extensions;
 
 namespace Subsonic.Client
 {
@@ -35,6 +35,7 @@ namespace Subsonic.Client
                 case ResponseStatus.Ok:
                     success = true;
                     break;
+
                 case ResponseStatus.Failed:
                     if (response.ItemElementName == ItemChoiceType.Error)
                         throw new SubsonicErrorException(string.Format(CultureInfo.CurrentCulture, "Error occurred in {0}", method.GetXmlEnumAttribute()), response.Item as Error);
@@ -72,6 +73,7 @@ namespace Subsonic.Client
                 case ResponseStatus.Ok:
                     result = (TResponse)response.Item;
                     break;
+
                 case ResponseStatus.Failed:
                     if (response.ItemElementName == ItemChoiceType.Error)
                         throw new SubsonicErrorException(string.Format(CultureInfo.CurrentCulture, "Error occurred in {0}", method.GetXmlEnumAttribute()), response.Item as Error);

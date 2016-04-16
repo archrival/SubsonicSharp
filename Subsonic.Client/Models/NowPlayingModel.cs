@@ -1,6 +1,4 @@
-﻿using Subsonic.Common.Classes;
-
-namespace Subsonic.Client.Models
+﻿namespace Subsonic.Client.Models
 {
     public class NowPlayingModel : TrackModel
     {

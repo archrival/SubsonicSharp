@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Subsonic.Common.Classes;
+using Subsonic.Common.Enums;
+using Subsonic.Common.Interfaces;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Subsonic.Common.Classes;
-using Subsonic.Common.Interfaces;
-using Subsonic.Common.Enums;
 
 namespace Subsonic.Client.Activities
 {
@@ -34,6 +34,7 @@ namespace Subsonic.Client.Activities
         }
 
         // Overrides for equality
+
         #region HashCode and Equality Overrides
 
         private const int HashSeed = 73; // Should be prime number
@@ -42,7 +43,7 @@ namespace Subsonic.Client.Activities
         public override int GetHashCode()
         {
             int hash = HashSeed;
-            
+
             hash = (hash * HashFactor) + typeof(AlbumListActivityDelegate<TImageType>).GetHashCode();
 
             hash = (hash * HashFactor) + AlbumListType.GetHashCode();
@@ -96,7 +97,7 @@ namespace Subsonic.Client.Activities
             if (left.Offset != null)
                 if (!left.Offset.Equals(right.Offset))
                     return false;
-            
+
             if (left.FromYear != null)
                 if (!left.FromYear.Equals(right.FromYear))
                     return false;
@@ -108,11 +109,11 @@ namespace Subsonic.Client.Activities
             if (left.Genre != null)
                 if (!left.Genre.Equals(right.Genre))
                     return false;
-            
+
             if (left.MusicFolderId != null)
                 if (!left.MusicFolderId.Equals(right.MusicFolderId))
                     return false;
-            
+
             return true;
         }
 
@@ -120,7 +121,7 @@ namespace Subsonic.Client.Activities
         {
             return !(left == right);
         }
-        #endregion
+
+        #endregion HashCode and Equality Overrides
     }
 }
-

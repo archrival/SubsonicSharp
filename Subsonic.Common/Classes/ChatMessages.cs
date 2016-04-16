@@ -5,6 +5,7 @@ namespace Subsonic.Common.Classes
 {
     public class ChatMessages
     {
-        [XmlElement("chatMessage")] public List<ChatMessage> Items;
+        [XmlElement("chatMessage")]
+        public List<ChatMessage> Items;
     }
 }

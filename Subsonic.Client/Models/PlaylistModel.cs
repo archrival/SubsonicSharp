@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Subsonic.Client.Tasks;
 using Subsonic.Common.Classes;
-using Subsonic.Client.Tasks;
+using System;
 
 namespace Subsonic.Client.Models
 {

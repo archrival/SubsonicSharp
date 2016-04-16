@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Subsonic.Common.Classes;
+using Subsonic.Common.Enums;
+using Subsonic.Common.Interfaces;
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Subsonic.Common.Classes;
-using Subsonic.Common.Enums;
-using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Interfaces
 {

@@ -1,16 +1,16 @@
-﻿using System;
-using System.Drawing;
-using System.Globalization;
-using System.Linq;
-using Xunit;
+﻿using Subsonic.Client.Activities;
 using Subsonic.Client.Exceptions;
 using Subsonic.Client.Extensions;
+using Subsonic.Client.Interfaces;
 using Subsonic.Common;
 using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
 using Subsonic.Common.Interfaces;
-using Subsonic.Client.Activities;
-using Subsonic.Client.Interfaces;
+using System;
+using System.Drawing;
+using System.Globalization;
+using System.Linq;
+using Xunit;
 
 namespace Subsonic.Client.Windows.Tests
 {
@@ -542,7 +542,7 @@ namespace Subsonic.Client.Windows.Tests
 
         [Fact]
         public async void GetByGenreAlbumListAsAdminUserOnSubsonic()
-        { 
+        {
             var genres = await _adminSubsonicClient.GetGenresAsync();
             var randomNumberForGenre = _random.Next(0, genres.Items.Count - 1);
             var randomGenre = genres.Items.ElementAt(randomNumberForGenre);

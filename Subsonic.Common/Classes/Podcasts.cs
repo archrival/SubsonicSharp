@@ -5,6 +5,7 @@ namespace Subsonic.Common.Classes
 {
     public class Podcasts
     {
-        [XmlElement("channel")] public List<PodcastChannel> Channels;
+        [XmlElement("channel")]
+        public List<PodcastChannel> Channels;
     }
 }

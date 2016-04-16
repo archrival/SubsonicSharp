@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Subsonic.Common.Enums;
+using Subsonic.Common.Interfaces;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Subsonic.Common.Enums;
-using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Interfaces
 {
@@ -11,7 +11,7 @@ namespace Subsonic.Client.Interfaces
     /// </summary>
     /// <typeparam name="T">Specifies the platform specific image format to be utilized.</typeparam>
     public interface ISubsonicResponse<T> where T : class, IDisposable
-    {        
+    {
         /// <summary>
         /// Get a boolean response from the Subsonic server for the specified Subsonic method.
         /// </summary>

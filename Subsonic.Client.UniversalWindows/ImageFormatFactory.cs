@@ -1,5 +1,5 @@
-﻿using Windows.UI.Xaml.Media.Imaging;
-using Subsonic.Common.Interfaces;
+﻿using Subsonic.Common.Interfaces;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Subsonic.Client.UniversalWindows
 {

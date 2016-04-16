@@ -1,7 +1,7 @@
-﻿using System;
-using Subsonic.Client.Extensions;
-using Subsonic.Common.Classes;
+﻿using Subsonic.Client.Extensions;
 using Subsonic.Client.Tasks;
+using Subsonic.Common.Classes;
+using System;
 
 namespace Subsonic.Client.Models
 {
@@ -19,7 +19,9 @@ namespace Subsonic.Client.Models
         }
 
         // Overrides for equality
+
         #region HashCode and Equality Overrides
+
         private const int HashSeed = 29; // Should be prime number
         private const int HashFactor = 11; // Should be prime number
 
@@ -62,6 +64,7 @@ namespace Subsonic.Client.Models
         {
             return !(left == right);
         }
-        #endregion
+
+        #endregion HashCode and Equality Overrides
     }
 }

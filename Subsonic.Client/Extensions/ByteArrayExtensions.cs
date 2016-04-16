@@ -18,9 +18,8 @@ namespace Subsonic.Client.Extensions
 
             foreach (byte b in ba)
                 hex.AppendFormat("{0:x2}", b);
-            
+
             return hex.ToString();
         }
     }
 }
-

@@ -14,4 +14,3 @@ namespace Subsonic.Client.Activities
         }
     }
 }
-

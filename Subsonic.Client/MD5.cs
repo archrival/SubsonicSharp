@@ -5,7 +5,7 @@ namespace Subsonic.Client
     public class MD5
     {
         private static readonly uint[] T =
-        {   
+        {
             0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
             0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
             0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
@@ -39,8 +39,8 @@ namespace Subsonic.Client
 
         public static string GetMd5Sum(byte[] value)
         {
-            MD5 md5 = new MD5 {_byteInput = new byte[value.Length]};
-            
+            MD5 md5 = new MD5 { _byteInput = new byte[value.Length] };
+
             for (int i = 0; i < value.Length; i++)
                 md5._byteInput[i] = value[i];
 
@@ -91,7 +91,7 @@ namespace Subsonic.Client
         {
             uint aa, bb, cc, dd;
 
-            aa = a;   
+            aa = a;
             bb = b;
             cc = c;
             dd = d;

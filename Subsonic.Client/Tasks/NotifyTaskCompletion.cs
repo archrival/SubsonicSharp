@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 namespace Subsonic.Client.Tasks
 {
-
     public sealed class NotifyTaskCompletion<TResult> : INotifyPropertyChanged
     {
         public NotifyTaskCompletion(Task<TResult> task)

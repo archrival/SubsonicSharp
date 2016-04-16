@@ -21,10 +21,10 @@ namespace Subsonic.Client.Extensions
             if (ignoreNamespace)
                 xml = Regex.Replace(xml, @"(xmlns:?[^=]*=[""][^""]*[""])", string.Empty, RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof (T));
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
 
             using (StringReader sr = new StringReader(xml))
-                result = (T) xmlSerializer.Deserialize(sr);
+                result = (T)xmlSerializer.Deserialize(sr);
 
             return result;
         }

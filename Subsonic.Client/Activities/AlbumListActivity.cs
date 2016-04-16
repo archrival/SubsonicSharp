@@ -1,7 +1,7 @@
-﻿using System;
-using Subsonic.Common.Classes;
-using Subsonic.Common.Interfaces;
+﻿using Subsonic.Common.Classes;
 using Subsonic.Common.Enums;
+using Subsonic.Common.Interfaces;
+using System;
 
 namespace Subsonic.Client.Activities
 {

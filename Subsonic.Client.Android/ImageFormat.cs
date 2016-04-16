@@ -15,14 +15,12 @@ namespace Subsonic.Client.Android
             Stream = stream;
             Image = await BitmapFactory.DecodeStreamAsync(stream);
         }
-        
+
         public void Dispose()
         {
+            Stream?.Close();
+            Stream?.Dispose();
             Image?.Dispose();
-            if (Stream == null) return;
-
-            Stream.Close();
-            Stream.Dispose();
         }
     }
 }

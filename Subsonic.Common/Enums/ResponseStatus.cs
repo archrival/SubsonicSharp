@@ -4,7 +4,10 @@ namespace Subsonic.Common.Enums
 {
     public enum ResponseStatus
     {
-        [XmlEnum("ok")] Ok,
-        [XmlEnum("failed")] Failed
+        [XmlEnum("ok")]
+        Ok,
+
+        [XmlEnum("failed")]
+        Failed
     }
 }

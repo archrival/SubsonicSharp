@@ -4,8 +4,13 @@ namespace Subsonic.Common.Enums
 {
     public enum StreamFormat
     {
-        [XmlEnum("mp3")] Mp3,
-        [XmlEnum("flv")] Flv,
-        [XmlEnum("raw")] Raw
+        [XmlEnum("mp3")]
+        Mp3,
+
+        [XmlEnum("flv")]
+        Flv,
+
+        [XmlEnum("raw")]
+        Raw
     }
 }

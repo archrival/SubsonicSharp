@@ -6,6 +6,8 @@ namespace Subsonic.Client.Windows
 {
     public class SubsonicResponse<T> : Client.SubsonicResponse<T> where T : class, IDisposable
     {
-        public SubsonicResponse(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, new SubsonicRequest<T>(subsonicServer, imageFormatFactory)) { }
+        public SubsonicResponse(ISubsonicServer subsonicServer, IImageFormatFactory<T> imageFormatFactory) : base(subsonicServer, new SubsonicRequest<T>(subsonicServer, imageFormatFactory))
+        {
+        }
     }
 }

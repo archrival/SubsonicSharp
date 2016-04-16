@@ -1,7 +1,7 @@
-﻿using System;
-using Subsonic.Client.EventArgs;
+﻿using Subsonic.Client.EventArgs;
 using Subsonic.Client.Handlers;
 using Subsonic.Client.Models;
+using System;
 
 namespace Subsonic.Client.Monitors
 {
@@ -32,15 +32,12 @@ namespace Subsonic.Client.Monitors
             }
             catch (Exception)
             {
-                
                 //throw;
             }
-            
         }
 
         public void OnError(Exception error)
         {
-            
         }
 
         public void OnCompleted()

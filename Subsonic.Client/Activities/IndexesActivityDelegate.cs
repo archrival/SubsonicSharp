@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Subsonic.Common.Classes;
+using Subsonic.Common.Interfaces;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Subsonic.Common.Classes;
-using Subsonic.Common.Interfaces;
 
 namespace Subsonic.Client.Activities
 {
@@ -23,6 +23,7 @@ namespace Subsonic.Client.Activities
         }
 
         // Overrides for equality
+
         #region HashCode and Equality Overrides
 
         private const int HashSeed = 73; // Should be prime number
@@ -32,13 +33,13 @@ namespace Subsonic.Client.Activities
         {
             int hash = HashSeed;
             hash = (hash * HashFactor) + typeof(IndexesActivityDelegate<TImageType>).GetHashCode();
-            
+
             if (MusicFolderId != null)
                 hash = (hash * HashFactor) + MusicFolderId.GetHashCode();
 
             if (IfModifiedSince != null)
                 hash = (hash * HashFactor) + IfModifiedSince.GetHashCode();
-            
+
             return hash;
         }
 
@@ -75,7 +76,7 @@ namespace Subsonic.Client.Activities
         {
             return !(left == right);
         }
-        #endregion
+
+        #endregion HashCode and Equality Overrides
     }
 }
-

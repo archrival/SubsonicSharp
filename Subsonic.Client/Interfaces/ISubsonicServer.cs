@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Subsonic.Common.Enums;
+using System;
 using System.Net;
-using Subsonic.Common.Enums;
 
 namespace Subsonic.Client.Interfaces
 {
@@ -85,4 +85,3 @@ namespace Subsonic.Client.Interfaces
         Uri BuildSettingsRequestUri(SettingMethods method);
     }
 }
-

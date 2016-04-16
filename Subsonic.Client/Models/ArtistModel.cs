@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using Subsonic.Client.Tasks;
 using Subsonic.Common.Classes;
-using Subsonic.Client.Tasks;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Subsonic.Client.Models
 {

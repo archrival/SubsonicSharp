@@ -1,5 +1,5 @@
-﻿using Subsonic.Common.Enums;
-using Subsonic.Client.Tasks;
+﻿using Subsonic.Client.Tasks;
+using Subsonic.Common.Enums;
 
 namespace Subsonic.Client.Models
 {

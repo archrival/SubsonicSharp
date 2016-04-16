@@ -4,7 +4,10 @@ namespace Subsonic.Common.Enums
 {
     public enum SettingMethods
     {
-        [XmlEnum("scanNow")] ScanNow,
-        [XmlEnum("expunge")] Expunge
+        [XmlEnum("scanNow")]
+        ScanNow,
+
+        [XmlEnum("expunge")]
+        Expunge
     }
 }

@@ -1,8 +1,8 @@
-﻿using System.Collections;
+﻿using Subsonic.Client.Enums;
+using Subsonic.Client.Exceptions;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Subsonic.Client.Enums;
-using Subsonic.Client.Exceptions;
 
 namespace Subsonic.Client
 {
@@ -11,17 +11,20 @@ namespace Subsonic.Client
         public ICollection Parameters { get; private set; }
         private SubsonicParameterType ParameterType { get; set; }
 
-        private SubsonicParameters() { }
+        private SubsonicParameters()
+        {
+        }
 
         public static SubsonicParameters Create(SubsonicParameterType type = SubsonicParameterType.Single)
         {
-            var parameters = new SubsonicParameters {ParameterType = type};
+            var parameters = new SubsonicParameters { ParameterType = type };
 
             switch (type)
             {
                 case SubsonicParameterType.List:
                     parameters.Parameters = new List<KeyValuePair<string, string>>();
                     break;
+
                 case SubsonicParameterType.Single:
                     parameters.Parameters = new Dictionary<string, string>();
                     break;
@@ -44,6 +47,7 @@ namespace Subsonic.Client
                             throw new SubsonicErrorException($"Parameter '{key}' is required, the value provided is null");
                     }
                     break;
+
                 case SubsonicParameterType.Single:
                     {
                         var parameters = Parameters as Dictionary<string, string>;
