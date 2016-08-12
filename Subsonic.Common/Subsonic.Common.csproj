@@ -34,84 +34,238 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Classes\AlbumID3.cs" />
-    <Compile Include="Classes\AlbumInfo.cs" />
-    <Compile Include="Classes\AlbumList.cs" />
-    <Compile Include="Classes\AlbumList2.cs" />
-    <Compile Include="Classes\AudioTrack.cs" />
-    <Compile Include="Classes\Captions.cs" />
-    <Compile Include="Classes\Error.cs" />
-    <Compile Include="Classes\Genres.cs" />
-    <Compile Include="Classes\Response.cs" />
-    <Compile Include="Classes\Songs.cs" />
-    <Compile Include="Classes\VideoConversion.cs" />
-    <Compile Include="Classes\VideoInfo.cs" />
-    <Compile Include="StreamParameters.cs" />
-    <Compile Include="Enums\AlbumListType.cs" />
-    <Compile Include="Classes\AlbumWithSongsID3.cs" />
-    <Compile Include="Classes\Artist.cs" />
-    <Compile Include="Classes\ArtistID3.cs" />
-    <Compile Include="Classes\ArtistsID3.cs" />
-    <Compile Include="Classes\ArtistWithAlbumsID3.cs" />
-    <Compile Include="Classes\ChatMessage.cs" />
-    <Compile Include="Classes\ChatMessages.cs" />
-    <Compile Include="Classes\Child.cs" />
-    <Compile Include="Enums\ItemChoiceType.cs" />
-    <Compile Include="Enums\JukeboxControlAction.cs" />
-    <Compile Include="Classes\JukeboxPlaylist.cs" />
-    <Compile Include="Classes\JukeboxStatus.cs" />
-    <Compile Include="Classes\Lyrics.cs" />
-    <Compile Include="Classes\PodcastChannel.cs" />
-    <Compile Include="Classes\Podcasts.cs" />
-    <Compile Include="Classes\RandomSongs.cs" />
-    <Compile Include="Classes\Share.cs" />
-    <Compile Include="Classes\Shares.cs" />
-    <Compile Include="Classes\Directory.cs" />
-    <Compile Include="Enums\Methods.cs" />
-    <Compile Include="Enums\ResponseStatus.cs" />
-    <Compile Include="Interfaces\IImageFormat.cs" />
-    <Compile Include="Classes\Index.cs" />
-    <Compile Include="Classes\Indexes.cs" />
-    <Compile Include="Classes\IndexID3.cs" />
-    <Compile Include="Interfaces\ISubsonicClient.cs" />
-    <Compile Include="Classes\License.cs" />
-    <Compile Include="Enums\MediaType.cs" />
-    <Compile Include="Classes\MusicFolder.cs" />
-    <Compile Include="Classes\MusicFolders.cs" />
-    <Compile Include="Classes\NowPlaying.cs" />
-    <Compile Include="Classes\NowPlayingEntry.cs" />
-    <Compile Include="Classes\Playlist.cs" />
-    <Compile Include="Classes\Playlists.cs" />
-    <Compile Include="Classes\PlaylistWithSongs.cs" />
-    <Compile Include="Classes\PodcastEpisode.cs" />
-    <Compile Include="Enums\PodcastStatus.cs" />
+    <Compile Include="..\Subsonic.Common.Core\Classes\AlbumID3.cs">
+      <Link>Classes\AlbumID3.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\AlbumInfo.cs">
+      <Link>Classes\AlbumInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\AlbumList.cs">
+      <Link>Classes\AlbumList.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\AlbumList2.cs">
+      <Link>Classes\AlbumList2.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\AlbumWithSongsID3.cs">
+      <Link>Classes\AlbumWithSongsID3.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Artist.cs">
+      <Link>Classes\Artist.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\ArtistID3.cs">
+      <Link>Classes\ArtistID3.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\ArtistInfo.cs">
+      <Link>Classes\ArtistInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\ArtistInfo2.cs">
+      <Link>Classes\ArtistInfo2.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\ArtistInfoBase.cs">
+      <Link>Classes\ArtistInfoBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\ArtistsID3.cs">
+      <Link>Classes\ArtistsID3.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\ArtistWithAlbumsID3.cs">
+      <Link>Classes\ArtistWithAlbumsID3.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\AudioTrack.cs">
+      <Link>Classes\AudioTrack.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Bookmark.cs">
+      <Link>Classes\Bookmark.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Bookmarks.cs">
+      <Link>Classes\Bookmarks.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Captions.cs">
+      <Link>Classes\Captions.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\ChatMessage.cs">
+      <Link>Classes\ChatMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\ChatMessages.cs">
+      <Link>Classes\ChatMessages.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Child.cs">
+      <Link>Classes\Child.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Directory.cs">
+      <Link>Classes\Directory.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Error.cs">
+      <Link>Classes\Error.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Genre.cs">
+      <Link>Classes\Genre.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Genres.cs">
+      <Link>Classes\Genres.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Index.cs">
+      <Link>Classes\Index.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Indexes.cs">
+      <Link>Classes\Indexes.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\IndexID3.cs">
+      <Link>Classes\IndexID3.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\InternetRadioStation.cs">
+      <Link>Classes\InternetRadioStation.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\InternetRadioStations.cs">
+      <Link>Classes\InternetRadioStations.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\JukeboxPlaylist.cs">
+      <Link>Classes\JukeboxPlaylist.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\JukeboxStatus.cs">
+      <Link>Classes\JukeboxStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\License.cs">
+      <Link>Classes\License.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Lyrics.cs">
+      <Link>Classes\Lyrics.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\MusicFolder.cs">
+      <Link>Classes\MusicFolder.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\MusicFolders.cs">
+      <Link>Classes\MusicFolders.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\NowPlaying.cs">
+      <Link>Classes\NowPlaying.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\NowPlayingEntry.cs">
+      <Link>Classes\NowPlayingEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Playlist.cs">
+      <Link>Classes\Playlist.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Playlists.cs">
+      <Link>Classes\Playlists.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\PlaylistWithSongs.cs">
+      <Link>Classes\PlaylistWithSongs.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\PlayQueue.cs">
+      <Link>Classes\PlayQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\PodcastChannel.cs">
+      <Link>Classes\PodcastChannel.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\PodcastEpisode.cs">
+      <Link>Classes\PodcastEpisode.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Podcasts.cs">
+      <Link>Classes\Podcasts.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\RandomSongs.cs">
+      <Link>Classes\RandomSongs.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Response.cs">
+      <Link>Classes\Response.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\SearchResult.cs">
+      <Link>Classes\SearchResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\SearchResult2.cs">
+      <Link>Classes\SearchResult2.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\SearchResult3.cs">
+      <Link>Classes\SearchResult3.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Share.cs">
+      <Link>Classes\Share.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Shares.cs">
+      <Link>Classes\Shares.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\SimilarSongs.cs">
+      <Link>Classes\SimilarSongs.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\SimilarSongs2.cs">
+      <Link>Classes\SimilarSongs2.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Songs.cs">
+      <Link>Classes\Songs.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Starred.cs">
+      <Link>Classes\Starred.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Starred2.cs">
+      <Link>Classes\Starred2.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\TopSongs.cs">
+      <Link>Classes\TopSongs.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\User.cs">
+      <Link>Classes\User.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Users.cs">
+      <Link>Classes\Users.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\VideoConversion.cs">
+      <Link>Classes\VideoConversion.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\VideoInfo.cs">
+      <Link>Classes\VideoInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Classes\Videos.cs">
+      <Link>Classes\Videos.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Enums\AlbumListType.cs">
+      <Link>Enums\AlbumListType.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Enums\AudioBitrate.cs">
+      <Link>Enums\AudioBitrate.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Enums\ErrorCode.cs">
+      <Link>Enums\ErrorCode.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Enums\ItemChoiceType.cs">
+      <Link>Enums\ItemChoiceType.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Enums\JukeboxControlAction.cs">
+      <Link>Enums\JukeboxControlAction.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Enums\MediaType.cs">
+      <Link>Enums\MediaType.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Enums\Methods.cs">
+      <Link>Enums\Methods.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Enums\PodcastStatus.cs">
+      <Link>Enums\PodcastStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Enums\ResponseStatus.cs">
+      <Link>Enums\ResponseStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Enums\SettingMethods.cs">
+      <Link>Enums\SettingMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Enums\StreamFormat.cs">
+      <Link>Enums\StreamFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Interfaces\IImageFormat.cs">
+      <Link>Interfaces\IImageFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Interfaces\IImageFormatFactory.cs">
+      <Link>Interfaces\IImageFormatFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\Interfaces\ISubsonicClient.cs">
+      <Link>Interfaces\ISubsonicClient.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\StreamParameters.cs">
+      <Link>StreamParameters.cs</Link>
+    </Compile>
+    <Compile Include="..\Subsonic.Common.Core\SubsonicApiVersion.cs">
+      <Link>SubsonicApiVersion.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Classes\SearchResult.cs" />
-    <Compile Include="Classes\SearchResult2.cs" />
-    <Compile Include="Classes\SearchResult3.cs" />
-    <Compile Include="Classes\Starred.cs" />
-    <Compile Include="Classes\Starred2.cs" />
-    <Compile Include="Enums\StreamFormat.cs" />
-    <Compile Include="Classes\User.cs" />
-    <Compile Include="Classes\Users.cs" />
-    <Compile Include="Classes\Videos.cs" />
-    <Compile Include="Classes\Genre.cs" />
-    <Compile Include="Classes\InternetRadioStations.cs" />
-    <Compile Include="Classes\InternetRadioStation.cs" />
-    <Compile Include="Classes\Bookmarks.cs" />
-    <Compile Include="Classes\Bookmark.cs" />
-    <Compile Include="SubsonicApiVersion.cs" />
-    <Compile Include="Classes\ArtistInfo.cs" />
-    <Compile Include="Classes\ArtistInfoBase.cs" />
-    <Compile Include="Classes\ArtistInfo2.cs" />
-    <Compile Include="Classes\SimilarSongs.cs" />
-    <Compile Include="Classes\SimilarSongs2.cs" />
-    <Compile Include="Enums\ErrorCode.cs" />
-    <Compile Include="Enums\SettingMethods.cs" />
-    <Compile Include="Interfaces\IImageFormatFactory.cs" />
-    <Compile Include="Classes\PlayQueue.cs" />
-    <Compile Include="Classes\TopSongs.cs" />
-    <Compile Include="Enums\AudioBitrate.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
