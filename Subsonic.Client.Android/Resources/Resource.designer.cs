@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("Subsonic.Client.Android.Resource", IsApplication=false)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("ClassLibrary1.Resource", IsApplication=false)]
 
-namespace Subsonic.Client.Android
+namespace ClassLibrary1
 {
 	
 	
@@ -40,8 +40,11 @@ namespace Subsonic.Client.Android
 		public partial class String
 		{
 			
+			// aapt resource value: 0x7f020001
+			public static int ApplicationName = 2130837505;
+			
 			// aapt resource value: 0x7f020000
-			public static int library_name = 2130837504;
+			public static int Hello = 2130837504;
 			
 			static String()
 			{

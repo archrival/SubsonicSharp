@@ -1,112 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CBB112D5-2507-4453-83BE-51232FB95CA6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Subsonic.Client</RootNamespace>
+    <TargetFramework>netstandard1.4</TargetFramework>
     <AssemblyName>Subsonic.Client</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <PackageId>Subsonic.Client</PackageId>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50;portable-net45+win8+wpa81+wp8;net462</PackageTargetFallback>
+    <RootNamespace>Subsonic.Client</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_APP</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_APP</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="Activities\AlbumListActivity.cs" />
-    <Compile Include="Activities\AlbumListActivityDelegate.cs" />
-    <Compile Include="Activities\IndexesActivity.cs" />
-    <Compile Include="Activities\IndexesActivityDelegate.cs" />
-    <Compile Include="Activities\MusicDirectoryActivity.cs" />
-    <Compile Include="Activities\MusicDirectoryActivityDelegate.cs" />
-    <Compile Include="Enums\LoggingLevel.cs" />
-    <Compile Include="EventArgs\ChatEventArgs.cs" />
-    <Compile Include="Handlers\ChatHandler.cs" />
-    <Compile Include="Handlers\Unsubscriber.cs" />
-    <Compile Include="Monitors\ChatMonitor.cs" />
-    <Compile Include="Interfaces\IFileLogger.cs" />
-    <Compile Include="Models\AlbumModel.cs" />
-    <Compile Include="Models\AlbumListModel.cs" />
-    <Compile Include="Models\ArtistModel.cs" />
-    <Compile Include="Models\ChatModel.cs" />
-    <Compile Include="Models\ChildModel.cs" />
-    <Compile Include="Enums\SubsonicParameterTypes.cs" />
-    <Compile Include="Exceptions\Exceptions.cs" />
-    <Compile Include="Interfaces\ISubsonicRequest.cs" />
-    <Compile Include="Interfaces\ISubsonicResponse.cs" />
-    <Compile Include="Models\NowPlayingModel.cs" />
-    <Compile Include="Models\PlaylistModel.cs" />
-    <Compile Include="SubsonicClient.cs" />
-    <Compile Include="SubsonicParameters.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\TrackModel.cs" />
-    <Compile Include="Models\GenreModel.cs" />
-    <Compile Include="SubsonicServer.cs" />
-    <Compile Include="Interfaces\ISubsonicServer.cs" />
-    <Compile Include="Extensions\VersionExtensions.cs" />
-    <Compile Include="Extensions\XmlExtensions.cs" />
-    <Compile Include="Extensions\DateTimeExtensions.cs" />
-    <Compile Include="Extensions\EnumExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Constants\HttpContentTypes.cs" />
-    <Compile Include="Constants\HttpHeaderField.cs" />
-    <Compile Include="Constants\ParameterConstants.cs" />
-    <Compile Include="Interfaces\ISubsonicActivity.cs" />
-    <Compile Include="Activities\SubsonicActivity.cs" />
-    <Compile Include="Activities\GenresActivity.cs" />
-    <Compile Include="Activities\MusicFoldersActivity.cs" />
-    <Compile Include="Tasks\NotifyTaskCompletion.cs" />
-    <Compile Include="Tasks\ObservableObject.cs" />
-    <Compile Include="WebProxy.cs" />
-    <Compile Include="Constants\HttpMethod.cs" />
-    <Compile Include="SubsonicResponse.cs" />
-    <Compile Include="SubsonicRequest.cs" />
-    <Compile Include="Interfaces\ISubsonicActivityDelegate.cs" />
-    <Compile Include="Activities\Search2ActivityDelegate.cs" />
-    <Compile Include="Activities\Search2Activity.cs" />
-    <Compile Include="Activities\SubsonicActivityDelegate.cs" />
-    <Compile Include="SubsonicAuthentication.cs" />
-    <Compile Include="Interfaces\ISubsonicAuthentication.cs" />
-    <Compile Include="SubsonicToken.cs" />
-    <Compile Include="Extensions\ByteArrayExtensions.cs" />
-    <Compile Include="MD5.cs" />
+    <ProjectReference Include="..\Subsonic.Common\Subsonic.Common.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
   <ItemGroup>
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Subsonic.Common\Subsonic.Common.csproj">
-      <Project>{a533a041-6d2d-46b3-a3e7-4cc7e64a16f3}</Project>
-      <Name>Subsonic.Common</Name>
-    </ProjectReference>
+    <Folder Include="Properties\" />
   </ItemGroup>
 </Project>

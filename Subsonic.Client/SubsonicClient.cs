@@ -78,7 +78,7 @@ namespace Subsonic.Client
             return await SubsonicResponse.GetResponseAsync<Starred2>(Methods.GetStarred2, methodApiVersion, parameters, cancelToken);
         }
 
-        public virtual async Task<Indexes> GetIndexesAsync(int? musicFolderId = null, long? ifModifiedSince = null, CancellationToken? cancelToken = null)
+        public virtual async Task<Indexes> GetIndexesAsync(string musicFolderId = null, long? ifModifiedSince = null, CancellationToken? cancelToken = null)
         {
             var parameters = SubsonicParameters.Create();
             parameters.Add(ParameterConstants.MusicFolderId, musicFolderId);
