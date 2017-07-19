@@ -710,6 +710,20 @@ namespace Subsonic.Common.Interfaces
         /// <returns cref="bool">True on success</returns>
         Task<bool> CleanupMediaFoldersAsync(CancellationToken? cancelToken = null);
 
+        /// <summary>
+        /// Returns the current status for media library scanning.
+        /// </summary>
+        /// <param name="cancelToken">The CancellationToken associated with a managed CancellationTokenSource.</param>
+        /// <returns cref="ScanStatus">ScanStatus</returns>
+        Task<ScanStatus> GetScanStatusAsync(CancellationToken? cancelToken = null);
+
+        /// <summary>
+        /// Initiates a rescan of the media libraries.
+        /// </summary>
+        /// <param name="cancelToken">The CancellationToken associated with a managed CancellationTokenSource.</param>
+        /// <returns cref="ScanStatus">ScanStatus</returns>
+        Task<ScanStatus> StartScanAsync(CancellationToken? cancelToken = null);
+
         Uri BuildDownloadUrl(string id);
 
         Uri BuildStreamUrl(string id, StreamParameters? streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null);

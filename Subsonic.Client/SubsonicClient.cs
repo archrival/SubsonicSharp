@@ -989,5 +989,15 @@ namespace Subsonic.Client
 
             return SubsonicServer.BuildRequestUriUser(Methods.Stream, methodApiVersion, parameters);
         }
+
+        public async Task<ScanStatus> GetScanStatusAsync(CancellationToken? cancelToken = null)
+        {
+            return await SubsonicResponse.GetResponseAsync<ScanStatus>(Methods.GetScanStatus, SubsonicApiVersion.Version1_15_0, null, cancelToken);
+        }
+
+        public async Task<ScanStatus> StartScanAsync(CancellationToken? cancelToken = null)
+        {
+            return await SubsonicResponse.GetResponseAsync<ScanStatus>(Methods.StartScan, SubsonicApiVersion.Version1_15_0, null, cancelToken);
+        }
     }
 }
