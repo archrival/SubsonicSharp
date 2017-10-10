@@ -281,7 +281,7 @@ namespace Subsonic.Common.Interfaces
         /// <param name="cancelToken">The CancellationToken associated with a managed CancellationTokenSource.</param>
         /// <param name="noResponse"></param>
         /// <returns>long</returns>
-        Task<long> StreamAsync(string id, string path, StreamParameters? streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, bool? converted = null, CancellationToken? cancelToken = null, bool noResponse = false);
+        Task<long> StreamAsync(string id, string path, StreamParameters? streamParameters = null, string format = null, int? timeOffset = null, bool? estimateContentLength = null, bool? converted = null, CancellationToken? cancelToken = null, bool noResponse = false);
 
         /// <summary>
         /// Downloads a given media file. Similar to stream, but this method returns the original media data without transcoding or downsampling.
@@ -726,6 +726,6 @@ namespace Subsonic.Common.Interfaces
 
         Uri BuildDownloadUrl(string id);
 
-        Uri BuildStreamUrl(string id, StreamParameters? streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null);
+        Uri BuildStreamUrl(string id, StreamParameters? streamParameters = null, string format = null, int? timeOffset = null, bool? estimateContentLength = null);
     }
 }
