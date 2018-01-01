@@ -616,7 +616,7 @@ namespace Subsonic.Client
             return await SubsonicResponse.GetResponseAsync<Songs>(Methods.GetSongsByGenre, methodApiVersion, parameters, cancelToken);
         }
 
-        public virtual async Task<long> StreamAsync(string id, string path, StreamParameters? streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null, bool? converted = null, CancellationToken? cancelToken = null, bool noResponse = false)
+        public virtual async Task<long> StreamAsync(string id, string path, StreamParameters? streamParameters = null, string format = null, int? timeOffset = null, bool? estimateContentLength = null, bool? converted = null, CancellationToken? cancelToken = null, bool noResponse = false)
         {
             var methodApiVersion = SubsonicApiVersion.Version1_2_0;
 
@@ -653,12 +653,10 @@ namespace Subsonic.Client
                 methodApiVersion = methodApiVersion.Max(SubsonicApiVersion.Version1_14_0);
             }
 
-            var streamFormatName = format?.GetXmlEnumAttribute();
-
-            if (streamFormatName != null)
+            if (format != null)
             {
-                parameters.Add(ParameterConstants.StreamFormat, streamFormatName);
-                methodApiVersion = format == StreamFormat.Raw ? methodApiVersion.Max(SubsonicApiVersion.Version1_9_0) : methodApiVersion.Max(SubsonicApiVersion.Version1_6_0);
+                parameters.Add(ParameterConstants.StreamFormat, format);
+                methodApiVersion = format == "raw" ? methodApiVersion.Max(SubsonicApiVersion.Version1_9_0) : methodApiVersion.Max(SubsonicApiVersion.Version1_6_0);
             }
 
             if (noResponse)
@@ -948,7 +946,7 @@ namespace Subsonic.Client
             return SubsonicServer.BuildRequestUriUser(Methods.Download, SubsonicApiVersion.Version1_0_0, parameters);
         }
 
-        public virtual Uri BuildStreamUrl(string id, StreamParameters? streamParameters = null, StreamFormat? format = null, int? timeOffset = null, bool? estimateContentLength = null)
+        public virtual Uri BuildStreamUrl(string id, StreamParameters? streamParameters = null, string format = null, int? timeOffset = null, bool? estimateContentLength = null)
         {
             var methodApiVersion = SubsonicApiVersion.Version1_2_0;
 
@@ -979,15 +977,23 @@ namespace Subsonic.Client
                 methodApiVersion = methodApiVersion.Max(SubsonicApiVersion.Version1_8_0);
             }
 
-            var streamFormatName = format?.GetXmlEnumAttribute();
-
-            if (streamFormatName != null)
+            if (format != null)
             {
-                parameters.Add(ParameterConstants.StreamFormat, streamFormatName);
-                methodApiVersion = format == StreamFormat.Raw ? methodApiVersion.Max(SubsonicApiVersion.Version1_9_0) : methodApiVersion.Max(SubsonicApiVersion.Version1_6_0);
+                parameters.Add(ParameterConstants.StreamFormat, format);
+                methodApiVersion = format == "raw" ? methodApiVersion.Max(SubsonicApiVersion.Version1_9_0) : methodApiVersion.Max(SubsonicApiVersion.Version1_6_0);
             }
 
             return SubsonicServer.BuildRequestUriUser(Methods.Stream, methodApiVersion, parameters);
+        }
+
+        public async Task<ScanStatus> GetScanStatusAsync(CancellationToken? cancelToken = null)
+        {
+            return await SubsonicResponse.GetResponseAsync<ScanStatus>(Methods.GetScanStatus, SubsonicApiVersion.Version1_15_0, null, cancelToken);
+        }
+
+        public async Task<ScanStatus> StartScanAsync(CancellationToken? cancelToken = null)
+        {
+            return await SubsonicResponse.GetResponseAsync<ScanStatus>(Methods.StartScan, SubsonicApiVersion.Version1_15_0, null, cancelToken);
         }
     }
 }

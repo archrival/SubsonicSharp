@@ -1,12 +1,9 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Subsonic.Common.Enums;
+﻿using Subsonic.Common.Enums;
 using System.Xml.Serialization;
 
 namespace Subsonic.Common.Classes
 {
-	[JsonObject("subsonic-response")]
-	[XmlRoot("subsonic-response", Namespace = null, IsNullable = false)]
+    [XmlRoot("subsonic-response", Namespace = null, IsNullable = false)]
 	public class Response
 	{
 		[XmlElement("album", typeof(AlbumWithSongsID3))]
@@ -55,11 +52,9 @@ namespace Subsonic.Common.Classes
 		[XmlChoiceIdentifier("ItemElementName")]
 		public dynamic Item;
 
-		[JsonIgnore]
 		[XmlIgnore]
 		public ItemChoiceType ItemElementName;
 
-		[JsonConverter(typeof(StringEnumConverter), true)]
 		[XmlAttribute("status")]
 		public ResponseStatus Status;
 

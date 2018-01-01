@@ -215,6 +215,12 @@ namespace Subsonic.Common.Enums
         GetVideoInfo,
 
         [XmlEnum("getCaptions")]
-        GetCaptions
+        GetCaptions,
+
+        [XmlEnum("getScanStatus")]
+        GetScanStatus,
+
+        [XmlEnum("startScan")]
+        StartScan
     }
 }
