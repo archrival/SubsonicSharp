@@ -108,3 +108,7 @@ Backup*/
 UpgradeLog*.XML
 *.userprefs
 *.dg
+/.vs/SubsonicSharp/v15/Server/sqlite3/storage.ide-wal
+/.vs/SubsonicSharp/v15/Server/sqlite3/storage.ide-shm
+/.vs/SubsonicSharp/v15/Server/sqlite3/storage.ide
+/.vs/SubsonicSharp/v15/Server/sqlite3/db.lock
