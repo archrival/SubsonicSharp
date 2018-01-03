@@ -13,13 +13,8 @@ namespace Subsonic.Client
 {
     public class SubsonicServer : ISubsonicServer
     {
-        public Uri Url { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string ClientName { get; set; }
-        public Version ApiVersion { get; set; }
-        public IWebProxy Proxy { get; set; }
-        private ISubsonicAuthentication SubsonicAuthentication { get; }
+        private const int HashFactor = 17;
+        private const int HashSeed = 73;
 
         public SubsonicServer(Uri serverUrl, string userName, string password, string clientName)
         {
@@ -44,20 +39,13 @@ namespace Subsonic.Client
             };
         }
 
-        public void SetUrl(string url)
-        {
-            Url = new Uri(url);
-        }
-
-        public void SetProxy(string host, int port)
-        {
-            Proxy = new WebProxy(host, port);
-        }
-
-        private bool ShouldUseNewAuthentication()
-        {
-            return ApiVersion >= SubsonicApiVersion.Version1_13_0;
-        }
+        public Version ApiVersion { get; set; }
+        public string ClientName { get; set; }
+        public string Password { get; set; }
+        public IWebProxy Proxy { get; set; }
+        public Uri Url { get; set; }
+        public string UserName { get; set; }
+        private ISubsonicAuthentication SubsonicAuthentication { get; }
 
         public Uri BuildRequestUri(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, bool checkForTokenUsability = true)
         {
@@ -77,20 +65,15 @@ namespace Subsonic.Client
                     var key = string.Empty;
                     var value = string.Empty;
 
-                    if (parameter is DictionaryEntry)
+                    if (parameter is DictionaryEntry entry)
                     {
-                        var entry = (DictionaryEntry)parameter;
-
                         key = entry.Key.ToString();
                         value = entry.Value.ToString();
                     }
-
-                    if (parameter is KeyValuePair<string, string>)
+                    else if (parameter is KeyValuePair<string, string> kvpEntry)
                     {
-                        var entry = (KeyValuePair<string, string>)parameter;
-
-                        key = entry.Key;
-                        value = entry.Value;
+                        key = kvpEntry.Key;
+                        value = kvpEntry.Value;
                     }
 
                     queryBuilder.AppendFormat("&{0}={1}", Uri.EscapeDataString(key), Uri.EscapeDataString(value));
@@ -149,9 +132,6 @@ namespace Subsonic.Client
             return uriBuilder.Uri;
         }
 
-        private const int HashSeed = 73; // Should be prime number
-        private const int HashFactor = 17; // Should be prime number
-
         public override int GetHashCode()
         {
             var hash = HashSeed;
@@ -173,6 +153,21 @@ namespace Subsonic.Client
                 hash = (hash * HashFactor) + ApiVersion.GetHashCode();
 
             return hash;
+        }
+
+        public void SetProxy(string host, int port)
+        {
+            Proxy = new WebProxy(host, port);
+        }
+
+        public void SetUrl(string url)
+        {
+            Url = new Uri(url);
+        }
+
+        private bool ShouldUseNewAuthentication()
+        {
+            return ApiVersion >= SubsonicApiVersion.Version1_13_0;
         }
     }
 }

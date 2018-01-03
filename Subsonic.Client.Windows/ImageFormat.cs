@@ -10,20 +10,19 @@ namespace Subsonic.Client.Windows
         public Image Image { get; set; }
         private Stream Stream { get; set; }
 
-        public async Task SetImageFromStreamAsync(Stream stream)
-        {
-            await Task.Run(() =>
-            {
-                Stream = stream;
-                Image = Image.FromStream(stream);
-            });
-        }
-
         public void Dispose()
         {
             Stream?.Close();
             Stream?.Dispose();
             Image?.Dispose();
+        }
+
+        public async Task SetImageFromStreamAsync(Stream stream)
+        {
+            await Task.CompletedTask;
+
+            Stream = stream;
+            Image = Image.FromStream(stream);
         }
     }
 }

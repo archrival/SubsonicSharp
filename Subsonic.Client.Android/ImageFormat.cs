@@ -10,17 +10,17 @@ namespace Subsonic.Client.Android
         public Bitmap Image { get; set; }
         private Stream Stream { get; set; }
 
-        public async Task SetImageFromStreamAsync(Stream stream)
-        {
-            Stream = stream;
-            Image = await BitmapFactory.DecodeStreamAsync(stream);
-        }
-
         public void Dispose()
         {
             Stream?.Close();
             Stream?.Dispose();
             Image?.Dispose();
+        }
+
+        public async Task SetImageFromStreamAsync(Stream stream)
+        {
+            Stream = stream;
+            Image = await BitmapFactory.DecodeStreamAsync(stream);
         }
     }
 }

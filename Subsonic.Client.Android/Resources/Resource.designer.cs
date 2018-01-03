@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("ClassLibrary1.Resource", IsApplication=false)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("Subsonic.Client.Android.Resource", IsApplication=false)]
 
-namespace ClassLibrary1
+namespace Subsonic.Client.Android
 {
 	
 	

@@ -16,34 +16,32 @@ namespace Subsonic.Client.Windows.Tests
 {
     public class Tests : IDisposable
     {
-        private static readonly Uri SubsonicServer = new Uri("http://localhost/subsonic/");
-        private static readonly Uri NonexistentServer = new Uri("http://localhost/ultrasonic/");
-        private const string ProxyServer = "localhost";
-        private const int ProxyPort = 8888;
         private const string AdminUser = "admin";
-        private const string DownloadUser = "test_download";
-        private const string NoPlayUser = "test_noplay";
-        private const string PlayUser = "test_play";
-        private const string Password = "Subsonic!";
-        private const string UserToCreate = "test_createduser";
-        private const string UserToCreateEmail = "test_createduser@localhost";
         private const string ClientName = "Subsonic.Client.Windows.Tests";
-        private const string SearchQuery = "Smashing Pumpkins";
-
+        private const string DownloadUser = "test_download";
+        private const int InvalidRandomSongCount = 501;
         private const int MaxRandomSongCount = 500;
         private const int MinRandomSongCount = 1;
-        private const int InvalidRandomSongCount = 501;
-
-        private ISubsonicClient<Image> _adminSubsonicClient;
-        private ISubsonicClient<Image> _downloadSubsonicClient;
-        private ISubsonicClient<Image> _noPlaySubsonicClient;
-        private ISubsonicClient<Image> _playSubsonicClient;
-        private ISubsonicClient<Image> _nonexistentSubsonicClient;
+        private const string NoPlayUser = "test_noplay";
+        private const string Password = "Subsonic!";
+        private const string PlayUser = "test_play";
+        private const int ProxyPort = 8888;
+        private const string ProxyServer = "localhost";
+        private const string SearchQuery = "Smashing Pumpkins";
+        private const string UserToCreate = "test_createduser";
+        private const string UserToCreateEmail = "test_createduser@localhost";
+        private static readonly Uri NonexistentServer = new Uri("http://localhost/ultrasonic/");
+        private static readonly Uri SubsonicServer = new Uri("http://localhost/subsonic/");
         private readonly ISubsonicServer _adminSubsonicServer;
         private readonly ISubsonicServer _downloadSubsonicServer;
+        private readonly ISubsonicServer _nonexistentSubsonicServer;
         private readonly ISubsonicServer _noPlaySubsonicServer;
         private readonly ISubsonicServer _playSubsonicServer;
-        private readonly ISubsonicServer _nonexistentSubsonicServer;
+        private ISubsonicClient<Image> _adminSubsonicClient;
+        private ISubsonicClient<Image> _downloadSubsonicClient;
+        private ISubsonicClient<Image> _nonexistentSubsonicClient;
+        private ISubsonicClient<Image> _noPlaySubsonicClient;
+        private ISubsonicClient<Image> _playSubsonicClient;
         private Random _random;
 
         public Tests()
@@ -64,94 +62,72 @@ namespace Subsonic.Client.Windows.Tests
             _random = new Random(DateTime.UtcNow.Millisecond * DateTime.UtcNow.Second * DateTime.UtcNow.Minute);
         }
 
-        public void Dispose()
-        {
-            _adminSubsonicClient = null;
-            _downloadSubsonicClient = null;
-            _noPlaySubsonicClient = null;
-            _playSubsonicClient = null;
-            _nonexistentSubsonicClient = null;
-            _random = null;
-        }
-
         [Fact]
-        public async void PingTestAdminOnSubsonic()
+        public async void AddChatMessageAsAdminUserOnSubsonic()
         {
-            var result = await _adminSubsonicClient.PingAsync();
+            var chatMessage = DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture);
+            var result = await _adminSubsonicClient.AddChatMessageAsync(chatMessage);
 
             Assert.True(result);
-            Assert.NotNull(_adminSubsonicServer.ApiVersion);
-            Assert.True(_adminSubsonicServer.ApiVersion >= SubsonicApiVersion.Version1_0_0);
+
+            var chatMessages = await _noPlaySubsonicClient.GetChatMessagesAsync();
+
+            Assert.NotEmpty(chatMessages.Items.Where(c => c.Message == chatMessage && c.Username == AdminUser));
         }
 
         [Fact]
-        public async void PingTestDownloadOnSubsonic()
+        public async void AddChatMessageAsNoPlayUserOnSubsonic()
         {
-            var result = await _downloadSubsonicClient.PingAsync();
+            var chatMessage = DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture);
+            var result = await _noPlaySubsonicClient.AddChatMessageAsync(chatMessage);
 
             Assert.True(result);
-            Assert.NotNull(_downloadSubsonicServer.ApiVersion);
-            Assert.True(_downloadSubsonicServer.ApiVersion >= SubsonicApiVersion.Version1_0_0);
+
+            var chatMessages = await _playSubsonicClient.GetChatMessagesAsync();
+
+            Assert.NotEmpty(chatMessages.Items.Where(c => c.Message == chatMessage && c.Username == NoPlayUser));
         }
 
         [Fact]
-        public async void PingTestNoPlayOnSubsonic()
+        public async void AddChatMessageAsPlayUserOnSubsonic()
         {
-            var result = await _noPlaySubsonicClient.PingAsync();
+            var chatMessage = DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture);
+            var result = await _playSubsonicClient.AddChatMessageAsync(chatMessage);
 
             Assert.True(result);
-            Assert.NotNull(_noPlaySubsonicServer.ApiVersion);
-            Assert.True(_noPlaySubsonicServer.ApiVersion >= SubsonicApiVersion.Version1_0_0);
+
+            var chatMessages = await _noPlaySubsonicClient.GetChatMessagesAsync();
+
+            Assert.NotEmpty(chatMessages.Items.Where(c => c.Message == chatMessage && c.Username == PlayUser));
         }
 
         [Fact]
-        public async void PingTestPlayOnSubsonic()
+        public async void CleanupMediaFoldersAsAdminUserOnSubsonic()
         {
-            var result = await _playSubsonicClient.PingAsync();
+            var success = await _adminSubsonicClient.CleanupMediaFoldersAsync();
 
-            Assert.True(result);
-            Assert.NotNull(_playSubsonicServer.ApiVersion);
-            Assert.True(_playSubsonicServer.ApiVersion >= SubsonicApiVersion.Version1_0_0);
+            Assert.True(success);
         }
 
         [Fact]
-        public async void PingTestOnNonexistentServer()
+        public async void CreateAdminUserAsDownloadUserOnSubsonicThrowsUserNotAuthorized()
         {
-            Assert.Null(_nonexistentSubsonicServer.ApiVersion);
-            await Assert.ThrowsAsync<SubsonicApiException>(async () => await _nonexistentSubsonicClient.PingAsync());
-            Assert.Null(_nonexistentSubsonicServer.ApiVersion);
+            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _downloadSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail, false, true));
+            Assert.True(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
         [Fact]
-        public async void LicenseTestAdminOnSubsonic()
+        public async void CreateAdminUserAsNoPlayUserOnSubsonicThrowsUserNotAuthorized()
         {
-            var license = await _adminSubsonicClient.GetLicenseAsync();
-
-            Assert.True(license.Valid);
+            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _noPlaySubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail, false, true));
+            Assert.True(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
         [Fact]
-        public async void LicenseTestDownloadOnSubsonic()
+        public async void CreateAdminUserAsPlayUserOnSubsonicThrowsUserNotAuthorized()
         {
-            var license = await _downloadSubsonicClient.GetLicenseAsync();
-
-            Assert.True(license.Valid);
-        }
-
-        [Fact]
-        public async void LicenseTestNoPlayOnSubsonic()
-        {
-            var license = await _noPlaySubsonicClient.GetLicenseAsync();
-
-            Assert.True(license.Valid);
-        }
-
-        [Fact]
-        public async void LicenseTestPlayOnSubsonic()
-        {
-            var license = await _playSubsonicClient.GetLicenseAsync();
-
-            Assert.True(license.Valid);
+            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _playSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail, false, true));
+            Assert.True(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
         [Fact]
@@ -163,8 +139,8 @@ namespace Subsonic.Client.Windows.Tests
 
             var user = await _adminSubsonicClient.GetUserAsync(UserToCreate);
 
-            Assert.True(user.Username.Equals(UserToCreate));
-            Assert.True(user.Email.Equals(UserToCreateEmail));
+            Assert.Equal(user.Username, UserToCreate);
+            Assert.Equal(user.Email, UserToCreateEmail);
             Assert.True(user.AdminRole);
             Assert.False(user.CommentRole);
             Assert.False(user.CoverArtRole);
@@ -184,30 +160,9 @@ namespace Subsonic.Client.Windows.Tests
         }
 
         [Fact]
-        public async void CreateAdminUserAsPlayUserOnSubsonicThrowsUserNotAuthorized()
+        public async void CreateUserAsDownloadUserOnSubsonicThrowsUserNotAuthorized()
         {
-            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _playSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail, false, true));
-            Assert.True(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
-        }
-
-        [Fact]
-        public async void CreateAdminUserAsNoPlayUserOnSubsonicThrowsUserNotAuthorized()
-        {
-            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _noPlaySubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail, false, true));
-            Assert.True(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
-        }
-
-        [Fact]
-        public async void CreateAdminUserAsDownloadUserOnSubsonicThrowsUserNotAuthorized()
-        {
-            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _downloadSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail, false, true));
-            Assert.True(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
-        }
-
-        [Fact]
-        public async void CreateUserAsPlayUserOnSubsonicThrowsUserNotAuthorized()
-        {
-            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _playSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail));
+            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _downloadSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail));
             Assert.True(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
@@ -219,86 +174,139 @@ namespace Subsonic.Client.Windows.Tests
         }
 
         [Fact]
-        public async void CreateUserAsDownloadUserOnSubsonicThrowsUserNotAuthorized()
+        public async void CreateUserAsPlayUserOnSubsonicThrowsUserNotAuthorized()
         {
-            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _downloadSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail));
+            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _playSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail));
             Assert.True(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
-        [Fact]
-        public async void AddChatMessageAsPlayUserOnSubsonic()
+        public void Dispose()
         {
-            var chatMessage = DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture);
-            var result = await _playSubsonicClient.AddChatMessageAsync(chatMessage);
-
-            Assert.True(result);
-
-            var chatMessages = await _noPlaySubsonicClient.GetChatMessagesAsync();
-
-            Assert.True(chatMessages.Items.Any(c => c.Message == chatMessage && c.Username == PlayUser));
+            _adminSubsonicClient = null;
+            _downloadSubsonicClient = null;
+            _noPlaySubsonicClient = null;
+            _playSubsonicClient = null;
+            _nonexistentSubsonicClient = null;
+            _random = null;
         }
 
         [Fact]
-        public async void AddChatMessageAsNoPlayUserOnSubsonic()
+        public async void GenresActivityTest()
         {
-            var chatMessage = DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture);
-            var result = await _noPlaySubsonicClient.AddChatMessageAsync(chatMessage);
+            var genresActivity = new GenresActivity<Image>(_adminSubsonicClient);
+            var genres = await genresActivity.GetResult();
 
-            Assert.True(result);
+            Assert.True(genres.Items.Any());
 
-            var chatMessages = await _playSubsonicClient.GetChatMessagesAsync();
+            genres = await genresActivity.GetResult();
 
-            Assert.True(chatMessages.Items.Any(c => c.Message == chatMessage && c.Username == NoPlayUser));
+            Assert.True(genres.Items.Any());
         }
 
         [Fact]
-        public async void AddChatMessageAsAdminUserOnSubsonic()
+        public async void GetAlphabeticalByArtistAlbumListAsAdminUserOnSubsonic()
         {
-            var chatMessage = DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture);
-            var result = await _adminSubsonicClient.AddChatMessageAsync(chatMessage);
+            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.AlphabeticalByArtist);
 
-            Assert.True(result);
-
-            var chatMessages = await _noPlaySubsonicClient.GetChatMessagesAsync();
-
-            Assert.True(chatMessages.Items.Any(c => c.Message == chatMessage && c.Username == AdminUser));
+            Assert.NotNull(albumList);
+            Assert.True(albumList.Albums.Any());
         }
 
         [Fact]
-        public async void GetRandomSongsAsAdminUserOnSubsonic()
+        public async void GetAlphabeticalByNameAlbumListAsAdminUserOnSubsonic()
         {
-            var randomNumber = _random.Next(MinRandomSongCount, MaxRandomSongCount);
-            RandomSongs randomSongs = await _adminSubsonicClient.GetRandomSongsAsync(randomNumber);
+            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.AlphabeticalByName);
 
-            Assert.Equal(randomSongs.Songs.Count, randomNumber);
+            Assert.NotNull(albumList);
+            Assert.True(albumList.Albums.Any());
         }
 
         [Fact]
-        public async void GetInvalidNumberOfRandomSongsAsAdminUserOnSubsonic()
+        public async void GetArtistsAsAdminUserOnSubsonic()
         {
-            RandomSongs randomSongs = await _adminSubsonicClient.GetRandomSongsAsync(InvalidRandomSongCount);
+            var artists = await _adminSubsonicClient.GetArtistsAsync();
 
-            Assert.True(randomSongs.Songs.Count < InvalidRandomSongCount);
+            Assert.True(artists.Indexes.Any());
         }
 
         [Fact]
-        public async void GetRandomSongsForGenreAsAdminUserOnSubsonic()
+        public async void GetByGenreAlbumListAsAdminUserOnSubsonic()
         {
-            var randomNumber = _random.Next(MinRandomSongCount, MaxRandomSongCount);
             var genres = await _adminSubsonicClient.GetGenresAsync();
             var randomNumberForGenre = _random.Next(0, genres.Items.Count - 1);
             var randomGenre = genres.Items.ElementAt(randomNumberForGenre);
-            var randomSongs = await _adminSubsonicClient.GetRandomSongsAsync(randomNumber, randomGenre.Name);
+            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.ByGenre, genre: randomGenre.Name);
 
-            Assert.True(randomSongs.Songs.All(s => string.Compare(s.Genre, randomGenre.Name, StringComparison.OrdinalIgnoreCase) == 0));
+            Assert.NotNull(albumList);
+            Assert.NotEmpty(albumList.Albums);
         }
 
         [Fact]
-        public async void GetMusicFoldersAsAdminUserOnSubsonic()
+        public async void GetByGenreAlbumListWithInvalidServerVersionAsAdminUserOnSubsonic()
         {
-            var musicFolders = await _adminSubsonicClient.GetMusicFoldersAsync();
+            var genres = await _adminSubsonicClient.GetGenresAsync();
+            var randomNumberForGenre = _random.Next(0, genres.Items.Count - 1);
+            var randomGenre = genres.Items.ElementAt(randomNumberForGenre);
+            var previousApiVersion = _adminSubsonicServer.ApiVersion;
+            _adminSubsonicServer.ApiVersion = SubsonicApiVersion.Version1_10_0;
+            await Assert.ThrowsAsync<SubsonicInvalidApiException>(async () => await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.ByGenre, genre: randomGenre.Name));
 
-            Assert.True(musicFolders.Items.Any());
+            _adminSubsonicServer.ApiVersion = previousApiVersion;
+        }
+
+        [Fact]
+        public async void GetByYearAlbumListAsAdminUserOnSubsonic()
+        {
+            var randomFromYear = _random.Next(1950, DateTime.Now.Year);
+            var randomToYear = _random.Next(randomFromYear, DateTime.Now.Year);
+            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.ByYear, fromYear: randomFromYear, toYear: randomToYear);
+
+            Assert.NotNull(albumList);
+            Assert.True(albumList.Albums.Any());
+        }
+
+        [Fact]
+        public async void GetByYearAlbumListWithInvalidParametersAsAdminUserOnSubsonic()
+        {
+            await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.ByYear));
+        }
+
+        [Fact]
+        public async void GetCoverArtSizeAsAdminUserOnSubsonic()
+        {
+            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.Random, 1);
+
+            Assert.NotNull(albumList);
+
+            var artSize = await _adminSubsonicClient.GetCoverArtSizeAsync(albumList.Albums.First().CoverArt);
+
+            Assert.True(artSize >= 0);
+        }
+
+        [Fact]
+        public async void GetFrequentAlbumListAsAdminUserOnSubsonic()
+        {
+            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.Frequent);
+
+            Assert.NotNull(albumList);
+            Assert.True(albumList.Albums.Any());
+        }
+
+        [Fact]
+        public async void GetGenresAsAdminUserOnSubsonic()
+        {
+            var genres = await _adminSubsonicClient.GetGenresAsync();
+
+            Assert.True(genres.Items.Any());
+        }
+
+        [Fact]
+        public async void GetHighestAlbumListAsAdminUserOnSubsonic()
+        {
+            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.Highest);
+
+            Assert.NotNull(albumList);
+            Assert.False(albumList.Albums.Any());
         }
 
         [Fact]
@@ -308,6 +316,15 @@ namespace Subsonic.Client.Windows.Tests
 
             Assert.NotNull(indexes);
             Assert.True(indexes.Items.Any());
+        }
+
+        [Fact]
+        public async void GetIndexesForFutureDateAsAdminUserOnSubsonic()
+        {
+            long ifModifiedSince = DateTime.UtcNow.AddDays(1).ToUnixTimestampInMilliseconds();
+            var indexes = await _adminSubsonicClient.GetIndexesAsync(ifModifiedSince: ifModifiedSince);
+
+            Assert.Null(indexes);
         }
 
         [Fact]
@@ -325,12 +342,11 @@ namespace Subsonic.Client.Windows.Tests
         }
 
         [Fact]
-        public async void GetIndexesForFutureDateAsAdminUserOnSubsonic()
+        public async void GetInvalidNumberOfRandomSongsAsAdminUserOnSubsonic()
         {
-            long ifModifiedSince = DateTime.UtcNow.AddDays(1).ToUnixTimestampInMilliseconds();
-            var indexes = await _adminSubsonicClient.GetIndexesAsync(ifModifiedSince: ifModifiedSince);
+            RandomSongs randomSongs = await _adminSubsonicClient.GetRandomSongsAsync(InvalidRandomSongCount);
 
-            Assert.Null(indexes);
+            Assert.True(randomSongs.Songs.Count < InvalidRandomSongCount);
         }
 
         [Fact]
@@ -358,19 +374,46 @@ namespace Subsonic.Client.Windows.Tests
         }
 
         [Fact]
-        public async void GetGenresAsAdminUserOnSubsonic()
+        public async void GetMusicFoldersAsAdminUserOnSubsonic()
         {
-            var genres = await _adminSubsonicClient.GetGenresAsync();
+            var musicFolders = await _adminSubsonicClient.GetMusicFoldersAsync();
 
-            Assert.True(genres.Items.Any());
+            Assert.True(musicFolders.Items.Any());
         }
 
         [Fact]
-        public async void GetArtistsAsAdminUserOnSubsonic()
+        public async void GetNewestAlbumListAsAdminUserOnSubsonic()
         {
-            var artists = await _adminSubsonicClient.GetArtistsAsync();
+            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.Newest);
 
-            Assert.True(artists.Indexes.Any());
+            Assert.NotNull(albumList);
+            Assert.True(albumList.Albums.Any());
+        }
+
+        [Fact]
+        public async void GetPlayQueueAsAdminUserOnSubsonic()
+        {
+            var playQueue = await _adminSubsonicClient.GetPlayQueueAsync();
+
+            Assert.NotNull(playQueue.Username);
+        }
+
+        [Fact]
+        public async void GetRandomAlbumInfoAsAdminUserOnSubsonic()
+        {
+            var randomSongs = await _adminSubsonicClient.GetRandomSongsAsync(1);
+            var albumInfo = await _adminSubsonicClient.GetAlbumInfoAsync(randomSongs.Songs.First().Id);
+
+            Assert.NotNull(albumInfo);
+        }
+
+        [Fact]
+        public async void GetRandomAlbumListAsAdminUserOnSubsonic()
+        {
+            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.Random);
+
+            Assert.NotNull(albumList);
+            Assert.True(albumList.Albums.Any());
         }
 
         [Fact]
@@ -458,63 +501,30 @@ namespace Subsonic.Client.Windows.Tests
         }
 
         [Fact]
-        public async void GetRandomAlbumListAsAdminUserOnSubsonic()
+        public async void GetRandomSongsAsAdminUserOnSubsonic()
         {
-            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.Random);
+            var randomNumber = _random.Next(MinRandomSongCount, MaxRandomSongCount);
+            RandomSongs randomSongs = await _adminSubsonicClient.GetRandomSongsAsync(randomNumber);
 
-            Assert.NotNull(albumList);
-            Assert.True(albumList.Albums.Any());
+            Assert.Equal(randomSongs.Songs.Count, randomNumber);
         }
 
         [Fact]
-        public async void GetNewestAlbumListAsAdminUserOnSubsonic()
+        public async void GetRandomSongsForGenreAsAdminUserOnSubsonic()
         {
-            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.Newest);
+            var randomNumber = _random.Next(MinRandomSongCount, MaxRandomSongCount);
+            var genres = await _adminSubsonicClient.GetGenresAsync();
+            var randomNumberForGenre = _random.Next(0, genres.Items.Count - 1);
+            var randomGenre = genres.Items.ElementAt(randomNumberForGenre);
+            var randomSongs = await _adminSubsonicClient.GetRandomSongsAsync(randomNumber, randomGenre.Name);
 
-            Assert.NotNull(albumList);
-            Assert.True(albumList.Albums.Any());
-        }
-
-        [Fact]
-        public async void GetHighestAlbumListAsAdminUserOnSubsonic()
-        {
-            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.Highest);
-
-            Assert.NotNull(albumList);
-            Assert.False(albumList.Albums.Any());
-        }
-
-        [Fact]
-        public async void GetFrequentAlbumListAsAdminUserOnSubsonic()
-        {
-            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.Frequent);
-
-            Assert.NotNull(albumList);
-            Assert.True(albumList.Albums.Any());
+            Assert.True(randomSongs.Songs.All(s => string.Compare(s.Genre, randomGenre.Name, StringComparison.OrdinalIgnoreCase) == 0));
         }
 
         [Fact]
         public async void GetRecentAlbumListAsAdminUserOnSubsonic()
         {
             var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.Recent);
-
-            Assert.NotNull(albumList);
-            Assert.True(albumList.Albums.Any());
-        }
-
-        [Fact]
-        public async void GetAlphabeticalByNameAlbumListAsAdminUserOnSubsonic()
-        {
-            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.AlphabeticalByName);
-
-            Assert.NotNull(albumList);
-            Assert.True(albumList.Albums.Any());
-        }
-
-        [Fact]
-        public async void GetAlphabeticalByArtistAlbumListAsAdminUserOnSubsonic()
-        {
-            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.AlphabeticalByArtist);
 
             Assert.NotNull(albumList);
             Assert.True(albumList.Albums.Any());
@@ -530,58 +540,35 @@ namespace Subsonic.Client.Windows.Tests
         }
 
         [Fact]
-        public async void GetByYearAlbumListAsAdminUserOnSubsonic()
+        public async void LicenseTestAdminOnSubsonic()
         {
-            var randomFromYear = _random.Next(1950, DateTime.Now.Year);
-            var randomToYear = _random.Next(randomFromYear, DateTime.Now.Year);
-            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.ByYear, fromYear: randomFromYear, toYear: randomToYear);
+            var license = await _adminSubsonicClient.GetLicenseAsync();
 
-            Assert.NotNull(albumList);
-            Assert.True(albumList.Albums.Any());
+            Assert.True(license.Valid);
         }
 
         [Fact]
-        public async void GetByGenreAlbumListAsAdminUserOnSubsonic()
+        public async void LicenseTestDownloadOnSubsonic()
         {
-            var genres = await _adminSubsonicClient.GetGenresAsync();
-            var randomNumberForGenre = _random.Next(0, genres.Items.Count - 1);
-            var randomGenre = genres.Items.ElementAt(randomNumberForGenre);
-            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.ByGenre, genre: randomGenre.Name);
+            var license = await _downloadSubsonicClient.GetLicenseAsync();
 
-            Assert.NotNull(albumList);
-            Assert.True(albumList.Albums.Any());
+            Assert.True(license.Valid);
         }
 
         [Fact]
-        public async void GetByGenreAlbumListWithInvalidServerVersionAsAdminUserOnSubsonic()
+        public async void LicenseTestNoPlayOnSubsonic()
         {
-            var genres = await _adminSubsonicClient.GetGenresAsync();
-            var randomNumberForGenre = _random.Next(0, genres.Items.Count - 1);
-            var randomGenre = genres.Items.ElementAt(randomNumberForGenre);
-            var previousApiVersion = _adminSubsonicServer.ApiVersion;
-            _adminSubsonicServer.ApiVersion = SubsonicApiVersion.Version1_10_0;
-            await Assert.ThrowsAsync<SubsonicInvalidApiException>(async () => await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.ByGenre, genre: randomGenre.Name));
+            var license = await _noPlaySubsonicClient.GetLicenseAsync();
 
-            _adminSubsonicServer.ApiVersion = previousApiVersion;
+            Assert.True(license.Valid);
         }
 
         [Fact]
-        public async void GetByYearAlbumListWithInvalidParametersAsAdminUserOnSubsonic()
+        public async void LicenseTestPlayOnSubsonic()
         {
-            await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.ByYear));
-        }
+            var license = await _playSubsonicClient.GetLicenseAsync();
 
-        [Fact]
-        public async void GenresActivityTest()
-        {
-            var genresActivity = new GenresActivity<Image>(_adminSubsonicClient);
-            var genres = await genresActivity.GetResult();
-
-            Assert.True(genres.Items.Any());
-
-            genres = await genresActivity.GetResult();
-
-            Assert.True(genres.Items.Any());
+            Assert.True(license.Valid);
         }
 
         [Fact]
@@ -598,44 +585,51 @@ namespace Subsonic.Client.Windows.Tests
         }
 
         [Fact]
-        public async void Search2ActivityTest()
+        public async void PingTestAdminOnSubsonic()
         {
-            var activity = new Search2Activity<Image>(_adminSubsonicClient, SearchQuery);
-            var searchResult2 = await activity.GetResult();
+            var result = await _adminSubsonicClient.PingAsync();
 
-            Assert.True(searchResult2.Artists.Any());
-
-            searchResult2 = await activity.GetResult();
-
-            Assert.True(searchResult2.Artists.Any());
+            Assert.True(result);
+            Assert.NotNull(_adminSubsonicServer.ApiVersion);
+            Assert.True(_adminSubsonicServer.ApiVersion >= SubsonicApiVersion.Version1_0_0);
         }
 
         [Fact]
-        public async void ScanMediaFoldersAsAdminUserOnSubsonic()
+        public async void PingTestDownloadOnSubsonic()
         {
-            var success = await _adminSubsonicClient.ScanMediaFoldersAsync();
+            var result = await _downloadSubsonicClient.PingAsync();
 
-            Assert.True(success);
+            Assert.True(result);
+            Assert.NotNull(_downloadSubsonicServer.ApiVersion);
+            Assert.True(_downloadSubsonicServer.ApiVersion >= SubsonicApiVersion.Version1_0_0);
         }
 
         [Fact]
-        public async void CleanupMediaFoldersAsAdminUserOnSubsonic()
+        public async void PingTestNoPlayOnSubsonic()
         {
-            var success = await _adminSubsonicClient.CleanupMediaFoldersAsync();
+            var result = await _noPlaySubsonicClient.PingAsync();
 
-            Assert.True(success);
+            Assert.True(result);
+            Assert.NotNull(_noPlaySubsonicServer.ApiVersion);
+            Assert.True(_noPlaySubsonicServer.ApiVersion >= SubsonicApiVersion.Version1_0_0);
         }
 
         [Fact]
-        public async void GetCoverArtSizeAsAdminUserOnSubsonic()
+        public async void PingTestOnNonexistentServer()
         {
-            var albumList = await _adminSubsonicClient.GetAlbumListAsync(AlbumListType.Random, 1);
+            Assert.Null(_nonexistentSubsonicServer.ApiVersion);
+            await Assert.ThrowsAsync<SubsonicApiException>(async () => await _nonexistentSubsonicClient.PingAsync());
+            Assert.Null(_nonexistentSubsonicServer.ApiVersion);
+        }
 
-            Assert.NotNull(albumList);
+        [Fact]
+        public async void PingTestPlayOnSubsonic()
+        {
+            var result = await _playSubsonicClient.PingAsync();
 
-            var artSize = await _adminSubsonicClient.GetCoverArtSizeAsync(albumList.Albums.First().CoverArt);
-
-            Assert.True(artSize >= 0);
+            Assert.True(result);
+            Assert.NotNull(_playSubsonicServer.ApiVersion);
+            Assert.True(_playSubsonicServer.ApiVersion >= SubsonicApiVersion.Version1_0_0);
         }
 
         [Fact]
@@ -648,20 +642,24 @@ namespace Subsonic.Client.Windows.Tests
         }
 
         [Fact]
-        public async void GetPlayQueueAsAdminUserOnSubsonic()
+        public async void ScanMediaFoldersAsAdminUserOnSubsonic()
         {
-            var playQueue = await _adminSubsonicClient.GetPlayQueueAsync();
+            var success = await _adminSubsonicClient.ScanMediaFoldersAsync();
 
-            Assert.NotNull(playQueue.Username);
+            Assert.True(success);
         }
 
         [Fact]
-        public async void GetRandomAlbumInfoAsAdminUserOnSubsonic()
+        public async void Search2ActivityTest()
         {
-            var randomSongs = await _adminSubsonicClient.GetRandomSongsAsync(1);
-            var albumInfo = await _adminSubsonicClient.GetAlbumInfoAsync(randomSongs.Songs.First().Id);
+            var activity = new Search2Activity<Image>(_adminSubsonicClient, SearchQuery);
+            var searchResult2 = await activity.GetResult();
 
-            Assert.NotNull(albumInfo);
+            Assert.True(searchResult2.Artists.Any());
+
+            searchResult2 = await activity.GetResult();
+
+            Assert.True(searchResult2.Artists.Any());
         }
     }
 }

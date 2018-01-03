@@ -13,13 +13,32 @@ namespace Subsonic.Client
 {
     public class SubsonicResponse<T> : ISubsonicResponse<T> where T : class, IDisposable
     {
-        private ISubsonicServer SubsonicServer { get; }
-        private ISubsonicRequest<T> SubsonicRequest { get; }
-
         protected SubsonicResponse(ISubsonicServer subsonicServer, ISubsonicRequest<T> subsonicRequest)
         {
             SubsonicServer = subsonicServer;
             SubsonicRequest = subsonicRequest;
+        }
+
+        private ISubsonicRequest<T> SubsonicRequest { get; }
+        private ISubsonicServer SubsonicServer { get; }
+
+        public virtual async Task<long> GetContentLengthAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        {
+            ValidateApiVersion(method, methodApiVersion);
+            return await SubsonicRequest.ContentLengthRequestAsync(method, methodApiVersion, parameters, cancelToken);
+        }
+
+        public virtual async Task<IImageFormat<T>> GetImageResponseAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        {
+            ValidateApiVersion(method, methodApiVersion);
+            return await SubsonicRequest.ImageRequestAsync(method, methodApiVersion, parameters, cancelToken);
+        }
+
+        public virtual async Task GetNoResponseAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        {
+            ValidateApiVersion(method, methodApiVersion);
+
+            await SubsonicRequest.RequestWithoutResponseAsync(method, methodApiVersion, parameters, cancelToken);
         }
 
         public virtual async Task<bool> GetResponseAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
@@ -53,13 +72,6 @@ namespace Subsonic.Client
             return await SubsonicRequest.RequestAsync(path, pathOverride, method, methodApiVersion, parameters, cancelToken);
         }
 
-        public virtual async Task GetNoResponseAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
-        {
-            ValidateApiVersion(method, methodApiVersion);
-
-            await SubsonicRequest.RequestWithoutResponseAsync(method, methodApiVersion, parameters, cancelToken);
-        }
-
         public virtual async Task<TResponse> GetResponseAsync<TResponse>(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             ValidateApiVersion(method, methodApiVersion);
@@ -84,27 +96,15 @@ namespace Subsonic.Client
             return result;
         }
 
-        public virtual async Task<long> GetContentLengthAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
+        public virtual async Task<bool> GetSettingChangeResponseAsync(SettingMethods method, CancellationToken? cancelToken = null)
         {
-            ValidateApiVersion(method, methodApiVersion);
-            return await SubsonicRequest.ContentLengthRequestAsync(method, methodApiVersion, parameters, cancelToken);
-        }
-
-        public virtual async Task<IImageFormat<T>> GetImageResponseAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
-        {
-            ValidateApiVersion(method, methodApiVersion);
-            return await SubsonicRequest.ImageRequestAsync(method, methodApiVersion, parameters, cancelToken);
+            return await SubsonicRequest.SettingChangeRequestAsync(method, cancelToken);
         }
 
         public virtual async Task<string> GetStringResponseAsync(Methods method, Version methodApiVersion, SubsonicParameters parameters = null, CancellationToken? cancelToken = null)
         {
             ValidateApiVersion(method, methodApiVersion);
             return await SubsonicRequest.StringRequestAsync(method, methodApiVersion, parameters, cancelToken);
-        }
-
-        public virtual async Task<bool> GetSettingChangeResponseAsync(SettingMethods method, CancellationToken? cancelToken = null)
-        {
-            return await SubsonicRequest.SettingChangeRequestAsync(method, cancelToken);
         }
 
         private void ValidateApiVersion(Methods method, Version methodApiVersion)
