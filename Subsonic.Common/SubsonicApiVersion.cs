@@ -4,7 +4,6 @@ namespace Subsonic.Common
 {
     public static class SubsonicApiVersion
     {
-        public static readonly Version Max = Version1_16_0;
         public static readonly Version Version1_0_0 = Version.Parse("1.0.0");
         public static readonly Version Version1_1_0 = Version.Parse("1.1.0");
         public static readonly Version Version1_1_1 = Version.Parse("1.1.1");
@@ -25,5 +24,6 @@ namespace Subsonic.Common
         public static readonly Version Version1_7_0 = Version.Parse("1.7.0");
         public static readonly Version Version1_8_0 = Version.Parse("1.8.0");
         public static readonly Version Version1_9_0 = Version.Parse("1.9.0");
+        public static readonly Version VersionMax = Version1_16_0;
     }
 }
