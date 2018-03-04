@@ -68,6 +68,9 @@ namespace Subsonic.Common.Enums
 		[XmlEnum("musicFolders")]
 		MusicFolders,
 
+        [XmlEnum("newestPodcasts")]
+        NewestPodcasts,
+
 		[XmlEnum("nowPlaying")]
 		NowPlaying,
 
