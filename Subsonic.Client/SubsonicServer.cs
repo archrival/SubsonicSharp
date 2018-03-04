@@ -23,7 +23,7 @@ namespace Subsonic.Client
             Password = password;
             ClientName = clientName;
             SubsonicAuthentication = new SubsonicAuthentication(Password);
-            ApiVersion = SubsonicApiVersion.Max;
+            ApiVersion = SubsonicApiVersion.VersionMax;
         }
 
         public SubsonicServer(Uri serverUrl, string userName, string password, string clientName, string proxyServer, int proxyPort) : this(serverUrl, userName, password, clientName)
