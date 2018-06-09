@@ -45,22 +45,22 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("playCount")]
         public long PlayCount
         {
-            get { return _playCount.GetValueOrDefault(); }
-            set { _playCount = value; }
+            get => _playCount.GetValueOrDefault();
+            set => _playCount = value;
         }
 
         [XmlAttribute("starred")]
         public DateTime Starred
         {
-            get { return _starred.GetValueOrDefault(); }
-            set { _starred = value; }
+            get => _starred.GetValueOrDefault();
+            set => _starred = value;
         }
 
         [XmlAttribute("year")]
         public int Year
         {
-            get { return _year.GetValueOrDefault(); }
-            set { _year = value; }
+            get => _year.GetValueOrDefault();
+            set => _year = value;
         }
 
         public bool ShouldSerializePlayCount()

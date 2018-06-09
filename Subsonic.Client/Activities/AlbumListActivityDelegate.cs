@@ -9,14 +9,6 @@ namespace Subsonic.Client.Activities
 {
     public class AlbumListActivityDelegate<TImageType> : SubsonicActivityDelegate<AlbumList, TImageType> where TImageType : class, IDisposable
     {
-        private AlbumListType AlbumListType { get; }
-        private int? Size { get; }
-        private int? Offset { get; }
-        private int? FromYear { get; }
-        private int? ToYear { get; }
-        private string Genre { get; }
-        private string MusicFolderId { get; }
-
         public AlbumListActivityDelegate(AlbumListType albumListType, int? size = null, int? offset = null, int? fromYear = null, int? toYear = null, string genre = null, string musicFolderId = null)
         {
             AlbumListType = albumListType;
@@ -28,6 +20,14 @@ namespace Subsonic.Client.Activities
             MusicFolderId = musicFolderId;
         }
 
+        private AlbumListType AlbumListType { get; }
+        private int? FromYear { get; }
+        private string Genre { get; }
+        private string MusicFolderId { get; }
+        private int? Offset { get; }
+        private int? Size { get; }
+        private int? ToYear { get; }
+
         public Func<CancellationToken?, Task<AlbumList>> CreateMethod(ISubsonicClient<TImageType> subsonicClient)
         {
             return cancelToken => subsonicClient.GetAlbumListAsync(AlbumListType, Size, Offset, FromYear, ToYear, Genre, MusicFolderId, cancelToken);
@@ -37,54 +37,21 @@ namespace Subsonic.Client.Activities
 
         #region HashCode and Equality Overrides
 
+        private const int HashFactor = 17;
         private const int HashSeed = 73; // Should be prime number
-        private const int HashFactor = 17; // Should be prime number
+                                         // Should be prime number
 
-        public override int GetHashCode()
+        public static bool operator !=(AlbumListActivityDelegate<TImageType> left, AlbumListActivityDelegate<TImageType> right)
         {
-            int hash = HashSeed;
-
-            hash = (hash * HashFactor) + typeof(AlbumListActivityDelegate<TImageType>).GetHashCode();
-
-            hash = (hash * HashFactor) + AlbumListType.GetHashCode();
-
-            if (Size != null)
-                hash = (hash * HashFactor) + Size.GetHashCode();
-
-            if (Offset != null)
-                hash = (hash * HashFactor) + Offset.GetHashCode();
-
-            if (FromYear != null)
-                hash = (hash * HashFactor) + FromYear.GetHashCode();
-
-            if (ToYear != null)
-                hash = (hash * HashFactor) + ToYear.GetHashCode();
-
-            if (Genre != null)
-                hash = (hash * HashFactor) + Genre.GetHashCode();
-
-            if (MusicFolderId != null)
-                hash = (hash * HashFactor) + MusicFolderId.GetHashCode();
-
-            return hash;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj != null && Equals(obj as AlbumListActivityDelegate<TImageType>);
-        }
-
-        private bool Equals(AlbumListActivityDelegate<TImageType> item)
-        {
-            return item != null && this == item;
+            return !(left == right);
         }
 
         public static bool operator ==(AlbumListActivityDelegate<TImageType> left, AlbumListActivityDelegate<TImageType> right)
         {
-            if (ReferenceEquals(null, left))
-                return ReferenceEquals(null, right);
+            if (left is null)
+                return right is null;
 
-            if (ReferenceEquals(null, right))
+            if (right is null)
                 return false;
 
             if (!left.AlbumListType.Equals(right.AlbumListType))
@@ -117,9 +84,43 @@ namespace Subsonic.Client.Activities
             return true;
         }
 
-        public static bool operator !=(AlbumListActivityDelegate<TImageType> left, AlbumListActivityDelegate<TImageType> right)
+        public override bool Equals(object obj)
         {
-            return !(left == right);
+            return obj != null && Equals(obj as AlbumListActivityDelegate<TImageType>);
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = HashSeed;
+
+            hash = hash * HashFactor + typeof(AlbumListActivityDelegate<TImageType>).GetHashCode();
+
+            hash = hash * HashFactor + AlbumListType.GetHashCode();
+
+            if (Size != null)
+                hash = hash * HashFactor + Size.GetHashCode();
+
+            if (Offset != null)
+                hash = hash * HashFactor + Offset.GetHashCode();
+
+            if (FromYear != null)
+                hash = hash * HashFactor + FromYear.GetHashCode();
+
+            if (ToYear != null)
+                hash = hash * HashFactor + ToYear.GetHashCode();
+
+            if (Genre != null)
+                hash = hash * HashFactor + Genre.GetHashCode();
+
+            if (MusicFolderId != null)
+                hash = hash * HashFactor + MusicFolderId.GetHashCode();
+
+            return hash;
+        }
+
+        private bool Equals(AlbumListActivityDelegate<TImageType> item)
+        {
+            return item != null && this == item;
         }
 
         #endregion HashCode and Equality Overrides

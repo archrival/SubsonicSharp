@@ -8,20 +8,19 @@ namespace Subsonic.Client.Monitors
     public class ChatMonitor<T> : IObserver<ChatModel> where T : class, IDisposable
     {
         private IDisposable _cancellation;
+
+        public event Action<ChatMonitor<T>, ChatEventArgs> PropertyChanged;
+
         public ChatHandler<T> ChatHandler { get; set; }
         public bool Disposed { get; set; }
 
-        public void Subscribe(ChatHandler<T> provider)
-        {
-            ChatHandler = provider;
-            _cancellation = provider.Subscribe(this);
-        }
-
-        public void Unsubscribe()
+        public void OnCompleted()
         {
             Disposed = true;
-            _cancellation.Dispose();
-            OnPropertyChanged(null);
+        }
+
+        public void OnError(Exception error)
+        {
         }
 
         public void OnNext(ChatModel value)
@@ -36,20 +35,22 @@ namespace Subsonic.Client.Monitors
             }
         }
 
-        public void OnError(Exception error)
+        public void Subscribe(ChatHandler<T> provider)
         {
+            ChatHandler = provider;
+            _cancellation = provider.Subscribe(this);
         }
 
-        public void OnCompleted()
+        public void Unsubscribe()
         {
             Disposed = true;
+            _cancellation.Dispose();
+            OnPropertyChanged(null);
         }
-
-        public event Action<ChatMonitor<T>, ChatEventArgs> PropertyChanged;
 
         protected virtual void OnPropertyChanged(ChatModel chatItem)
         {
-            Action<ChatMonitor<T>, ChatEventArgs> handler = PropertyChanged;
+            var handler = PropertyChanged;
             handler?.Invoke(this, new ChatEventArgs(chatItem));
         }
     }

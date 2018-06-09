@@ -29,9 +29,9 @@ namespace Subsonic.Client
 
         public static string GetMd5Sum(string value)
         {
-            byte[] bytes = new byte[value.Length];
+            var bytes = new byte[value.Length];
 
-            for (int i = 0; i < value.Length; i++)
+            for (var i = 0; i < value.Length; i++)
                 bytes[i] = (byte)value[i];
 
             return GetMd5Sum(bytes);
@@ -39,22 +39,27 @@ namespace Subsonic.Client
 
         public static string GetMd5Sum(byte[] value)
         {
-            MD5 md5 = new MD5 { _byteInput = new byte[value.Length] };
+            var md5 = new MD5 { _byteInput = new byte[value.Length] };
 
-            for (int i = 0; i < value.Length; i++)
+            for (var i = 0; i < value.Length; i++)
                 md5._byteInput[i] = value[i];
 
-            Digest digest = md5.CalculateMd5Value();
+            var digest = md5.CalculateMd5Value();
 
             return digest.ToString();
+        }
+
+        private static uint RotateLeft(uint uiNumber, ushort shift)
+        {
+            return (uiNumber >> 32 - shift) | (uiNumber << shift);
         }
 
         private Digest CalculateMd5Value()
         {
             uint n;
-            Digest dg = new Digest();
+            var dg = new Digest();
 
-            byte[] bMsg = CreatePaddedBuffer();
+            var bMsg = CreatePaddedBuffer();
 
             n = (uint)(bMsg.Length * 8) / 32;
 
@@ -67,24 +72,44 @@ namespace Subsonic.Client
             return dg;
         }
 
-        private void TransF(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
+        private void CopyBlock(byte[] bMsg, uint block)
         {
-            a = b + RotateLeft((a + ((b & c) | (~(b) & d)) + _x[k] + T[i - 1]), s);
+            block = block << 6;
+
+            for (uint j = 0; j < 61; j += 4)
+            {
+                _x[j >> 2] = ((uint)bMsg[block + j + 3] << 24) |
+                ((uint)bMsg[block + j + 2] << 16) |
+                ((uint)bMsg[block + j + 1] << 8) |
+                bMsg[block + j];
+            }
         }
 
-        private void TransG(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
+        private byte[] CreatePaddedBuffer()
         {
-            a = b + RotateLeft((a + ((b & d) | (c & ~d)) + _x[k] + T[i - 1]), s);
-        }
+            uint pad;
+            ulong sizeMsg;
+            uint sizeMsgBuff;
+            var temp = 448 - _byteInput.Length * 8 % 512;
 
-        private void TransH(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
-        {
-            a = b + RotateLeft((a + (b ^ c ^ d) + _x[k] + T[i - 1]), s);
-        }
+            pad = (uint)((temp + 512) % 512);
 
-        private void TransI(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
-        {
-            a = b + RotateLeft((a + (c ^ (b | ~d)) + _x[k] + T[i - 1]), s);
+            if (pad == 0)
+                pad = 512;
+
+            sizeMsgBuff = (uint)(_byteInput.Length + pad / 8 + 8);
+            sizeMsg = (ulong)_byteInput.Length * 8;
+            var bMsg = new byte[sizeMsgBuff];
+
+            for (var i = 0; i < _byteInput.Length; i++)
+                bMsg[i] = _byteInput[i];
+
+            bMsg[_byteInput.Length] |= 0x80;
+
+            for (var i = 8; i > 0; i--)
+                bMsg[sizeMsgBuff - i] = (byte)(sizeMsg >> ((8 - i) * 8) & 0x00000000000000ff);
+
+            return bMsg;
         }
 
         private void PerformTransformation(ref uint a, ref uint b, ref uint c, ref uint d)
@@ -167,49 +192,24 @@ namespace Subsonic.Client
             d = d + dd;
         }
 
-        private byte[] CreatePaddedBuffer()
+        private void TransF(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
         {
-            uint pad;
-            ulong sizeMsg;
-            uint sizeMsgBuff;
-            int temp = (448 - ((_byteInput.Length * 8) % 512));
-
-            pad = (uint)((temp + 512) % 512);
-
-            if (pad == 0)
-                pad = 512;
-
-            sizeMsgBuff = (uint)((_byteInput.Length) + (pad / 8) + 8);
-            sizeMsg = (ulong)_byteInput.Length * 8;
-            byte[] bMsg = new byte[sizeMsgBuff];
-
-            for (int i = 0; i < _byteInput.Length; i++)
-                bMsg[i] = _byteInput[i];
-
-            bMsg[_byteInput.Length] |= 0x80;
-
-            for (int i = 8; i > 0; i--)
-                bMsg[sizeMsgBuff - i] = (byte)(sizeMsg >> ((8 - i) * 8) & 0x00000000000000ff);
-
-            return bMsg;
+            a = b + RotateLeft(a + ((b & c) | (~b & d)) + _x[k] + T[i - 1], s);
         }
 
-        private void CopyBlock(byte[] bMsg, uint block)
+        private void TransG(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
         {
-            block = block << 6;
-
-            for (uint j = 0; j < 61; j += 4)
-            {
-                _x[j >> 2] = (((uint)bMsg[block + (j + 3)]) << 24) |
-                (((uint)bMsg[block + (j + 2)]) << 16) |
-                (((uint)bMsg[block + (j + 1)]) << 8) |
-                bMsg[block + (j)];
-            }
+            a = b + RotateLeft(a + ((b & d) | (c & ~d)) + _x[k] + T[i - 1], s);
         }
 
-        private static uint RotateLeft(uint uiNumber, ushort shift)
+        private void TransH(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
         {
-            return ((uiNumber >> 32 - shift) | (uiNumber << shift));
+            a = b + RotateLeft(a + (b ^ c ^ d) + _x[k] + T[i - 1], s);
+        }
+
+        private void TransI(ref uint a, uint b, uint c, uint d, uint k, ushort s, uint i)
+        {
+            a = b + RotateLeft(a + (c ^ (b | ~d)) + _x[k] + T[i - 1], s);
         }
     }
 
@@ -230,7 +230,7 @@ namespace Subsonic.Client
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             sb.Append(ReverseByte(A).ToString("x8"));
             sb.Append(ReverseByte(B).ToString("x8"));
@@ -242,10 +242,10 @@ namespace Subsonic.Client
 
         private static uint ReverseByte(uint uiNumber)
         {
-            return (((uiNumber & 0x000000ff) << 24) |
-            (uiNumber >> 24) |
-            ((uiNumber & 0x00ff0000) >> 8) |
-            ((uiNumber & 0x0000ff00) << 8));
+            return ((uiNumber & 0x000000ff) << 24) |
+                   (uiNumber >> 24) |
+                   ((uiNumber & 0x00ff0000) >> 8) |
+                   ((uiNumber & 0x0000ff00) << 8);
         }
     }
 }

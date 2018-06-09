@@ -10,13 +10,10 @@ namespace Subsonic.Client.Handlers
 {
     public class ChatHandler<T> : IObservable<ChatModel>, IDisposable where T : class, IDisposable
     {
-        private readonly List<IObserver<ChatModel>> _observers;
-        private readonly HashSet<ChatModel> _chatItems;
-        private readonly Lazy<Task> _worker;
-
-        public int Interval { get; set; }
-        public ISubsonicClient<T> Client { get; set; }
         public CancellationToken CancellationToken;
+        private readonly HashSet<ChatModel> _chatItems;
+        private readonly List<IObserver<ChatModel>> _observers;
+        private readonly Lazy<Task> _worker;
 
         private double _lastChatItem;
 
@@ -26,6 +23,22 @@ namespace Subsonic.Client.Handlers
             _observers = new List<IObserver<ChatModel>>();
             _chatItems = new HashSet<ChatModel>();
             Interval = 1000;
+        }
+
+        public ISubsonicClient<T> Client { get; set; }
+        public int Interval { get; set; }
+
+        public void Dispose()
+        {
+            RemoveObservers();
+        }
+
+        public void RemoveObservers()
+        {
+            foreach (var observer in _observers)
+                observer.OnCompleted();
+
+            _observers.Clear();
         }
 
         public IDisposable Subscribe(IObserver<ChatModel> observer)
@@ -47,7 +60,7 @@ namespace Subsonic.Client.Handlers
 
         private async void SpawnWorker()
         {
-            bool execute = true;
+            var execute = true;
 
             while (execute)
             {
@@ -91,19 +104,6 @@ namespace Subsonic.Client.Handlers
                     execute = false;
                 }
             }
-        }
-
-        public void RemoveObservers()
-        {
-            foreach (var observer in _observers)
-                observer.OnCompleted();
-
-            _observers.Clear();
-        }
-
-        public void Dispose()
-        {
-            RemoveObservers();
         }
     }
 }

@@ -24,8 +24,8 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("publishDate")]
         public DateTime PublishDate
         {
-            get { return _publishDate.GetValueOrDefault(); }
-            set { _publishDate = value; }
+            get => _publishDate.GetValueOrDefault();
+            set => _publishDate = value;
         }
 
         public bool ShouldSerializePublishDate()

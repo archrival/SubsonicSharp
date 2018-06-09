@@ -20,15 +20,15 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("licenseExpires")]
         public DateTime LicenseExpires
         {
-            get { return _licenseExpires.GetValueOrDefault(); }
-            set { _licenseExpires = value; }
+            get => _licenseExpires.GetValueOrDefault();
+            set => _licenseExpires = value;
         }
 
         [XmlAttribute("trialExpires")]
         public DateTime TrialExpires
         {
-            get { return _trialExpires.GetValueOrDefault(); }
-            set { _trialExpires = value; }
+            get => _trialExpires.GetValueOrDefault();
+            set => _trialExpires = value;
         }
 
         public bool ShouldSerializeLicenseExpires()

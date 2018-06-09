@@ -20,8 +20,8 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("position")]
         public int Position
         {
-            get { return _position.GetValueOrDefault(); }
-            set { _position = value; }
+            get => _position.GetValueOrDefault();
+            set => _position = value;
         }
 
         public bool ShouldSerializePosition()

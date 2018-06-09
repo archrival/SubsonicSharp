@@ -43,8 +43,8 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("public")]
         public bool Public
         {
-            get { return _public.GetValueOrDefault(); }
-            set { _public = value; }
+            get => _public.GetValueOrDefault();
+            set => _public = value;
         }
 
         public bool ShouldSerializePublic()

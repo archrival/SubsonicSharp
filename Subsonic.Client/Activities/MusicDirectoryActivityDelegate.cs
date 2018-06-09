@@ -8,12 +8,12 @@ namespace Subsonic.Client.Activities
 {
     public class MusicDirectoryActivityDelegate<TImageType> : SubsonicActivityDelegate<Directory, TImageType> where TImageType : class, IDisposable
     {
-        private string Id { get; }
-
         public MusicDirectoryActivityDelegate(string id)
         {
             Id = id;
         }
+
+        private string Id { get; }
 
         public Func<CancellationToken?, Task<Directory>> CreateMethod(ISubsonicClient<TImageType> subsonicClient)
         {
@@ -24,36 +24,21 @@ namespace Subsonic.Client.Activities
 
         #region HashCode and Equality Overrides
 
+        private const int HashFactor = 17;
         private const int HashSeed = 73; // Should be prime number
-        private const int HashFactor = 17; // Should be prime number
+                                         // Should be prime number
 
-        public override int GetHashCode()
+        public static bool operator !=(MusicDirectoryActivityDelegate<TImageType> left, MusicDirectoryActivityDelegate<TImageType> right)
         {
-            int hash = HashSeed;
-            hash = (hash * HashFactor) + typeof(MusicDirectoryActivityDelegate<TImageType>).GetHashCode();
-
-            if (Id != null)
-                hash = (hash * HashFactor) + Id.GetHashCode();
-
-            return hash;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj != null && Equals(obj as MusicDirectoryActivityDelegate<TImageType>);
-        }
-
-        private bool Equals(MusicDirectoryActivityDelegate<TImageType> item)
-        {
-            return item != null && this == item;
+            return !(left == right);
         }
 
         public static bool operator ==(MusicDirectoryActivityDelegate<TImageType> left, MusicDirectoryActivityDelegate<TImageType> right)
         {
-            if (ReferenceEquals(null, left))
-                return ReferenceEquals(null, right);
+            if (left is null)
+                return right is null;
 
-            if (ReferenceEquals(null, right))
+            if (right is null)
                 return false;
 
             if (left.Id != null)
@@ -63,9 +48,25 @@ namespace Subsonic.Client.Activities
             return true;
         }
 
-        public static bool operator !=(MusicDirectoryActivityDelegate<TImageType> left, MusicDirectoryActivityDelegate<TImageType> right)
+        public override bool Equals(object obj)
         {
-            return !(left == right);
+            return obj != null && Equals(obj as MusicDirectoryActivityDelegate<TImageType>);
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = HashSeed;
+            hash = hash * HashFactor + typeof(MusicDirectoryActivityDelegate<TImageType>).GetHashCode();
+
+            if (Id != null)
+                hash = hash * HashFactor + Id.GetHashCode();
+
+            return hash;
+        }
+
+        private bool Equals(MusicDirectoryActivityDelegate<TImageType> item)
+        {
+            return item != null && this == item;
         }
 
         #endregion HashCode and Equality Overrides

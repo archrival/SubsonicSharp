@@ -23,34 +23,17 @@ namespace Subsonic.Client.Models
             };
         }
 
-        public override bool Equals(object obj)
+        public static bool operator !=(AlbumModel left, AlbumModel right)
         {
-            return obj != null && Equals(obj as AlbumModel);
-        }
-
-        private bool Equals(AlbumModel item)
-        {
-            return item != null && this == item;
-        }
-
-        public override int GetHashCode()
-        {
-            int hash = 13;
-            int hashFactor = 7;
-
-            hash = (hash * hashFactor) + base.GetHashCode();
-            hash = (hash * hashFactor) + Name.GetHashCode();
-            hash = (hash * hashFactor) + Parent.GetHashCode();
-
-            return hash;
+            return !(left == right);
         }
 
         public static bool operator ==(AlbumModel left, AlbumModel right)
         {
-            if (ReferenceEquals(null, left))
-                return ReferenceEquals(null, right);
+            if (left is null)
+                return right is null;
 
-            if (ReferenceEquals(null, right))
+            if (right is null)
                 return false;
 
             if (!string.Equals(left.Name, right.Name))
@@ -62,9 +45,26 @@ namespace Subsonic.Client.Models
             return true;
         }
 
-        public static bool operator !=(AlbumModel left, AlbumModel right)
+        public override bool Equals(object obj)
         {
-            return !(left == right);
+            return obj != null && Equals(obj as AlbumModel);
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = 13;
+            var hashFactor = 7;
+
+            hash = hash * hashFactor + base.GetHashCode();
+            hash = hash * hashFactor + Name.GetHashCode();
+            hash = hash * hashFactor + Parent.GetHashCode();
+
+            return hash;
+        }
+
+        private bool Equals(AlbumModel item)
+        {
+            return item != null && this == item;
         }
     }
 }

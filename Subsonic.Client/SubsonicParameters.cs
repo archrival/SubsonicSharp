@@ -8,12 +8,12 @@ namespace Subsonic.Client
 {
     public class SubsonicParameters
     {
-        public ICollection Parameters { get; private set; }
-        private SubsonicParameterType ParameterType { get; set; }
-
         private SubsonicParameters()
         {
         }
+
+        public ICollection Parameters { get; private set; }
+        private SubsonicParameterType ParameterType { get; set; }
 
         public static SubsonicParameters Create(SubsonicParameterType type = SubsonicParameterType.Single)
         {
@@ -39,9 +39,7 @@ namespace Subsonic.Client
             {
                 case SubsonicParameterType.List:
                     {
-                        var stringValue = value as string;
-
-                        if (stringValue != null)
+                        if (value is string stringValue)
                             Add(key, new List<string> { stringValue });
                         else if (required)
                             throw new SubsonicErrorException($"Parameter '{key}' is required, the value provided is null");
@@ -50,9 +48,7 @@ namespace Subsonic.Client
 
                 case SubsonicParameterType.Single:
                     {
-                        var parameters = Parameters as Dictionary<string, string>;
-
-                        if (parameters != null)
+                        if (Parameters is Dictionary<string, string> parameters)
                             if (value != null)
                                 parameters.Add(key, value.ToString());
                             else if (required)
@@ -64,9 +60,7 @@ namespace Subsonic.Client
 
         public void Add(string key, IEnumerable<string> values, bool required = false)
         {
-            var parameters = Parameters as List<KeyValuePair<string, string>>;
-
-            if (parameters == null)
+            if (!(Parameters is List<KeyValuePair<string, string>> parameters))
                 return;
 
             if (values != null)

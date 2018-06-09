@@ -16,15 +16,15 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("audioTrackId")]
         public int AudioTrackId
         {
-            get { return _audioTrackId.GetValueOrDefault(); }
-            set { _audioTrackId = value; }
+            get => _audioTrackId.GetValueOrDefault();
+            set => _audioTrackId = value;
         }
 
         [XmlAttribute("bitRate")]
         public int BitRate
         {
-            get { return _bitRate.GetValueOrDefault(); }
-            set { _bitRate = value; }
+            get => _bitRate.GetValueOrDefault();
+            set => _bitRate = value;
         }
 
         public bool ShouldSerializeAudioTrackId()

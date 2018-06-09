@@ -60,7 +60,7 @@ namespace Subsonic.Client
 
             if (parameters != null && parameters.Parameters.Count > 0)
             {
-                foreach (object parameter in parameters.Parameters)
+                foreach (var parameter in parameters.Parameters)
                 {
                     var key = string.Empty;
                     var value = string.Empty;
@@ -103,7 +103,7 @@ namespace Subsonic.Client
             }
             else
             {
-                string encodedPassword = $"enc:{Password.ToHexString()}";
+                var encodedPassword = $"enc:{Password.ToHexString()}";
                 queryBuilder.AppendFormat("&u={0}&p={1}", UserName, encodedPassword);
             }
 
@@ -135,22 +135,22 @@ namespace Subsonic.Client
         public override int GetHashCode()
         {
             var hash = HashSeed;
-            hash = (hash * HashFactor) + typeof(SubsonicServer).GetHashCode();
+            hash = hash * HashFactor + typeof(SubsonicServer).GetHashCode();
 
             if (Url != null)
-                hash = (hash * HashFactor) + Url.GetHashCode();
+                hash = hash * HashFactor + Url.GetHashCode();
 
             if (UserName != null)
-                hash = (hash * HashFactor) + UserName.GetHashCode();
+                hash = hash * HashFactor + UserName.GetHashCode();
 
             if (Password != null)
-                hash = (hash * HashFactor) + Password.GetHashCode();
+                hash = hash * HashFactor + Password.GetHashCode();
 
             if (ClientName != null)
-                hash = (hash * HashFactor) + ClientName.GetHashCode();
+                hash = hash * HashFactor + ClientName.GetHashCode();
 
             if (ApiVersion != null)
-                hash = (hash * HashFactor) + ApiVersion.GetHashCode();
+                hash = hash * HashFactor + ApiVersion.GetHashCode();
 
             return hash;
         }

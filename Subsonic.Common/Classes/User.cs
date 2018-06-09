@@ -63,15 +63,15 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("avatarLastChanged")]
         public DateTime AvatarLastChanged
         {
-            get { return _avatarLastChanged.GetValueOrDefault(); }
-            set { _avatarLastChanged = value; }
+            get => _avatarLastChanged.GetValueOrDefault();
+            set => _avatarLastChanged = value;
         }
 
         [XmlAttribute("maxBitrate")]
         public int MaxBitrate
         {
-            get { return _maxBitrate.GetValueOrDefault(); }
-            set { _maxBitrate = value; }
+            get => _maxBitrate.GetValueOrDefault();
+            set => _maxBitrate = value;
         }
 
         public bool ShouldSerializeAvatarLastChanged()

@@ -4,39 +4,21 @@ namespace Subsonic.Client.Models
 {
     public class GenreModel : ObservableObject
     {
-        public string Name { get; set; }
         public int AlbumCount { get; set; }
+        public string Name { get; set; }
         public int SongCount { get; set; }
 
-        public override bool Equals(object obj)
+        public static bool operator !=(GenreModel left, GenreModel right)
         {
-            return obj != null && Equals(obj as GenreModel);
-        }
-
-        private bool Equals(GenreModel item)
-        {
-            return item != null && this == item;
-        }
-
-        public override int GetHashCode()
-        {
-            int hash = 13;
-            int hashFactor = 7;
-
-            hash = (hash * hashFactor) + base.GetHashCode();
-            hash = (hash * hashFactor) + Name.GetHashCode();
-            hash = (hash * hashFactor) + AlbumCount.GetHashCode();
-            hash = (hash * hashFactor) + SongCount.GetHashCode();
-
-            return hash;
+            return !(left == right);
         }
 
         public static bool operator ==(GenreModel left, GenreModel right)
         {
-            if (ReferenceEquals(null, left))
-                return ReferenceEquals(null, right);
+            if (left is null)
+                return right is null;
 
-            if (ReferenceEquals(null, right))
+            if (right is null)
                 return false;
 
             if (!string.Equals(left.Name, right.Name))
@@ -45,15 +27,30 @@ namespace Subsonic.Client.Models
             if (!left.AlbumCount.Equals(right.AlbumCount))
                 return false;
 
-            if (!left.SongCount.Equals(right.SongCount))
-                return false;
-
-            return true;
+            return left.SongCount.Equals(right.SongCount);
         }
 
-        public static bool operator !=(GenreModel left, GenreModel right)
+        public override bool Equals(object obj)
         {
-            return !(left == right);
+            return obj != null && Equals(obj as GenreModel);
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = 13;
+            var hashFactor = 7;
+
+            hash = hash * hashFactor + base.GetHashCode();
+            hash = hash * hashFactor + Name.GetHashCode();
+            hash = hash * hashFactor + AlbumCount.GetHashCode();
+            hash = hash * hashFactor + SongCount.GetHashCode();
+
+            return hash;
+        }
+
+        private bool Equals(GenreModel item)
+        {
+            return item != null && this == item;
         }
     }
 }

@@ -104,113 +104,113 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("averageRating")]
         public double AverageRating
         {
-            get { return _averageRating.GetValueOrDefault(); }
-            set { _averageRating = value; }
+            get => _averageRating.GetValueOrDefault();
+            set => _averageRating = value;
         }
 
         [XmlAttribute("bitRate")]
         public int BitRate
         {
-            get { return _bitRate.GetValueOrDefault(); }
-            set { _bitRate = value; }
+            get => _bitRate.GetValueOrDefault();
+            set => _bitRate = value;
         }
 
         [XmlAttribute("bookmarkPosition")]
         public long BookmarkPosition
         {
-            get { return _bookmarkPosition.GetValueOrDefault(); }
-            set { _bookmarkPosition = value; }
+            get => _bookmarkPosition.GetValueOrDefault();
+            set => _bookmarkPosition = value;
         }
 
         [XmlAttribute("created")]
         public DateTime Created
         {
-            get { return _created.GetValueOrDefault(); }
-            set { _created = value; }
+            get => _created.GetValueOrDefault();
+            set => _created = value;
         }
 
         [XmlAttribute("discNumber")]
         public int DiscNumber
         {
-            get { return _discNumber.GetValueOrDefault(); }
-            set { _discNumber = value; }
+            get => _discNumber.GetValueOrDefault();
+            set => _discNumber = value;
         }
 
         [XmlAttribute("duration")]
         public int Duration
         {
-            get { return _duration.GetValueOrDefault(); }
-            set { _duration = value; }
+            get => _duration.GetValueOrDefault();
+            set => _duration = value;
         }
 
         [XmlAttribute("isVideo")]
         public bool IsVideo
         {
-            get { return _isVideo.GetValueOrDefault(); }
-            set { _isVideo = value; }
+            get => _isVideo.GetValueOrDefault();
+            set => _isVideo = value;
         }
 
         [XmlAttribute("originalHeight")]
         public int OriginalHeight
         {
-            get { return _originalHeight.GetValueOrDefault(); }
-            set { _originalHeight = value; }
+            get => _originalHeight.GetValueOrDefault();
+            set => _originalHeight = value;
         }
 
         [XmlAttribute("originalWidth")]
         public int OriginalWidth
         {
-            get { return _originalWidth.GetValueOrDefault(); }
-            set { _originalWidth = value; }
+            get => _originalWidth.GetValueOrDefault();
+            set => _originalWidth = value;
         }
 
         [XmlAttribute("playCount")]
         public long PlayCount
         {
-            get { return _playCount.GetValueOrDefault(); }
-            set { _playCount = value; }
+            get => _playCount.GetValueOrDefault();
+            set => _playCount = value;
         }
 
         [XmlAttribute("size")]
         public long Size
         {
-            get { return _size.GetValueOrDefault(); }
-            set { _size = value; }
+            get => _size.GetValueOrDefault();
+            set => _size = value;
         }
 
         [XmlAttribute("starred")]
         public DateTime Starred
         {
-            get { return _starred.GetValueOrDefault(); }
-            set { _starred = value; }
+            get => _starred.GetValueOrDefault();
+            set => _starred = value;
         }
 
         [XmlAttribute("track")]
         public int Track
         {
-            get { return _track.GetValueOrDefault(); }
-            set { _track = value; }
+            get => _track.GetValueOrDefault();
+            set => _track = value;
         }
 
         [XmlAttribute("type")]
         public MediaType Type
         {
-            get { return _type.GetValueOrDefault(); }
-            set { _type = value; }
+            get => _type.GetValueOrDefault();
+            set => _type = value;
         }
 
         [XmlAttribute("userRating")]
         public int UserRating
         {
-            get { return _userRating.GetValueOrDefault(); }
-            set { _userRating = value; }
+            get => _userRating.GetValueOrDefault();
+            set => _userRating = value;
         }
 
         [XmlAttribute("year")]
         public int Year
         {
-            get { return _year.GetValueOrDefault(); }
-            set { _year = value; }
+            get => _year.GetValueOrDefault();
+            set => _year = value;
         }
 
         public static bool operator !=(Child left, Child right)
@@ -220,16 +220,13 @@ namespace Subsonic.Common.Classes
 
         public static bool operator ==(Child left, Child right)
         {
-            if (ReferenceEquals(null, left))
-                return ReferenceEquals(null, right);
+            if (left is null)
+                return right is null;
 
-            if (ReferenceEquals(null, right))
+            if (right is null)
                 return false;
 
-            if (!string.Equals(left.Id, right.Id))
-                return false;
-
-            return true;
+            return string.Equals(left.Id, right.Id);
         }
 
         public override bool Equals(object obj)
@@ -239,10 +236,10 @@ namespace Subsonic.Common.Classes
 
         public override int GetHashCode()
         {
-            int hash = 13;
-            int hashFactor = 7;
+            var hash = 13;
+            const int hashFactor = 7;
 
-            hash = (hash * hashFactor) + Id.GetHashCode();
+            hash = hash * hashFactor + Id.GetHashCode();
 
             return hash;
         }

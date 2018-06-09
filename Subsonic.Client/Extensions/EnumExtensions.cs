@@ -18,7 +18,7 @@ namespace Subsonic.Client.Extensions
         {
             if (en == null) throw new ArgumentNullException(nameof(en));
 
-            Type type = en.GetType();
+            var type = en.GetType();
 
             var memInfo = type.GetTypeInfo().DeclaredMembers.Where(m => m.Name == en.ToString()).ToList();
 

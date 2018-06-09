@@ -8,15 +8,6 @@ namespace Subsonic.Client.Activities
 {
     public class Search2ActivityDelegate<TImageType> : SubsonicActivityDelegate<SearchResult2, TImageType> where TImageType : class, IDisposable
     {
-        private string Query { get; }
-        private int? ArtistCount { get; }
-        private int? ArtistOffset { get; }
-        private int? AlbumCount { get; }
-        private int? AlbumOffset { get; }
-        private int? SongCount { get; }
-        private int? SongOffset { get; }
-        private string MusicFolderId { get; }
-
         public Search2ActivityDelegate(string query, int? artistCount = null, int? artistOffset = null, int? albumCount = null, int? albumOffset = null, int? songCount = null, int? songOffset = null, string musicFolderId = null)
         {
             Query = query;
@@ -29,6 +20,15 @@ namespace Subsonic.Client.Activities
             MusicFolderId = musicFolderId;
         }
 
+        private int? AlbumCount { get; }
+        private int? AlbumOffset { get; }
+        private int? ArtistCount { get; }
+        private int? ArtistOffset { get; }
+        private string MusicFolderId { get; }
+        private string Query { get; }
+        private int? SongCount { get; }
+        private int? SongOffset { get; }
+
         public Func<CancellationToken?, Task<SearchResult2>> CreateMethod(ISubsonicClient<TImageType> subsonicClient)
         {
             return cancelToken => subsonicClient.Search2Async(Query, ArtistCount, ArtistOffset, AlbumCount, AlbumOffset, SongCount, SongOffset, MusicFolderId, cancelToken);
@@ -38,57 +38,21 @@ namespace Subsonic.Client.Activities
 
         #region HashCode and Equality Overrides
 
+        private const int HashFactor = 17;
         private const int HashSeed = 73; // Should be prime number
-        private const int HashFactor = 17; // Should be prime number
+                                         // Should be prime number
 
-        public override int GetHashCode()
+        public static bool operator !=(Search2ActivityDelegate<TImageType> left, Search2ActivityDelegate<TImageType> right)
         {
-            int hash = HashSeed;
-            hash = (hash * HashFactor) + typeof(Search2ActivityDelegate<TImageType>).GetHashCode();
-
-            if (Query != null)
-                hash = (hash * HashFactor) + Query.GetHashCode();
-
-            if (MusicFolderId != null)
-                hash = (hash * HashFactor) + MusicFolderId.GetHashCode();
-
-            if (ArtistCount.HasValue)
-                hash = (hash * HashFactor) + ArtistCount.Value.GetHashCode();
-
-            if (ArtistOffset.HasValue)
-                hash = (hash * HashFactor) + ArtistOffset.Value.GetHashCode();
-
-            if (AlbumCount.HasValue)
-                hash = (hash * HashFactor) + AlbumCount.Value.GetHashCode();
-
-            if (AlbumOffset.HasValue)
-                hash = (hash * HashFactor) + AlbumOffset.Value.GetHashCode();
-
-            if (SongCount.HasValue)
-                hash = (hash * HashFactor) + SongCount.Value.GetHashCode();
-
-            if (SongOffset.HasValue)
-                hash = (hash * HashFactor) + SongOffset.Value.GetHashCode();
-
-            return hash;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj != null && Equals(obj as Search2ActivityDelegate<TImageType>);
-        }
-
-        private bool Equals(Search2ActivityDelegate<TImageType> item)
-        {
-            return item != null && this == item;
+            return !(left == right);
         }
 
         public static bool operator ==(Search2ActivityDelegate<TImageType> left, Search2ActivityDelegate<TImageType> right)
         {
-            if (ReferenceEquals(null, left))
-                return ReferenceEquals(null, right);
+            if (left is null)
+                return right is null;
 
-            if (ReferenceEquals(null, right))
+            if (right is null)
                 return false;
 
             if (left.Query != null)
@@ -138,9 +102,46 @@ namespace Subsonic.Client.Activities
             return true;
         }
 
-        public static bool operator !=(Search2ActivityDelegate<TImageType> left, Search2ActivityDelegate<TImageType> right)
+        public override bool Equals(object obj)
         {
-            return !(left == right);
+            return obj != null && Equals(obj as Search2ActivityDelegate<TImageType>);
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = HashSeed;
+            hash = hash * HashFactor + typeof(Search2ActivityDelegate<TImageType>).GetHashCode();
+
+            if (Query != null)
+                hash = hash * HashFactor + Query.GetHashCode();
+
+            if (MusicFolderId != null)
+                hash = hash * HashFactor + MusicFolderId.GetHashCode();
+
+            if (ArtistCount.HasValue)
+                hash = hash * HashFactor + ArtistCount.Value.GetHashCode();
+
+            if (ArtistOffset.HasValue)
+                hash = hash * HashFactor + ArtistOffset.Value.GetHashCode();
+
+            if (AlbumCount.HasValue)
+                hash = hash * HashFactor + AlbumCount.Value.GetHashCode();
+
+            if (AlbumOffset.HasValue)
+                hash = hash * HashFactor + AlbumOffset.Value.GetHashCode();
+
+            if (SongCount.HasValue)
+                hash = hash * HashFactor + SongCount.Value.GetHashCode();
+
+            if (SongOffset.HasValue)
+                hash = hash * HashFactor + SongOffset.Value.GetHashCode();
+
+            return hash;
+        }
+
+        private bool Equals(Search2ActivityDelegate<TImageType> item)
+        {
+            return item != null && this == item;
         }
 
         #endregion HashCode and Equality Overrides

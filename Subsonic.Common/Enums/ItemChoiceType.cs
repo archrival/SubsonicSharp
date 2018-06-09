@@ -2,139 +2,139 @@
 
 namespace Subsonic.Common.Enums
 {
-	[XmlType(IncludeInSchema = false)]
-	public enum ItemChoiceType
-	{
-		[XmlEnum("album")]
-		Album,
+    [XmlType(IncludeInSchema = false)]
+    public enum ItemChoiceType
+    {
+        [XmlEnum("album")]
+        Album,
 
-		[XmlEnum("albumInfo")]
-		AlbumInfo,
+        [XmlEnum("albumInfo")]
+        AlbumInfo,
 
-		[XmlEnum("albumInfo2")]
-		AlbumInfo2,
+        [XmlEnum("albumInfo2")]
+        AlbumInfo2,
 
-		[XmlEnum("albumList")]
-		AlbumList,
+        [XmlEnum("albumList")]
+        AlbumList,
 
-		[XmlEnum("albumList2")]
-		AlbumList2,
+        [XmlEnum("albumList2")]
+        AlbumList2,
 
-		[XmlEnum("artist")]
-		Artist,
+        [XmlEnum("artist")]
+        Artist,
 
-		[XmlEnum("artistInfo")]
-		ArtistInfo,
+        [XmlEnum("artistInfo")]
+        ArtistInfo,
 
-		[XmlEnum("artistInfo2")]
-		ArtistInfo2,
+        [XmlEnum("artistInfo2")]
+        ArtistInfo2,
 
-		[XmlEnum("artists")]
-		Artists,
+        [XmlEnum("artists")]
+        Artists,
 
-		[XmlEnum("bookmarks")]
-		Bookmarks,
+        [XmlEnum("bookmarks")]
+        Bookmarks,
 
-		[XmlEnum("chatMessages")]
-		ChatMessages,
+        [XmlEnum("chatMessages")]
+        ChatMessages,
 
-		[XmlEnum("directory")]
-		Directory,
+        [XmlEnum("directory")]
+        Directory,
 
-		[XmlEnum("error")]
-		Error,
+        [XmlEnum("error")]
+        Error,
 
-		[XmlEnum("genres")]
-		Genres,
+        [XmlEnum("genres")]
+        Genres,
 
-		[XmlEnum("indexes")]
-		Indexes,
+        [XmlEnum("indexes")]
+        Indexes,
 
-		[XmlEnum("internetRadioStations")]
-		InternetRadioStations,
+        [XmlEnum("internetRadioStations")]
+        InternetRadioStations,
 
-		[XmlEnum("jukeboxPlaylist")]
-		JukeboxPlaylist,
+        [XmlEnum("jukeboxPlaylist")]
+        JukeboxPlaylist,
 
-		[XmlEnum("jukeboxStatus")]
-		JukeboxStatus,
+        [XmlEnum("jukeboxStatus")]
+        JukeboxStatus,
 
-		[XmlEnum("license")]
-		License,
+        [XmlEnum("license")]
+        License,
 
-		[XmlEnum("lyrics")]
-		Lyrics,
+        [XmlEnum("lyrics")]
+        Lyrics,
 
-		[XmlEnum("musicFolders")]
-		MusicFolders,
+        [XmlEnum("musicFolders")]
+        MusicFolders,
 
         [XmlEnum("newestPodcasts")]
         NewestPodcasts,
 
-		[XmlEnum("nowPlaying")]
-		NowPlaying,
+        [XmlEnum("nowPlaying")]
+        NowPlaying,
 
-		[XmlEnum("playlist")]
-		Playlist,
+        [XmlEnum("playlist")]
+        Playlist,
 
-		[XmlEnum("playlists")]
-		Playlists,
+        [XmlEnum("playlists")]
+        Playlists,
 
-		[XmlEnum("playQueue")]
-		PlayQueue,
+        [XmlEnum("playQueue")]
+        PlayQueue,
 
-		[XmlEnum("podcasts")]
-		Podcasts,
+        [XmlEnum("podcasts")]
+        Podcasts,
 
-		[XmlEnum("randomSongs")]
-		RandomSongs,
+        [XmlEnum("randomSongs")]
+        RandomSongs,
 
-		[XmlEnum("scanStatus")]
-		ScanStatus,
+        [XmlEnum("scanStatus")]
+        ScanStatus,
 
-		[XmlEnum("searchResult")]
-		SearchResult,
+        [XmlEnum("searchResult")]
+        SearchResult,
 
-		[XmlEnum("searchResult2")]
-		SearchResult2,
+        [XmlEnum("searchResult2")]
+        SearchResult2,
 
-		[XmlEnum("searchResult3")]
-		SearchResult3,
+        [XmlEnum("searchResult3")]
+        SearchResult3,
 
-		[XmlEnum("shares")]
-		Shares,
+        [XmlEnum("shares")]
+        Shares,
 
-		[XmlEnum("similarSongs")]
-		SimilarSongs,
+        [XmlEnum("similarSongs")]
+        SimilarSongs,
 
-		[XmlEnum("similarSongs2")]
-		SimilarSongs2,
+        [XmlEnum("similarSongs2")]
+        SimilarSongs2,
 
-		[XmlEnum("song")]
-		Song,
+        [XmlEnum("song")]
+        Song,
 
-		[XmlEnum("songsByGenre")]
-		SongsByGenre,
+        [XmlEnum("songsByGenre")]
+        SongsByGenre,
 
-		[XmlEnum("starred")]
-		Starred,
+        [XmlEnum("starred")]
+        Starred,
 
-		[XmlEnum("starred2")]
-		Starred2,
+        [XmlEnum("starred2")]
+        Starred2,
 
-		[XmlEnum("topSongs")]
-		TopSongs,
+        [XmlEnum("topSongs")]
+        TopSongs,
 
-		[XmlEnum("user")]
-		User,
+        [XmlEnum("user")]
+        User,
 
-		[XmlEnum("users")]
-		Users,
+        [XmlEnum("users")]
+        Users,
 
-		[XmlEnum("videoInfo")]
-		VideoInfo,
+        [XmlEnum("videoInfo")]
+        VideoInfo,
 
-		[XmlEnum("videos")]
-		Videos
-	}
+        [XmlEnum("videos")]
+        Videos
+    }
 }

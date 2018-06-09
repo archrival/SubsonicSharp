@@ -24,8 +24,8 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("starred")]
         public DateTime Starred
         {
-            get { return _starred.GetValueOrDefault(); }
-            set { _starred = value; }
+            get => _starred.GetValueOrDefault();
+            set => _starred = value;
         }
 
         public bool ShouldSerializeStarred()

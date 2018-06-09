@@ -112,21 +112,21 @@ namespace Subsonic.Client.Windows.Tests
         [Fact]
         public async void CreateAdminUserAsDownloadUserOnSubsonicThrowsUserNotAuthorized()
         {
-            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _downloadSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail, false, true));
+            var ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _downloadSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail, false, true));
             Assert.True(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
         [Fact]
         public async void CreateAdminUserAsNoPlayUserOnSubsonicThrowsUserNotAuthorized()
         {
-            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _noPlaySubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail, false, true));
+            var ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _noPlaySubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail, false, true));
             Assert.True(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
         [Fact]
         public async void CreateAdminUserAsPlayUserOnSubsonicThrowsUserNotAuthorized()
         {
-            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _playSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail, false, true));
+            var ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _playSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail, false, true));
             Assert.True(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
@@ -162,21 +162,21 @@ namespace Subsonic.Client.Windows.Tests
         [Fact]
         public async void CreateUserAsDownloadUserOnSubsonicThrowsUserNotAuthorized()
         {
-            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _downloadSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail));
+            var ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _downloadSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail));
             Assert.True(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
         [Fact]
         public async void CreateUserAsNoPlayUserOnSubsonicThrowsUserNotAuthorized()
         {
-            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _noPlaySubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail));
+            var ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _noPlaySubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail));
             Assert.True(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
         [Fact]
         public async void CreateUserAsPlayUserOnSubsonicThrowsUserNotAuthorized()
         {
-            SubsonicErrorException ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _playSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail));
+            var ex = await Assert.ThrowsAsync<SubsonicErrorException>(async () => await _playSubsonicClient.CreateUserAsync(UserToCreate, Password, UserToCreateEmail));
             Assert.True(ex.Error.Code.Equals(ErrorCode.UserNotAuthorized));
         }
 
@@ -321,7 +321,7 @@ namespace Subsonic.Client.Windows.Tests
         [Fact]
         public async void GetIndexesForFutureDateAsAdminUserOnSubsonic()
         {
-            long ifModifiedSince = DateTime.UtcNow.AddDays(1).ToUnixTimestampInMilliseconds();
+            var ifModifiedSince = DateTime.UtcNow.AddDays(1).ToUnixTimestampInMilliseconds();
             var indexes = await _adminSubsonicClient.GetIndexesAsync(ifModifiedSince: ifModifiedSince);
 
             Assert.Null(indexes);
@@ -344,7 +344,7 @@ namespace Subsonic.Client.Windows.Tests
         [Fact]
         public async void GetInvalidNumberOfRandomSongsAsAdminUserOnSubsonic()
         {
-            RandomSongs randomSongs = await _adminSubsonicClient.GetRandomSongsAsync(InvalidRandomSongCount);
+            var randomSongs = await _adminSubsonicClient.GetRandomSongsAsync(InvalidRandomSongCount);
 
             Assert.True(randomSongs.Songs.Count < InvalidRandomSongCount);
         }
@@ -504,7 +504,7 @@ namespace Subsonic.Client.Windows.Tests
         public async void GetRandomSongsAsAdminUserOnSubsonic()
         {
             var randomNumber = _random.Next(MinRandomSongCount, MaxRandomSongCount);
-            RandomSongs randomSongs = await _adminSubsonicClient.GetRandomSongsAsync(randomNumber);
+            var randomSongs = await _adminSubsonicClient.GetRandomSongsAsync(randomNumber);
 
             Assert.Equal(randomSongs.Songs.Count, randomNumber);
         }

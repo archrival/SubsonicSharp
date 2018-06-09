@@ -12,27 +12,35 @@ namespace Subsonic.Client.Windows
 {
     public class StreamProxy : IDisposable
     {
-        private Thread _thread;
-        private bool _isRunning;
-        private TcpListener _socket;
-        private int _port;
-        private TrackModel _trackItem;
-        private StreamToMediaPlayerTask _task;
         private static readonly Lazy<StreamProxy> StreamProxyInstance = new Lazy<StreamProxy>(() => new StreamProxy());
+        private bool _isRunning;
+        private int _port;
+        private TcpListener _socket;
+        private StreamToMediaPlayerTask _task;
+        private Thread _thread;
+        private TrackModel _trackItem;
 
         private StreamProxy()
         { }
 
         public static StreamProxy Instance => StreamProxyInstance.Value;
 
-        public void SetTrackItem(TrackModel trackItem)
+        public void Dispose()
         {
-            _trackItem = trackItem;
+            if (_isRunning)
+                Stop();
+
+            _task?.Dispose();
         }
 
         public int GetPort()
         {
             return _port;
+        }
+
+        public void SetTrackItem(TrackModel trackItem)
+        {
+            _trackItem = trackItem;
         }
 
         public void Start()
@@ -62,15 +70,6 @@ namespace Subsonic.Client.Windows
             _thread.Abort();
         }
 
-        private void Run()
-        {
-            _isRunning = true;
-
-            _task = new StreamToMediaPlayerTask();
-
-            SpinWait.SpinUntil(CheckForWork);
-        }
-
         private bool CheckForWork()
         {
             try
@@ -94,59 +93,44 @@ namespace Subsonic.Client.Windows
             return !_isRunning;
         }
 
-        public void Dispose()
+        private void Run()
         {
-            if (_isRunning)
-                Stop();
+            _isRunning = true;
 
-            _task?.Dispose();
+            _task = new StreamToMediaPlayerTask();
+
+            SpinWait.SpinUntil(CheckForWork);
         }
 
         private class StreamToMediaPlayerTask : IDisposable
         {
-            private string _localPath;
-            private TcpClient _client;
-            private int _cbSkip;
-            private NetworkStream _inputStream;
-            private StreamReader _streamReader;
             private const string Headers = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nConnection: close\r\n\r\n";
+            private int _cbSkip;
+            private TcpClient _client;
+            private NetworkStream _inputStream;
+            private string _localPath;
+            private StreamReader _streamReader;
 
-            internal void SetClient(TcpClient client)
+            public void Dispose()
             {
-                _client?.Close();
-
-                _client = client;
-                _client.NoDelay = true;
-                _client.ReceiveBufferSize = 4096;
-                _cbSkip = 0;
-                _localPath = null;
-            }
-
-            private string ReadRequest()
-            {
-                String firstLine;
-
-                try
+                if (_streamReader != null)
                 {
-                    _inputStream = _client.GetStream();
-                    _streamReader = new StreamReader(_inputStream);
-                    firstLine = _streamReader.ReadLine();
-                }
-                catch (Exception)
-                {
-                    return null;
+                    _streamReader.Close();
+                    _streamReader.Dispose();
+                    _streamReader = null;
                 }
 
-                if (string.IsNullOrWhiteSpace(firstLine))
-                    return null;
-
-                var st = firstLine.Split(' ');
-                return st.ElementAt(1).Substring(1);
+                if (_inputStream != null)
+                {
+                    _inputStream.Close();
+                    _inputStream.Dispose();
+                    _inputStream = null;
+                }
             }
 
             internal bool ProcessRequest()
             {
-                string request = ReadRequest();
+                var request = ReadRequest();
 
                 if (string.IsNullOrWhiteSpace(request))
                     return false;
@@ -163,7 +147,7 @@ namespace Subsonic.Client.Windows
                 if (file.Exists)
                     return true;
 
-                bool waitForFile = true;
+                var waitForFile = true;
                 var sw = new Stopwatch();
                 sw.Start();
 
@@ -203,19 +187,19 @@ namespace Subsonic.Client.Windows
                         {
                             file.Refresh();
 
-                            int cbSentThisBatch = 0;
+                            var cbSentThisBatch = 0;
 
                             if (file.Exists)
                             {
-                                using (FileStream input = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+                                using (var input = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
                                 {
                                     input.Seek(_cbSkip, SeekOrigin.Current);
-                                    long cbToSendThisBatch = input.Length;
+                                    var cbToSendThisBatch = input.Length;
 
                                     while (cbToSendThisBatch > 0)
                                     {
-                                        int cbToRead = (int)Math.Min(cbToSendThisBatch, buff.Length);
-                                        int cbRead = input.Read(buff, 0, cbToRead);
+                                        var cbToRead = (int)Math.Min(cbToSendThisBatch, buff.Length);
+                                        var cbRead = input.Read(buff, 0, cbToRead);
 
                                         if (cbRead == 0)
                                             break;
@@ -257,21 +241,37 @@ namespace Subsonic.Client.Windows
                 }
             }
 
-            public void Dispose()
+            internal void SetClient(TcpClient client)
             {
-                if (_streamReader != null)
+                _client?.Close();
+
+                _client = client;
+                _client.NoDelay = true;
+                _client.ReceiveBufferSize = 4096;
+                _cbSkip = 0;
+                _localPath = null;
+            }
+
+            private string ReadRequest()
+            {
+                String firstLine;
+
+                try
                 {
-                    _streamReader.Close();
-                    _streamReader.Dispose();
-                    _streamReader = null;
+                    _inputStream = _client.GetStream();
+                    _streamReader = new StreamReader(_inputStream);
+                    firstLine = _streamReader.ReadLine();
+                }
+                catch (Exception)
+                {
+                    return null;
                 }
 
-                if (_inputStream != null)
-                {
-                    _inputStream.Close();
-                    _inputStream.Dispose();
-                    _inputStream = null;
-                }
+                if (string.IsNullOrWhiteSpace(firstLine))
+                    return null;
+
+                var st = firstLine.Split(' ');
+                return st.ElementAt(1).Substring(1);
             }
         }
     }

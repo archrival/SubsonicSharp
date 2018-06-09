@@ -16,6 +16,30 @@ namespace Subsonic.Client.Tasks
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public string ErrorMessage => InnerException?.Message;
+
+        public AggregateException Exception => Task.Exception;
+
+        public Exception InnerException => Exception?.InnerException;
+
+        public bool IsCanceled => Task.IsCanceled;
+
+        public bool IsCompleted => Task.IsCompleted;
+
+        public bool IsFaulted => Task.IsFaulted;
+
+        public bool IsNotCompleted => !Task.IsCompleted;
+
+        public bool IsSuccessfullyCompleted => Task.Status == TaskStatus.RanToCompletion;
+
+        public TResult Result => Task.Status == TaskStatus.RanToCompletion ? Task.Result : default(TResult);
+
+        public TaskStatus Status => Task.Status;
+
+        public Task<TResult> Task { get; private set; }
+
         private async Task WatchTaskAsync(Task task)
         {
             try
@@ -52,49 +76,5 @@ namespace Subsonic.Client.Tasks
                 propertyChanged(this, new PropertyChangedEventArgs("Result"));
             }
         }
-
-        public Task<TResult> Task { get; private set; }
-
-        public TResult Result
-        {
-            get
-            {
-                return (Task.Status == TaskStatus.RanToCompletion) ? Task.Result : default(TResult);
-            }
-        }
-
-        public TaskStatus Status { get { return Task.Status; } }
-        public bool IsCompleted { get { return Task.IsCompleted; } }
-        public bool IsNotCompleted { get { return !Task.IsCompleted; } }
-
-        public bool IsSuccessfullyCompleted
-        {
-            get
-            {
-                return Task.Status == TaskStatus.RanToCompletion;
-            }
-        }
-
-        public bool IsCanceled { get { return Task.IsCanceled; } }
-        public bool IsFaulted { get { return Task.IsFaulted; } }
-        public AggregateException Exception { get { return Task.Exception; } }
-
-        public Exception InnerException
-        {
-            get
-            {
-                return (Exception == null) ? null : Exception.InnerException;
-            }
-        }
-
-        public string ErrorMessage
-        {
-            get
-            {
-                return (InnerException == null) ? null : InnerException.Message;
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

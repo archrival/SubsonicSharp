@@ -41,7 +41,7 @@ namespace Subsonic.Client.Android
                         if (stringResponse == null)
                             throw new SubsonicErrorException("HTTP response contains no content");
 
-                        Response result = await DeserializeResponseAsync(stringResponse);
+                        var result = await DeserializeResponseAsync(stringResponse);
 
                         if (result.ItemElementName == ItemChoiceType.Error)
                             throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
@@ -85,13 +85,11 @@ namespace Subsonic.Client.Android
 
                     if (download)
                     {
-                        if (cancelToken.HasValue)
-                            cancelToken.Value.ThrowIfCancellationRequested();
+                        cancelToken?.ThrowIfCancellationRequested();
 
                         using (var fileStream = File.Open(path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
                         {
-                            if (cancelToken.HasValue)
-                                cancelToken.Value.ThrowIfCancellationRequested();
+                            cancelToken?.ThrowIfCancellationRequested();
 
                             await response.Content.CopyToAsync(fileStream);
                             bytesTransferred = fileStream.Length;
@@ -107,8 +105,7 @@ namespace Subsonic.Client.Android
                 throw new SubsonicApiException(ex.Message, ex);
             }
 
-            if (cancelToken.HasValue)
-                cancelToken.Value.ThrowIfCancellationRequested();
+            cancelToken?.ThrowIfCancellationRequested();
 
             return bytesTransferred;
         }

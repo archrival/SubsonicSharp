@@ -7,10 +7,6 @@ namespace Subsonic.Client.Models
 {
     public class ChatModel : ObservableObject
     {
-        public string User { get; }
-        public string Message { get; }
-        public DateTime TimeStamp { get; }
-
         public ChatModel(ChatMessage chatMessage)
         {
             User = chatMessage.Username;
@@ -18,40 +14,28 @@ namespace Subsonic.Client.Models
             TimeStamp = chatMessage.Time.FromUnixTimestampInMilliseconds().ToLocalTime();
         }
 
+        public string Message { get; }
+        public DateTime TimeStamp { get; }
+        public string User { get; }
         // Overrides for equality
 
         #region HashCode and Equality Overrides
 
+        private const int HashFactor = 11;
         private const int HashSeed = 29; // Should be prime number
-        private const int HashFactor = 11; // Should be prime number
+                                         // Should be prime number
 
-        public override int GetHashCode()
+        public static bool operator !=(ChatModel left, ChatModel right)
         {
-            int hash = HashSeed;
-            hash = (hash * HashFactor) + typeof(ChatModel).GetHashCode();
-            hash = (hash * HashFactor) + TimeStamp.GetHashCode();
-            hash = (hash * HashFactor) + User.GetHashCode();
-            hash = (hash * HashFactor) + Message.GetHashCode();
-
-            return hash;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj != null && Equals(obj as ChatModel);
-        }
-
-        private bool Equals(ChatModel chatItem)
-        {
-            return chatItem != null && this == chatItem;
+            return !(left == right);
         }
 
         public static bool operator ==(ChatModel left, ChatModel right)
         {
-            if (ReferenceEquals(null, left))
-                return ReferenceEquals(null, right);
+            if (left is null)
+                return right is null;
 
-            if (!ReferenceEquals(null, right))
+            if (!(right is null))
                 if (left.TimeStamp.Equals(right.TimeStamp))
                     if (left.User.Equals(right.User))
                         if (left.Message.Equals(right.Message))
@@ -60,9 +44,25 @@ namespace Subsonic.Client.Models
             return false;
         }
 
-        public static bool operator !=(ChatModel left, ChatModel right)
+        public override bool Equals(object obj)
         {
-            return !(left == right);
+            return obj != null && Equals(obj as ChatModel);
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = HashSeed;
+            hash = hash * HashFactor + typeof(ChatModel).GetHashCode();
+            hash = hash * HashFactor + TimeStamp.GetHashCode();
+            hash = hash * HashFactor + User.GetHashCode();
+            hash = hash * HashFactor + Message.GetHashCode();
+
+            return hash;
+        }
+
+        private bool Equals(ChatModel chatItem)
+        {
+            return chatItem != null && this == chatItem;
         }
 
         #endregion HashCode and Equality Overrides

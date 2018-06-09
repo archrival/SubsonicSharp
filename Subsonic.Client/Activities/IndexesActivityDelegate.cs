@@ -8,14 +8,14 @@ namespace Subsonic.Client.Activities
 {
     public class IndexesActivityDelegate<TImageType> : SubsonicActivityDelegate<Indexes, TImageType> where TImageType : class, IDisposable
     {
-        private string MusicFolderId { get; }
-        private long? IfModifiedSince { get; }
-
         public IndexesActivityDelegate(string musicFolderId = null, long? ifModifiedSince = null)
         {
             MusicFolderId = musicFolderId;
             IfModifiedSince = ifModifiedSince;
         }
+
+        private long? IfModifiedSince { get; }
+        private string MusicFolderId { get; }
 
         public Func<CancellationToken?, Task<Indexes>> CreateMethod(ISubsonicClient<TImageType> subsonicClient)
         {
@@ -26,39 +26,21 @@ namespace Subsonic.Client.Activities
 
         #region HashCode and Equality Overrides
 
+        private const int HashFactor = 17;
         private const int HashSeed = 73; // Should be prime number
-        private const int HashFactor = 17; // Should be prime number
+                                         // Should be prime number
 
-        public override int GetHashCode()
+        public static bool operator !=(IndexesActivityDelegate<TImageType> left, IndexesActivityDelegate<TImageType> right)
         {
-            int hash = HashSeed;
-            hash = (hash * HashFactor) + typeof(IndexesActivityDelegate<TImageType>).GetHashCode();
-
-            if (MusicFolderId != null)
-                hash = (hash * HashFactor) + MusicFolderId.GetHashCode();
-
-            if (IfModifiedSince != null)
-                hash = (hash * HashFactor) + IfModifiedSince.GetHashCode();
-
-            return hash;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj != null && Equals(obj as IndexesActivityDelegate<TImageType>);
-        }
-
-        private bool Equals(IndexesActivityDelegate<TImageType> item)
-        {
-            return item != null && this == item;
+            return !(left == right);
         }
 
         public static bool operator ==(IndexesActivityDelegate<TImageType> left, IndexesActivityDelegate<TImageType> right)
         {
-            if (ReferenceEquals(null, left))
-                return ReferenceEquals(null, right);
+            if (left is null)
+                return right is null;
 
-            if (ReferenceEquals(null, right))
+            if (right is null)
                 return false;
 
             if (left.MusicFolderId != null)
@@ -72,9 +54,28 @@ namespace Subsonic.Client.Activities
             return true;
         }
 
-        public static bool operator !=(IndexesActivityDelegate<TImageType> left, IndexesActivityDelegate<TImageType> right)
+        public override bool Equals(object obj)
         {
-            return !(left == right);
+            return obj != null && Equals(obj as IndexesActivityDelegate<TImageType>);
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = HashSeed;
+            hash = hash * HashFactor + typeof(IndexesActivityDelegate<TImageType>).GetHashCode();
+
+            if (MusicFolderId != null)
+                hash = hash * HashFactor + MusicFolderId.GetHashCode();
+
+            if (IfModifiedSince != null)
+                hash = hash * HashFactor + IfModifiedSince.GetHashCode();
+
+            return hash;
+        }
+
+        private bool Equals(IndexesActivityDelegate<TImageType> item)
+        {
+            return item != null && this == item;
         }
 
         #endregion HashCode and Equality Overrides

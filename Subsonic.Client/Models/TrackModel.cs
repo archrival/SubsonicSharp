@@ -8,22 +8,12 @@ namespace Subsonic.Client.Models
     {
         private bool _cached;
 
-        public int DiscNumber { get; set; }
-        public int TrackNumber { get; set; }
-        public string Title { get; set; }
         public string Album { get; set; }
-        public TimeSpan Duration { get; set; }
         public int BitRate { get; set; }
-        public string FileName { get; set; }
-        public Guid PlaylistGuid { get; set; }
-        public TrackModel Source { get; set; }
 
         public bool Cached
         {
-            get
-            {
-                return _cached;
-            }
+            get => _cached;
             set
             {
                 if (_cached != value)
@@ -33,6 +23,14 @@ namespace Subsonic.Client.Models
                 }
             }
         }
+
+        public int DiscNumber { get; set; }
+        public TimeSpan Duration { get; set; }
+        public string FileName { get; set; }
+        public Guid PlaylistGuid { get; set; }
+        public TrackModel Source { get; set; }
+        public string Title { get; set; }
+        public int TrackNumber { get; set; }
 
         public static TrackModel Create(Child child, string fileName, bool cached)
         {
@@ -55,46 +53,17 @@ namespace Subsonic.Client.Models
             };
         }
 
-        public override bool Equals(object obj)
+        public static bool operator !=(TrackModel left, TrackModel right)
         {
-            return obj != null && Equals(obj as TrackModel);
-        }
-
-        private bool Equals(TrackModel item)
-        {
-            return item != null && this == item;
-        }
-
-        public override int GetHashCode()
-        {
-            int hash = 13;
-            int hashFactor = 7;
-
-            hash = (hash * hashFactor) + base.GetHashCode();
-            hash = (hash * hashFactor) + PlaylistGuid.GetHashCode();
-            hash = Title.GetHashCode(hash, hashFactor);
-            hash = Artist.GetHashCode(hash, hashFactor);
-            hash = Album.GetHashCode(hash, hashFactor);
-            hash = FileName.GetHashCode(hash, hashFactor);
-            hash = (hash * hashFactor) + DiscNumber.GetHashCode();
-            hash = (hash * hashFactor) + TrackNumber.GetHashCode();
-            hash = (hash * hashFactor) + Cached.GetHashCode();
-
-            if (Source != null)
-                hash = (hash * hashFactor) + Source.GetHashCode();
-
-            hash = (hash * hashFactor) + Duration.GetHashCode();
-            hash = (hash * hashFactor) + BitRate.GetHashCode();
-
-            return hash;
+            return !(left == right);
         }
 
         public static bool operator ==(TrackModel left, TrackModel right)
         {
-            if (ReferenceEquals(null, left))
-                return ReferenceEquals(null, right);
+            if (left is null)
+                return right is null;
 
-            if (ReferenceEquals(null, right))
+            if (right is null)
                 return false;
 
             if (!left.PlaylistGuid.Equals(right.PlaylistGuid))
@@ -141,9 +110,38 @@ namespace Subsonic.Client.Models
             return true;
         }
 
-        public static bool operator !=(TrackModel left, TrackModel right)
+        public override bool Equals(object obj)
         {
-            return !(left == right);
+            return obj != null && Equals(obj as TrackModel);
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = 13;
+            var hashFactor = 7;
+
+            hash = hash * hashFactor + base.GetHashCode();
+            hash = hash * hashFactor + PlaylistGuid.GetHashCode();
+            hash = Title.GetHashCode(hash, hashFactor);
+            hash = Artist.GetHashCode(hash, hashFactor);
+            hash = Album.GetHashCode(hash, hashFactor);
+            hash = FileName.GetHashCode(hash, hashFactor);
+            hash = hash * hashFactor + DiscNumber.GetHashCode();
+            hash = hash * hashFactor + TrackNumber.GetHashCode();
+            hash = hash * hashFactor + Cached.GetHashCode();
+
+            if (Source != null)
+                hash = hash * hashFactor + Source.GetHashCode();
+
+            hash = hash * hashFactor + Duration.GetHashCode();
+            hash = hash * hashFactor + BitRate.GetHashCode();
+
+            return hash;
+        }
+
+        private bool Equals(TrackModel item)
+        {
+            return item != null && this == item;
         }
     }
 }

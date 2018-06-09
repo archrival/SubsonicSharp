@@ -6,6 +6,24 @@ namespace Subsonic.Client.Extensions
 {
     public static class StringExtensions
     {
+        public static byte[] GetBytes(this string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            var bytes = new byte[str.Length * sizeof(char)];
+            Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+            return bytes;
+        }
+
+        public static int GetHashCode(this string str, int hash, int hashFactor)
+        {
+            if (str == null)
+                return hash;
+
+            return hash * hashFactor + str.GetHashCode();
+        }
+
         /// <summary>
         /// Covert ASCII string to Hexadecimal string.
         /// </summary>
@@ -16,30 +34,12 @@ namespace Subsonic.Client.Extensions
             if (string.IsNullOrEmpty(text))
                 return text;
 
-            StringBuilder hexString = new StringBuilder();
+            var hexString = new StringBuilder();
 
-            foreach (char character in text)
+            foreach (var character in text)
                 hexString.Append(Convert.ToInt32(character).ToString("x", CultureInfo.InvariantCulture));
 
             return hexString.ToString();
-        }
-
-        public static byte[] GetBytes(this string str)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-
-            byte[] bytes = new byte[str.Length * sizeof(char)];
-            Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
-            return bytes;
-        }
-
-        public static int GetHashCode(this string str, int hash, int hashFactor)
-        {
-            if (str == null)
-                return hash;
-
-            return (hash * hashFactor) + str.GetHashCode();
         }
     }
 }

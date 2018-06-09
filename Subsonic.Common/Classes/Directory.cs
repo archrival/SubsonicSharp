@@ -33,29 +33,29 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("averageRating")]
         public double AverageRating
         {
-            get { return _averageRating.GetValueOrDefault(); }
-            set { _averageRating = value; }
+            get => _averageRating.GetValueOrDefault();
+            set => _averageRating = value;
         }
 
         [XmlAttribute("playCount")]
         public long PlayCount
         {
-            get { return _playCount.GetValueOrDefault(); }
-            set { _playCount = value; }
+            get => _playCount.GetValueOrDefault();
+            set => _playCount = value;
         }
 
         [XmlAttribute("starred")]
         public DateTime Starred
         {
-            get { return _starred.GetValueOrDefault(); }
-            set { _starred = value; }
+            get => _starred.GetValueOrDefault();
+            set => _starred = value;
         }
 
         [XmlAttribute("userRating")]
         public int UserRating
         {
-            get { return _userRating.GetValueOrDefault(); }
-            set { _userRating = value; }
+            get => _userRating.GetValueOrDefault();
+            set => _userRating = value;
         }
 
         public bool ShouldSerializeAverageRating()

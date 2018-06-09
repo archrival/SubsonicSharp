@@ -6,50 +6,27 @@ namespace Subsonic.Client.Models
 {
     public class ChildModel : ObservableObject
     {
+        public int AlbumArtSize { get; set; }
         public string Artist { get; set; }
+        public Child Child { get; set; }
+        public string CoverArt { get; set; }
         public string Genre { get; set; }
         public string Id { get; set; }
-        public int Year { get; set; }
         public int Rating { get; set; }
         public bool Starred { get; set; }
-        public int AlbumArtSize { get; set; }
-        public string CoverArt { get; set; }
-        public Child Child { get; set; }
+        public int Year { get; set; }
 
-        public override bool Equals(object obj)
+        public static bool operator !=(ChildModel left, ChildModel right)
         {
-            return obj != null && Equals(obj as ChildModel);
-        }
-
-        private bool Equals(ChildModel item)
-        {
-            return item != null && this == item;
-        }
-
-        public override int GetHashCode()
-        {
-            int hash = 13;
-            int hashFactor = 7;
-
-            hash = Id.GetHashCode(hash, hashFactor);
-            hash = Artist.GetHashCode(hash, hashFactor);
-            hash = Genre.GetHashCode(hash, hashFactor);
-            hash = (hash * hashFactor) + Year.GetHashCode();
-            hash = (hash * hashFactor) + Rating.GetHashCode();
-            hash = (hash * hashFactor) + Starred.GetHashCode();
-            hash = (hash * hashFactor) + AlbumArtSize.GetHashCode();
-            hash = CoverArt.GetHashCode(hash, hashFactor);
-            hash = (hash * hashFactor) + Child.GetHashCode();
-
-            return hash;
+            return !(left == right);
         }
 
         public static bool operator ==(ChildModel left, ChildModel right)
         {
-            if (ReferenceEquals(null, left))
-                return ReferenceEquals(null, right);
+            if (left is null)
+                return right is null;
 
-            if (ReferenceEquals(null, right))
+            if (right is null)
                 return false;
 
             if (!string.Equals(left.Id, right.Id))
@@ -82,9 +59,32 @@ namespace Subsonic.Client.Models
             return true;
         }
 
-        public static bool operator !=(ChildModel left, ChildModel right)
+        public override bool Equals(object obj)
         {
-            return !(left == right);
+            return obj != null && Equals(obj as ChildModel);
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = 13;
+            var hashFactor = 7;
+
+            hash = Id.GetHashCode(hash, hashFactor);
+            hash = Artist.GetHashCode(hash, hashFactor);
+            hash = Genre.GetHashCode(hash, hashFactor);
+            hash = hash * hashFactor + Year.GetHashCode();
+            hash = hash * hashFactor + Rating.GetHashCode();
+            hash = hash * hashFactor + Starred.GetHashCode();
+            hash = hash * hashFactor + AlbumArtSize.GetHashCode();
+            hash = CoverArt.GetHashCode(hash, hashFactor);
+            hash = hash * hashFactor + Child.GetHashCode();
+
+            return hash;
+        }
+
+        private bool Equals(ChildModel item)
+        {
+            return item != null && this == item;
         }
     }
 }

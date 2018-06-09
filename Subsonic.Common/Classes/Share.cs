@@ -36,15 +36,15 @@ namespace Subsonic.Common.Classes
         [XmlAttribute("expires")]
         public DateTime Expires
         {
-            get { return _expires.GetValueOrDefault(); }
-            set { _expires = value; }
+            get => _expires.GetValueOrDefault();
+            set => _expires = value;
         }
 
         [XmlAttribute("lastVisited")]
         public DateTime LastVisited
         {
-            get { return _lastVisited.GetValueOrDefault(); }
-            set { _lastVisited = value; }
+            get => _lastVisited.GetValueOrDefault();
+            set => _lastVisited = value;
         }
 
         public bool ShouldSerializeExpires()

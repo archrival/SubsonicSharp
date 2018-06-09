@@ -8,47 +8,44 @@ namespace Subsonic.Client.Models
         public AlbumListType AlbumListType { get; set; }
         public int Current { get; set; }
 
-        public override bool Equals(object obj)
+        public static bool operator !=(AlbumListModel left, AlbumListModel right)
         {
-            return obj != null && Equals(obj as AlbumListModel);
-        }
-
-        private bool Equals(AlbumListModel item)
-        {
-            return item != null && this == item;
-        }
-
-        public override int GetHashCode()
-        {
-            int hash = 13;
-            int hashFactor = 7;
-
-            hash = (hash * hashFactor) + AlbumListType.GetHashCode();
-            hash = (hash * hashFactor) + Current.GetHashCode();
-
-            return hash;
+            return !(left == right);
         }
 
         public static bool operator ==(AlbumListModel left, AlbumListModel right)
         {
-            if (ReferenceEquals(null, left))
-                return ReferenceEquals(null, right);
+            if (left is null)
+                return right is null;
 
-            if (ReferenceEquals(null, right))
+            if (right is null)
                 return false;
 
             if (!string.Equals(left.AlbumListType, right.AlbumListType))
                 return false;
 
-            if (!string.Equals(left.Current, right.Current))
-                return false;
-
-            return true;
+            return string.Equals(left.Current, right.Current);
         }
 
-        public static bool operator !=(AlbumListModel left, AlbumListModel right)
+        public override bool Equals(object obj)
         {
-            return !(left == right);
+            return obj != null && Equals(obj as AlbumListModel);
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = 13;
+            var hashFactor = 7;
+
+            hash = hash * hashFactor + AlbumListType.GetHashCode();
+            hash = hash * hashFactor + Current.GetHashCode();
+
+            return hash;
+        }
+
+        private bool Equals(AlbumListModel item)
+        {
+            return item != null && this == item;
         }
     }
 }

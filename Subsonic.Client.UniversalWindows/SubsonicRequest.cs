@@ -40,7 +40,7 @@ namespace Subsonic.Client.UniversalWindows
                         if (stringResponse == null)
                             throw new SubsonicErrorException("HTTP response contains no content");
 
-                        Response result = await DeserializeResponseAsync(stringResponse);
+                        var result = await DeserializeResponseAsync(stringResponse);
 
                         if (result.ItemElementName == ItemChoiceType.Error)
                             throw new SubsonicErrorException("Error occurred during request.", result.Item as Error);
